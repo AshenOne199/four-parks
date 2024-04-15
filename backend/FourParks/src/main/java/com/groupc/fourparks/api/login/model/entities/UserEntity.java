@@ -30,14 +30,20 @@ public class UserEntity {
     @Column(name = "second_name")
     private String secondName;
 
-    @Column(name = "first_surname")
-    private String firstSurname;
+    @Column(name = "first_lastname")
+    private String firstLastname;
 
-    @Column(name = "second_surname")
-    private String secondSurname;
+    @Column(name = "second_lastname")
+    private String secondLastname;
 
     @Column(name = "is_active")
     private boolean isActive;
+
+    @Column(name = "is_blocked")
+    private boolean isBLocked;
+
+    @Column(name = "login_attempts")
+    private int loginAttempts;
 
     @Column(name = "updated_at")
     private LocalDate updatedAt;

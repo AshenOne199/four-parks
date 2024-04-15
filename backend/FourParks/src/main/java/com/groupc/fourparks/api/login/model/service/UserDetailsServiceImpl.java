@@ -9,6 +9,7 @@ import com.groupc.fourparks.api.login.model.entities.UserEntity;
 import com.groupc.fourparks.api.login.model.repository.RoleRepository;
 import com.groupc.fourparks.api.login.model.repository.UserRepository;
 import com.groupc.fourparks.api.login.utils.JwtUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,13 +22,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+
+    @Value("${security.default.password}")
+    private String defaultPassword;
 
     private final JwtUtils jwtUtils;
 
@@ -36,6 +38,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     private final RoleRepository roleRepository;
+
 
     public UserDetailsServiceImpl(final JwtUtils jwtUtils, final UserRepository userRepository, final PasswordEncoder passwordEncoder, final RoleRepository roleRepository) {
         this.jwtUtils = jwtUtils;
@@ -61,15 +64,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new User(userEntity.getEmail(), userEntity.getPassword(), authorityList);
     }
 
-    public AuthResponse loginUser(AuthLoginRequest authLoginRequest) {
-        String email = authLoginRequest.email();
-        String password = authLoginRequest.password();
-
-        Authentication authentication = this.authenticate(email, password);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String accessToken = jwtUtils.generateToken(authentication);
-        return new AuthResponse(email, "Usuario loggeado con exito", accessToken, true);
+    public String passwordGenerator(String Name) {
+        String initials = Name.substring(0, 1).toUpperCase() + Name.substring(1, Math.min(Name.length(), 4));
+        Random random = new Random();
+        int randomNumber = 1000 + random.nextInt(9000);
+        return initials + randomNumber;
     }
 
     public Authentication authenticate(String username, String password) {
@@ -84,11 +83,26 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
     }
 
+    public AuthResponse loginUser(AuthLoginRequest authLoginRequest) {
+        String email = authLoginRequest.email();
+        String password = authLoginRequest.password();
+
+        Authentication authentication = this.authenticate(email, password);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String accessToken = jwtUtils.generateToken(authentication);
+        return new AuthResponse(email, "Usuario loggeado con exito", accessToken, true);
+    }
+
     public AuthResponse createUser(AuthCreateUserRequest authCreateUserRequest) {
         String username = authCreateUserRequest.email();
-        String password = authCreateUserRequest.password();
-        List<String> roleRequest = authCreateUserRequest.roleRequest().roleListName();
+        String password = passwordGenerator(authCreateUserRequest.password());
+        String firstName = authCreateUserRequest.firstName();
+        String secondName = authCreateUserRequest.secondName();
+        String firstLastname = authCreateUserRequest.firstLastname();
+        String secondLastname = authCreateUserRequest.secondLastname();
 
+        List<String> roleRequest = authCreateUserRequest.roleRequest().roleListName();
         Set<RoleEntity> roleEntitySet = new HashSet<>(roleRepository.findRoleEntitiesByRoleEnumIn(roleRequest));
 
         if (roleEntitySet.isEmpty()){
@@ -98,6 +112,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         UserEntity userEntity = UserEntity.builder()
                 .email(username)
                 .password(passwordEncoder.encode(password))
+                .firstName(firstName)
+                .secondName(secondName)
+                .firstLastname(firstLastname)
+                .secondLastname(secondLastname)
+                .createdAt(LocalDate.now())
+                .updatedAt(LocalDate.now())
                 .roles(roleEntitySet)
                 .build();
 

@@ -44,8 +44,8 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll();
 
                     // private endpoints
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/test/hello-secured").hasRole("USER");
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/test/hello-secured-2").hasRole("ADMIN");
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/test/hello-secured").hasRole("USUARIO");
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/test/hello-secured-2").hasRole("GERENTE");
 
                     // no specific endpoints
                     http.anyRequest().denyAll();
