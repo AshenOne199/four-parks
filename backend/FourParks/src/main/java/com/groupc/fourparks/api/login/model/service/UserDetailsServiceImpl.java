@@ -86,7 +86,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public AuthResponse loginUser(AuthLoginRequest authLoginRequest) {
         String email = authLoginRequest.email();
         String password = authLoginRequest.password();
-
         Authentication authentication = this.authenticate(email, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -96,7 +95,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public AuthResponse createUser(AuthCreateUserRequest authCreateUserRequest) {
         String username = authCreateUserRequest.email();
-        String password = passwordGenerator(authCreateUserRequest.password());
+        String password = authCreateUserRequest.password();
         String firstName = authCreateUserRequest.firstName();
         String secondName = authCreateUserRequest.secondName();
         String firstLastname = authCreateUserRequest.firstLastname();
