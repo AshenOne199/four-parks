@@ -49,7 +49,7 @@ CREATE TABLE role_permissions (
                                   FOREIGN KEY (permission_id) REFERENCES permissions (id) ON DELETE CASCADE
 );
 
-INSERT INTO roles (role_name) VALUES  ('ADMIN'), ('SUPERVISOR'), ('USER');
+INSERT INTO roles (role_name) VALUES  ('GERENTE'), ('FUNCIONARIO'), ('USUARIO');
 
 
 -- Permiso para gestión de usuarios
@@ -69,17 +69,17 @@ INSERT INTO permissions (permission_name, description) VALUES
     ('BOOKING', 'Permite gestión de todo lo referente a una reserva propia');
 
 
--- Asignar todos los permisos al rol ADMIN
+-- Asignar todos los permisos al rol GERENTE
 INSERT INTO role_permissions (role_id, permission_id) VALUES
                                                           (1, 1), (1, 2), (1, 3), (1, 4);
 
 
--- Asignar algunos permisos al rol SUPERVISOR
+-- Asignar algunos permisos al rol FUNCIONARIO
 INSERT INTO role_permissions (role_id, permission_id) VALUES
                                                           (2, 2), (2, 3), (2, 4);
 
 
--- Asignar permisos básicos al rol USER
+-- Asignar permisos básicos al rol USUARIO
 INSERT INTO role_permissions (role_id, permission_id) VALUES
     (3, 4);
 
@@ -90,15 +90,15 @@ INSERT INTO users (email, password, first_name, second_name,  first_lastname, se
                                                                                                               ('user@gmail.com', '$2a$12$amk/1mLvlv/VUEafSw3FC.mHBMbmnUgm2zRXi4cKZFa5YbAwFw2HS', 'Andres', '', 'Jimenez', 'Mantilla', 1);
 
 
--- Asignar rol de ADMIN al usuario admin
+-- Asignar rol de ADMIN al usuario GERENTE
 INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
 
 
--- Asignar rol de SUPERVISOR al usuario supervisor
+-- Asignar rol de SUPERVISOR al usuario FUNCIONARIO
 INSERT INTO user_roles (user_id, role_id) VALUES (2, 2);
 
 
--- Asignar rol de USER al usuario user
+-- Asignar rol de USER al usuario USUARIO
 INSERT INTO user_roles (user_id, role_id) VALUES (3, 3);
 
 
