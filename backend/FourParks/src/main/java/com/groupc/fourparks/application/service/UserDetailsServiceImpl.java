@@ -55,14 +55,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = userPort.findUserByEmail(username)
-                .orElseThrow(() -> new UserNotExists("El usuario " + username + " no existe"));
+                .orElseThrow(() -> new UnauthorizedException("El usuario " + username + " no existe"));
 
         if (!userEntity.isActive()){
-            throw new UserInactive("El usuario esta inactivo");
+            throw new ForbidenException("El usuario esta inactivo");
         }
 
         if (userEntity.isBLocked()){
-            throw new UserInactive("El usuario esta bloqueado. Contacte un administrador");
+            throw new ForbidenException("El usuario esta bloqueado. Contacte un administrador");
         }
 
         return new User(userEntity.getEmail(), userEntity.getPassword(), getRoles(userEntity));
@@ -73,7 +73,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         Optional<UserEntity> userEntityFound = userPort.findUserByEmail(email);
         if (userEntityFound.isPresent()) {
-            throw new UserAlreadyExists("Email ya registrado");
+            throw new InternalServerErrorException("Email ya registrado");
         }
 
         String firstName = authCreateUserRegisterRequest.firstName();
@@ -85,14 +85,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Set<RoleEntity> roleEntitySet = new HashSet<>(rolePort.findRolesByEnum(roleRequest));
 
         if (roleEntitySet.isEmpty()){
-            throw new RolesNotExists("Los roles enviados no existen");
+            throw new BadRequestException("Los roles enviados no existen");
         }
 
         String password = passwordGeneratorImpl.generateRandomPassword();
         try {
             emailServiceImpl.sendEmail(new EmailEntity(email, "Nueva contraseña", password));
         } catch (MessagingException e) {
-            throw new EmailException("Error al enviar email");
+            throw new InternalServerErrorException("Error al enviar email");
         }
 
         UserEntity userEntity = UserEntity.builder()
@@ -117,7 +117,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .flatMap(role -> role.getPermissionsList().stream())
                 .forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName())));
 
-        return new AuthResponse(userCreated.getEmail(), "Usuario creado correctamente", null, true);
+        return new AuthResponse(userCreated.getEmail(), "Usuario creado correctamente", null);
     }
 
     public AuthResponse loginUser(UserLoginRequest userLoginRequest) {
@@ -127,29 +127,29 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String accessToken = jwtUtils.generateToken(authentication);
-        return new AuthResponse(email, "Usuario loggeado con exito", accessToken, true);
+        return new AuthResponse(email, "Usuario loggeado con exito", accessToken);
     }
 
     public AuthResponse activeUser(UserLoginRequest userLoginRequest) {
         String email = userLoginRequest.email();
         String password = userLoginRequest.password();
 
-        UserEntity userEntity = userPort.findUserByEmail(email).orElseThrow(() -> new UserNotExists("El usuario " + email + " no existe"));
+        UserEntity userEntity = userPort.findUserByEmail(email).orElseThrow(() -> new UnauthorizedException("El usuario " + email + " no existe"));
 
         if (userEntity.isBLocked()){
-            throw new UserInactive("El usuario esta bloqueado. Contacte un administrador");
+            throw new ForbidenException("El usuario esta bloqueado. Contacte un administrador");
         }
 
         User user = new User(userEntity.getEmail(), userEntity.getPassword(), getRoles(userEntity));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new CredentialsException("Contraseña incorrecta. No se puede activar el usuario.");
+            throw new UnauthorizedException("Contraseña incorrecta. No se puede activar el usuario.");
         }
 
         userEntity.setActive(true);
         userPort.save(userEntity);
 
-        return new AuthResponse(email, "Cuenta activada con exito", null, true);
+        return new AuthResponse(email, "Cuenta activada con exito", null);
     }
 
     public AuthResponse newPassword(UserNewPasswordRequest userNewPasswordRequest) {
@@ -159,43 +159,43 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         String confirmPassword = userNewPasswordRequest.confirmPassword();
 
         if (!newPassword.equals(confirmPassword)) {
-            throw new CredentialsException("Las contraseñas no coinciden");
+            throw new UnauthorizedException("Las contraseñas no coinciden");
         }
 
-        UserEntity userEntity = userPort.findUserByEmail(email).orElseThrow(() -> new UserNotExists("El usuario " + email + " no existe"));
+        UserEntity userEntity = userPort.findUserByEmail(email).orElseThrow(() -> new UnauthorizedException("El usuario " + email + " no existe"));
 
         if (userEntity.isBLocked()){
-            throw new UserInactive("El usuario esta bloqueado. Contacte un administrador");
+            throw new ForbidenException("El usuario esta bloqueado. Contacte un administrador");
         }
 
         User user = new User(userEntity.getEmail(), userEntity.getPassword(), getRoles(userEntity));
 
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-            throw new CredentialsException("Error de credenciales al cambiar de contraseña");
+            throw new UnauthorizedException("Error de credenciales al cambiar de contraseña");
         }
 
         userEntity.setPassword(passwordEncoder.encode(confirmPassword));
         userPort.save(userEntity);
 
-        return new AuthResponse(email, "Contraseña modificada con exito", null, true);
+        return new AuthResponse(email, "Contraseña modificada con exito", null);
     }
 
     public AuthResponse unBlock(UserUnblockRequest userUnblockRequest) {
         String email = userUnblockRequest.email();
 
-        UserEntity userEntity = userPort.findUserByEmail(email).orElseThrow(() -> new UserNotExists("El usuario " + email + " no existe"));
+        UserEntity userEntity = userPort.findUserByEmail(email).orElseThrow(() -> new UnauthorizedException("El usuario " + email + " no existe"));
 
         userEntity.setBLocked(false);
         userEntity.setLoginAttempts(0);
         userPort.save(userEntity);
 
-        return new AuthResponse(email, "Usuario desbloqueado con exito", null, true);
+        return new AuthResponse(email, "Usuario desbloqueado con exito", null);
     }
 
     public Authentication authenticate(String username, String password) {
         UserDetails userDetails = this.loadUserByUsername(username);
         if (userDetails == null) {
-            throw new UserNotExists("Usuario o contraseña invalidos");
+            throw new UnauthorizedException("Usuario o contraseña invalidos");
         }
 
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
@@ -205,11 +205,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 if (userEntity.get().getLoginAttempts() > 3) {
                     userEntity.get().setBLocked(true);
                     userPort.save(userEntity.get());
-                    throw new LoginAttempts("Cuenta bloqueada. Mas de 3 intentos fallidos. Contacte con un administrador");
+                    throw new TooManyRequestsException("Cuenta bloqueada. Mas de 3 intentos fallidos. Contacte con un administrador");
                 }
                 userPort.save(userEntity.get());
             }
-            throw new CredentialsException("Contraseña incorrecta");
+            throw new UnauthorizedException("Contraseña incorrecta");
         }
 
         Optional<UserEntity> userEntity = userPort.findUserByEmail(username);

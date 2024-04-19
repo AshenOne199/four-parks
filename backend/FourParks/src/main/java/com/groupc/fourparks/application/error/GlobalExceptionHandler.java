@@ -9,60 +9,39 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({UserAlreadyExists.class})
-    public ResponseEntity<Object> handleUserAlreadyExists(UserAlreadyExists exception) {
+    @ExceptionHandler({InternalServerErrorException.class})
+    public ResponseEntity<Object> handleInternalServerErrorException(InternalServerErrorException exception) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(exception.getMessage());
     }
 
-    @ExceptionHandler({RolesNotExists.class})
-    public ResponseEntity<Object> handleRolesNotExists(RolesNotExists exception) {
+    @ExceptionHandler({BadRequestException.class})
+    public ResponseEntity<Object> handleBadRequestException(BadRequestException exception) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(exception.getMessage());
     }
 
-    @ExceptionHandler({EmailException.class})
-    public ResponseEntity<Object> handleEmailError(EmailException exception) {
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(exception.getMessage());
-    }
-
-    @ExceptionHandler({UserNotExists.class})
-    public ResponseEntity<Object> handleBadCredentials(UserNotExists exception) {
+    @ExceptionHandler({UnauthorizedException.class})
+    public ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException exception) {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(exception.getMessage());
     }
 
-    @ExceptionHandler({CredentialsException.class})
-    public ResponseEntity<Object> handleBadCredentials(CredentialsException exception) {
-        return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
-                .body(exception.getMessage());
-    }
 
-    @ExceptionHandler({UserInactive.class})
-    public ResponseEntity<Object> handleUserInactive(UserInactive exception) {
+    @ExceptionHandler({ForbidenException.class})
+    public ResponseEntity<Object> handleForbidenException(ForbidenException exception) {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(exception.getMessage());
     }
 
-    @ExceptionHandler({UserBlocked.class})
-    public ResponseEntity<Object> handleUserBlocked(UserBlocked exception) {
-        return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
-                .body(exception.getMessage());
-    }
-
-    @ExceptionHandler({LoginAttempts.class})
-    public ResponseEntity<Object> handleLoginAttempts(LoginAttempts exception) {
+    @ExceptionHandler({TooManyRequestsException.class})
+    public ResponseEntity<Object> handleTooManyRequestsException(TooManyRequestsException exception) {
         return ResponseEntity
                 .status(HttpStatus.TOO_MANY_REQUESTS)
                 .body(exception.getMessage());
     }
-
 }
