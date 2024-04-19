@@ -1,9 +1,12 @@
 package com.groupc.fourparks.application.service;
 
 
+import com.groupc.fourparks.application.error.exception.*;
+import com.groupc.fourparks.domain.dto.request.UserNewPasswordRequest;
 import com.groupc.fourparks.domain.dto.request.UserRegisterRequest;
 import com.groupc.fourparks.domain.dto.request.UserLoginRequest;
 import com.groupc.fourparks.domain.dto.AuthResponse;
+import com.groupc.fourparks.domain.dto.request.UserUnblockRequest;
 import com.groupc.fourparks.domain.port.UserPort;
 import com.groupc.fourparks.infraestructure.adapter.entity.EmailEntity;
 import com.groupc.fourparks.infraestructure.adapter.entity.RoleEntity;
@@ -11,7 +14,6 @@ import com.groupc.fourparks.infraestructure.adapter.entity.UserEntity;
 import com.groupc.fourparks.domain.port.RolePort;
 import com.groupc.fourparks.infraestructure.config.jwt.JwtUtils;
 import jakarta.mail.MessagingException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -39,61 +41,41 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final EmailServiceImpl emailServiceImpl;
 
-    public UserDetailsServiceImpl(final PasswordEncoder passwordEncoder, final JwtUtils jwtUtils, final RolePort rolePort, final UserPort userPort, final EmailServiceImpl emailServiceImpl) {
+    private final PasswordGeneratorImpl passwordGeneratorImpl;
+
+    public UserDetailsServiceImpl(final PasswordEncoder passwordEncoder, final JwtUtils jwtUtils, final RolePort rolePort, final UserPort userPort, final EmailServiceImpl emailServiceImpl, final PasswordGeneratorImpl passwordGeneratorImpl) {
         this.passwordEncoder = passwordEncoder;
         this.jwtUtils = jwtUtils;
         this.rolePort = rolePort;
         this.userPort = userPort;
         this.emailServiceImpl = emailServiceImpl;
+        this.passwordGeneratorImpl = passwordGeneratorImpl;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserEntity userEntity = userPort.findUserByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("El usuario " + username + " no existe"));
+                .orElseThrow(() -> new UserNotExists("El usuario " + username + " no existe"));
 
-        List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
-
-        userEntity.getRoles()
-                .forEach(role -> authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(role.getRoleEnum().name()))));
-
-        userEntity.getRoles().stream()
-                .flatMap(role -> role.getPermissionsList().stream())
-                .forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName())));
-
-        return new User(userEntity.getEmail(), userEntity.getPassword(), authorityList);
-    }
-
-    public Authentication authenticate(String username, String password) {
-        UserDetails userDetails = this.loadUserByUsername(username);
-        if (userDetails == null) {
-            throw new BadCredentialsException("Usuario o contraseña invalidos");
+        if (!userEntity.isActive()){
+            throw new UserInactive("El usuario esta inactivo");
         }
 
-        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw new BadCredentialsException("Contraseña incorrecta");
+        if (userEntity.isBLocked()){
+            throw new UserInactive("El usuario esta bloqueado. Contacte un administrador");
         }
-        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
-    }
 
-    public AuthResponse loginUser(UserLoginRequest userLoginRequest) {
-        String email = userLoginRequest.email();
-        String password = userLoginRequest.password();
-        Authentication authentication = this.authenticate(email, password);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String accessToken = jwtUtils.generateToken(authentication);
-        return new AuthResponse(email, "Usuario loggeado con exito", accessToken, true);
+        return new User(userEntity.getEmail(), userEntity.getPassword(), getRoles(userEntity));
     }
 
     public AuthResponse createUser(UserRegisterRequest authCreateUserRegisterRequest) {
         String email = authCreateUserRegisterRequest.email();
-        String password = encrypt(authCreateUserRegisterRequest.email());
-        try {
-            emailServiceImpl.sendEmail(new EmailEntity(email, "Nueva contraseña", password));
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
+
+        Optional<UserEntity> userEntityFound = userPort.findUserByEmail(email);
+        if (userEntityFound.isPresent()) {
+            throw new UserAlreadyExists("Email ya registrado");
         }
+
         String firstName = authCreateUserRegisterRequest.firstName();
         String secondName = authCreateUserRegisterRequest.secondName();
         String firstLastname = authCreateUserRegisterRequest.firstLastname();
@@ -103,7 +85,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Set<RoleEntity> roleEntitySet = new HashSet<>(rolePort.findRolesByEnum(roleRequest));
 
         if (roleEntitySet.isEmpty()){
-            throw new IllegalArgumentException("Los roles enviados en el request no existen");
+            throw new RolesNotExists("Los roles enviados no existen");
+        }
+
+        String password = passwordGeneratorImpl.generateRandomPassword();
+        try {
+            emailServiceImpl.sendEmail(new EmailEntity(email, "Nueva contraseña", password));
+        } catch (MessagingException e) {
+            throw new EmailException("Error al enviar email");
         }
 
         UserEntity userEntity = UserEntity.builder()
@@ -128,16 +117,119 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .flatMap(role -> role.getPermissionsList().stream())
                 .forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName())));
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(userCreated.getEmail(), userCreated.getPassword(), authorityList);
+        return new AuthResponse(userCreated.getEmail(), "Usuario creado correctamente", null, true);
+    }
+
+    public AuthResponse loginUser(UserLoginRequest userLoginRequest) {
+        String email = userLoginRequest.email();
+        String password = userLoginRequest.password();
+        Authentication authentication = this.authenticate(email, password);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
         String accessToken = jwtUtils.generateToken(authentication);
-        return new AuthResponse(userCreated.getEmail(), "Usuario creado correctamente", accessToken, true);
+        return new AuthResponse(email, "Usuario loggeado con exito", accessToken, true);
     }
 
-    public static String encrypt(String plaintext) {
-        return plaintext.chars()
-                .map(c -> Character.isLetter(c) ? (char) ('a' + (c - 'a' + 7) % 26) : c)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
+    public AuthResponse activeUser(UserLoginRequest userLoginRequest) {
+        String email = userLoginRequest.email();
+        String password = userLoginRequest.password();
+
+        UserEntity userEntity = userPort.findUserByEmail(email).orElseThrow(() -> new UserNotExists("El usuario " + email + " no existe"));
+
+        if (userEntity.isBLocked()){
+            throw new UserInactive("El usuario esta bloqueado. Contacte un administrador");
+        }
+
+        User user = new User(userEntity.getEmail(), userEntity.getPassword(), getRoles(userEntity));
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new CredentialsException("Contraseña incorrecta. No se puede activar el usuario.");
+        }
+
+        userEntity.setActive(true);
+        userPort.save(userEntity);
+
+        return new AuthResponse(email, "Cuenta activada con exito", null, true);
     }
 
+    public AuthResponse newPassword(UserNewPasswordRequest userNewPasswordRequest) {
+        String email = userNewPasswordRequest.email();
+        String oldPassword = userNewPasswordRequest.oldPassword();
+        String newPassword = userNewPasswordRequest.newPassword();
+        String confirmPassword = userNewPasswordRequest.confirmPassword();
+
+        if (!newPassword.equals(confirmPassword)) {
+            throw new CredentialsException("Las contraseñas no coinciden");
+        }
+
+        UserEntity userEntity = userPort.findUserByEmail(email).orElseThrow(() -> new UserNotExists("El usuario " + email + " no existe"));
+
+        if (userEntity.isBLocked()){
+            throw new UserInactive("El usuario esta bloqueado. Contacte un administrador");
+        }
+
+        User user = new User(userEntity.getEmail(), userEntity.getPassword(), getRoles(userEntity));
+
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new CredentialsException("Error de credenciales al cambiar de contraseña");
+        }
+
+        userEntity.setPassword(passwordEncoder.encode(confirmPassword));
+        userPort.save(userEntity);
+
+        return new AuthResponse(email, "Contraseña modificada con exito", null, true);
+    }
+
+    public AuthResponse unBlock(UserUnblockRequest userUnblockRequest) {
+        String email = userUnblockRequest.email();
+
+        UserEntity userEntity = userPort.findUserByEmail(email).orElseThrow(() -> new UserNotExists("El usuario " + email + " no existe"));
+
+        userEntity.setBLocked(false);
+        userEntity.setLoginAttempts(0);
+        userPort.save(userEntity);
+
+        return new AuthResponse(email, "Usuario desbloqueado con exito", null, true);
+    }
+
+    public Authentication authenticate(String username, String password) {
+        UserDetails userDetails = this.loadUserByUsername(username);
+        if (userDetails == null) {
+            throw new UserNotExists("Usuario o contraseña invalidos");
+        }
+
+        if (!passwordEncoder.matches(password, userDetails.getPassword())) {
+            Optional<UserEntity> userEntity = userPort.findUserByEmail(username);
+            if (userEntity.isPresent()) {
+                userEntity.ifPresent(entity -> entity.setLoginAttempts(entity.getLoginAttempts()+1));
+                if (userEntity.get().getLoginAttempts() > 3) {
+                    userEntity.get().setBLocked(true);
+                    userPort.save(userEntity.get());
+                    throw new LoginAttempts("Cuenta bloqueada. Mas de 3 intentos fallidos. Contacte con un administrador");
+                }
+                userPort.save(userEntity.get());
+            }
+            throw new CredentialsException("Contraseña incorrecta");
+        }
+
+        Optional<UserEntity> userEntity = userPort.findUserByEmail(username);
+        if (userEntity.isPresent()) {
+            userEntity.ifPresent(entity -> entity.setLoginAttempts(0));
+            userPort.save(userEntity.get());
+        }
+
+        return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+    }
+
+    private List<SimpleGrantedAuthority> getRoles(UserEntity userEntity) {
+        List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
+
+        userEntity.getRoles()
+                .forEach(role -> authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(role.getRoleEnum().name()))));
+
+        userEntity.getRoles().stream()
+                .flatMap(role -> role.getPermissionsList().stream())
+                .forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName())));
+        return authorityList;
+    }
 }

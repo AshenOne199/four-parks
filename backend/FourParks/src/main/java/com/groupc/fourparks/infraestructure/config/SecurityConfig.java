@@ -40,15 +40,14 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
                     // public endpoints
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/test/home").permitAll();
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/sign-up").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/log-in").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/active").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/new-password").permitAll();
 
                     // private endpoints
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/test/hello-secured").hasRole("USUARIO");
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/test/hello-secured-2").hasRole("GERENTE");
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/unblock").hasRole("FUNCIONARIO");
 
-                    // no specific endpoints
-                    http.anyRequest().denyAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();
