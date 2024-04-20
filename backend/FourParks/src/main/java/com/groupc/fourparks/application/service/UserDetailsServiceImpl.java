@@ -5,6 +5,7 @@ import java.util.*;
 
 import com.groupc.fourparks.domain.port.CreditCardPort;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,6 +30,8 @@ import com.groupc.fourparks.infraestructure.model.dto.EmailDto;
 import com.groupc.fourparks.infraestructure.adapter.entity.RoleEntity;
 import com.groupc.fourparks.domain.port.RolePort;
 import com.groupc.fourparks.infraestructure.config.jwt.JwtUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 @AllArgsConstructor
@@ -123,6 +126,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public LoginDto loginUser(UserLoginRequest userLoginRequest) {
+
         var userToLogin = userLoginRequestMapper.toDomain(userLoginRequest);
         String email = userToLogin.getEmail();
         String password = userToLogin.getPassword();
@@ -132,6 +136,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         var login = loginDtoMapper.toDto(userToLogin);
         login.setJwt(accessToken);
+
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest();
+
+        login.setIp(request.getRemoteAddr());
 
         return login;
     }
