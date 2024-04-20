@@ -1,5 +1,6 @@
 package com.groupc.fourparks.infraestructure.adapter.entity;
 
+import com.groupc.fourparks.domain.model.RoleEnum;
 import jakarta.persistence.*;
 import lombok.*;
 

@@ -1,10 +1,11 @@
-package com.groupc.fourparks.application.error;
+package com.groupc.fourparks.infraestructure.rest.advice;
 
-import com.groupc.fourparks.application.error.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import com.groupc.fourparks.infraestructure.exception.*;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -31,8 +32,8 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler({ForbidenException.class})
-    public ResponseEntity<Object> handleForbidenException(ForbidenException exception) {
+    @ExceptionHandler({ForbiddenException.class})
+    public ResponseEntity<Object> handleForbiddenException(ForbiddenException exception) {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(exception.getMessage());
@@ -42,6 +43,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Object> handleTooManyRequestsException(TooManyRequestsException exception) {
         return ResponseEntity
                 .status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(exception.getMessage());
+    }
+
+    @ExceptionHandler({NotFoundException.class})
+    public ResponseEntity<Object> handleTooManyRequestsException(NotFoundException exception) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body(exception.getMessage());
     }
 }

@@ -31,7 +31,6 @@ public class PasswordGeneratorImpl {
             }
         }
 
-        // Si la longitud supera el máximo, truncamos el exceso
         if (sb.length() > totalLength) {
             sb.setLength(totalLength);
         }

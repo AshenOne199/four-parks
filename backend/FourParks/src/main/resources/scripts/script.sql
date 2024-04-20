@@ -7,13 +7,22 @@ CREATE TABLE users (
                        second_name VARCHAR(100),
                        first_lastname VARCHAR(100),
                        second_lastname VARCHAR(100),
-                       is_active BOOLEAN DEFAULT FALSE,
-                       is_blocked BOOLEAN DEFAULT FALSE,
+                       account_active BOOLEAN DEFAULT FALSE,
+                       account_blocked BOOLEAN DEFAULT FALSE,
                        login_attempts INT DEFAULT 0,
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
+-- Creación de la tabla de tarjetas de credito
+CREATE TABLE credit_cards (
+                              id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                              user_id BIGINT NOT NULL,
+                              card_number VARCHAR(16) NOT NULL,
+                              expiration_date VARCHAR(10) NOT NULL,
+                              cvv VARCHAR(4) NOT NULL,
+                              FOREIGN KEY (user_id) REFERENCES users(id)
+);
 
 -- Creación de la tabla de roles
 CREATE TABLE roles (
@@ -84,10 +93,24 @@ INSERT INTO role_permissions (role_id, permission_id) VALUES
     (3, 4);
 
 
-INSERT INTO users (email, password, first_name, second_name,  first_lastname, second_lastname, is_active) VALUES
-                                                                                                              ('admin@gmail.com', '$2a$12$amk/1mLvlv/VUEafSw3FC.mHBMbmnUgm2zRXi4cKZFa5YbAwFw2HS', 'Elmer', '', 'Figueroa', 'Arce', 1),
-                                                                                                              ('supervisor@gmail.com', '$2a$12$amk/1mLvlv/VUEafSw3FC.mHBMbmnUgm2zRXi4cKZFa5YbAwFw2HS', 'Claudia', 'Helena', 'Rodriguez', 'Avila', 1),
-                                                                                                              ('user@gmail.com', '$2a$12$amk/1mLvlv/VUEafSw3FC.mHBMbmnUgm2zRXi4cKZFa5YbAwFw2HS', 'Andres', '', 'Jimenez', 'Mantilla', 1);
+INSERT INTO users (email, password, first_name, second_name,  first_lastname, second_lastname, account_active) VALUES
+                                                                                                                   ('admin@gmail.com', '$2a$12$amk/1mLvlv/VUEafSw3FC.mHBMbmnUgm2zRXi4cKZFa5YbAwFw2HS', 'Elmer', '', 'Figueroa', 'Arce', 1),
+                                                                                                                   ('supervisor@gmail.com', '$2a$12$amk/1mLvlv/VUEafSw3FC.mHBMbmnUgm2zRXi4cKZFa5YbAwFw2HS', 'Claudia', 'Helena', 'Rodriguez', 'Avila', 1),
+                                                                                                                   ('user@gmail.com', '$2a$12$amk/1mLvlv/VUEafSw3FC.mHBMbmnUgm2zRXi4cKZFa5YbAwFw2HS', 'Andres', '', 'Jimenez', 'Mantilla', 1);
+
+-- Inserts para el usuario con email 'admin@gmail.com'
+INSERT INTO credit_cards (user_id, card_number, expiration_date, cvv) VALUES
+                                                                          (1, '1111222233334444', '12/25', '123'),
+                                                                          (1, '5555666677778888', '10/24', '456');
+
+-- Inserts para el usuario con email 'supervisor@gmail.com'
+INSERT INTO credit_cards (user_id, card_number, expiration_date, cvv) VALUES
+                                                                          (2, '2222111133334444', '05/26', '789'),
+                                                                          (2, '9999888877776666', '08/23', '012');
+
+-- Inserts para el usuario con email 'user@gmail.com'
+INSERT INTO credit_cards (user_id, card_number, expiration_date, cvv) VALUES
+    (3, '3333444455556666', '09/25', '345');
 
 
 -- Asignar rol de ADMIN al usuario GERENTE

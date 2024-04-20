@@ -38,11 +38,11 @@ public class UserEntity {
     @Column(name = "second_lastname")
     private String secondLastname;
 
-    @Column(name = "is_active")
-    private boolean isActive;
+    @Column(name = "account_active")
+    private boolean accountActive;
 
-    @Column(name = "is_blocked")
-    private boolean isBLocked;
+    @Column(name = "account_blocked")
+    private boolean accountBlocked;
 
     @Column(name = "login_attempts")
     private int loginAttempts;
@@ -56,4 +56,7 @@ public class UserEntity {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles = new HashSet<>();
+
+    @OneToMany(targetEntity = CreditCardEntity.class, fetch = FetchType.EAGER, mappedBy = "userId")
+    private Set<CreditCardEntity> creditCards = new HashSet<>();
 }

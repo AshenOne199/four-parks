@@ -1,4 +1,4 @@
-package com.groupc.fourparks.application.error.exception;
+package com.groupc.fourparks.infraestructure.exception;
 
 public class TooManyRequestsException extends RuntimeException{
     public TooManyRequestsException(String message) {

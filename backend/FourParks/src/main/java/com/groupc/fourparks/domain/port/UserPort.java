@@ -1,10 +1,11 @@
 package com.groupc.fourparks.domain.port;
 
-import com.groupc.fourparks.infraestructure.adapter.entity.UserEntity;
+import com.groupc.fourparks.domain.model.User;
 
 import java.util.Optional;
 
 public interface UserPort {
-    Optional<UserEntity> findUserByEmail(String email);
-    UserEntity save(UserEntity userEntity);
+    Optional<User> findUserByEmailOptional(String username);
+    User findUserByEmail(String email);
+    User save(User user);
 }

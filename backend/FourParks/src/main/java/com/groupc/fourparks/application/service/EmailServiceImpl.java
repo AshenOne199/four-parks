@@ -1,7 +1,7 @@
 package com.groupc.fourparks.application.service;
 
 import com.groupc.fourparks.application.usecase.EmailService;
-import com.groupc.fourparks.infraestructure.adapter.entity.EmailEntity;
+import com.groupc.fourparks.infraestructure.model.dto.EmailDto;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -22,7 +22,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendEmail(EmailEntity email) throws MessagingException {
+    public void sendEmail(EmailDto email) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 

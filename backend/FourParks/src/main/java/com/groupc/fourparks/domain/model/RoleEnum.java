@@ -1,4 +1,4 @@
-package com.groupc.fourparks.infraestructure.adapter.entity;
+package com.groupc.fourparks.domain.model;
 
 public enum RoleEnum {
     GERENTE,
