@@ -17,7 +17,6 @@ import com.groupc.fourparks.infraestructure.model.request.UserLoginRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = "http://localhost:3000")
 public class AuthenticationController {
 
     private final UserDetailsServiceImpl userDetailsService;
@@ -30,11 +29,6 @@ public class AuthenticationController {
     @PostMapping("/log-in")
     public ResponseEntity<LoginDto> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
         return new ResponseEntity<>(this.userDetailsService.loginUser(userLoginRequest), HttpStatus.OK);
-    }
-
-    @PostMapping("/active")
-    public ResponseEntity<UserDto> active(@RequestBody @Valid UserLoginRequest userLoginRequest){
-        return new ResponseEntity<>(this.userDetailsService.activeUser(userLoginRequest), HttpStatus.OK);
     }
 
     @PostMapping("/new-password")

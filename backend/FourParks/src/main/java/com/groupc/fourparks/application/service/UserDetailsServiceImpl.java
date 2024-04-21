@@ -145,27 +145,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return login;
     }
 
-    public UserDto activeUser(UserLoginRequest userLoginRequest) {
-        var userToActive = userLoginRequestMapper.toDomain(userLoginRequest);
-        String email = userToActive.getEmail();
-        String password = userToActive.getPassword();
-
-        var user = userPort.findUserByEmail(email);
-
-        if (user.isAccountBlocked()){
-            throw new ForbiddenException("El usuario esta bloqueado. Contacte un administrador");
-        }
-
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new UnauthorizedException("Contraseña incorrecta. No se puede activar el usuario.");
-        }
-
-        user.setAccountActive(true);
-        var userSaved = userPort.save(user);
-
-        return userDtoMapper.toDto(userSaved);
-    }
-
     public UserDto newPassword(UserNewPasswordRequest userNewPasswordRequest) {
         String email = userNewPasswordRequest.getEmail();
         String oldPassword = userNewPasswordRequest.getOldPassword();
@@ -187,6 +166,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         user.setPassword(passwordEncoder.encode(confirmPassword));
+        user.setAccountActive(true);
         var userSaved = userPort.save(user);
 
         return userDtoMapper.toDto(userSaved);
