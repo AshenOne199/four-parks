@@ -58,7 +58,7 @@ CREATE TABLE role_permissions (
                                   FOREIGN KEY (permission_id) REFERENCES permissions (id) ON DELETE CASCADE
 );
 
-INSERT INTO roles (role_name) VALUES  ('GERENTE'), ('FUNCIONARIO'), ('USUARIO');
+INSERT INTO roles (role_name) VALUES  ('GERENTE'), ('ADMINISTRADOR'), ('USUARIO');
 
 
 -- Permiso para gestión de usuarios
@@ -83,7 +83,7 @@ INSERT INTO role_permissions (role_id, permission_id) VALUES
                                                           (1, 1), (1, 2), (1, 3), (1, 4);
 
 
--- Asignar algunos permisos al rol FUNCIONARIO
+-- Asignar algunos permisos al rol ADMINISTRADOR
 INSERT INTO role_permissions (role_id, permission_id) VALUES
                                                           (2, 2), (2, 3), (2, 4);
 
@@ -117,7 +117,7 @@ INSERT INTO credit_cards (user_id, card_number, expiration_date, cvv) VALUES
 INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
 
 
--- Asignar rol de SUPERVISOR al usuario FUNCIONARIO
+-- Asignar rol de SUPERVISOR al usuario ADMINISTRADOR
 INSERT INTO user_roles (user_id, role_id) VALUES (2, 2);
 
 
