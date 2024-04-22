@@ -2,6 +2,6 @@ package com.groupc.fourparks.domain.model;
 
 public enum RoleEnum {
     GERENTE,
-    FUNCIONARIO,
+    ADMINISTRADOR,
     USUARIO,
 }

@@ -43,11 +43,10 @@ public class SecurityConfig {
                     // public endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/sign-up").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/log-in").permitAll();
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/active").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/new-password").permitAll();
 
                     // private endpoints
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/unlock").hasRole("FUNCIONARIO");
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/unlock").hasRole("ADMINISTRADOR");
 
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
