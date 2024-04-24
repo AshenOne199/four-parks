@@ -24,7 +24,6 @@ public class CreditCardJpaAdapter implements CreditCardPort {
         var creditCardToSave = creditCardDboMapper.toDbo(creditCard);
         var userToSave = userDboMapper.toDbo(user);
         creditCardToSave.setUserId(userToSave);
-        var creditCardSaved = creditCardRepository.save(creditCardToSave);
-        creditCardDboMapper.toDomain(creditCardSaved);
+        creditCardRepository.save(creditCardToSave);
     }
 }
