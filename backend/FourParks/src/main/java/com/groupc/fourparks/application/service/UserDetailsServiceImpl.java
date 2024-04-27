@@ -2,8 +2,7 @@ package com.groupc.fourparks.application.service;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 import com.groupc.fourparks.domain.port.CreditCardPort;
 import jakarta.mail.MessagingException;
@@ -38,6 +37,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 @AllArgsConstructor
+
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
@@ -66,6 +66,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final CreditCardDtoMapper creditCardDtoMapper;
 
+    public UserDetailsServiceImpl()
+    {
+        passwordEncoder = null;
+       jwtUtils=null;
+       rolePort=null;
+       userPort=null;
+       creditCardPort=null;
+       emailServiceImpl=null;
+       creditCardServiceImpl=null;
+       passwordGeneratorImpl=null;
+       userRegisterRequestMapper=null;
+       userDtoMapper=null;
+       userLoginRequestMapper=null;
+       loginDtoMapper=null;
+       creditCardDtoMapper=null;
+    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var userToLoad = userPort.findUserByEmail(username);
@@ -230,7 +246,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
     }
 
-    private List<SimpleGrantedAuthority> getRoles(com.groupc.fourparks.domain.model.User user) {
+    public List<SimpleGrantedAuthority> getRoles(com.groupc.fourparks.domain.model.User user) {
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
 
         user.getRoles()
