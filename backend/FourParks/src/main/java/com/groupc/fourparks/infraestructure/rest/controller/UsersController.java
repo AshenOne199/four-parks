@@ -44,13 +44,13 @@ public class UsersController
         usersManageService.deleteUser(email);
 
     }
-
-    public ResponseEntity<User> modifyUser(User user)
+    @PostMapping
+    public ResponseEntity<User> modifyUser(@RequestBody @Valid User user)
     {
         return new ResponseEntity<User>(this.usersManageService.modifyUser(user), HttpStatus.OK);
     }
-
-    public ResponseEntity<User> createUser(User user)
+    @PostMapping
+    public ResponseEntity<User> createUser( @RequestBody @Valid User user)
     {
         return new ResponseEntity<User>(this.usersManageService.createUser(user), HttpStatus.OK);
     }
