@@ -12,5 +12,10 @@ import lombok.Setter;
 public class LoginDto{
     String email;
     String jwt;
+    String rol;
     String ip;
+    private String firstName;
+    private String secondName;
+    private String firstLastname;
+    private String secondLastname;
 }

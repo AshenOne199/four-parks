@@ -2,6 +2,8 @@ package com.groupc.fourparks.application.service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.groupc.fourparks.domain.port.CreditCardPort;
 import jakarta.mail.MessagingException;
@@ -9,6 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -111,6 +114,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userToCreate.setUpdatedAt(LocalDate.now());
         userToCreate.setRoles(roleEntitySet);
 
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest();
+        userToCreate.setIp(request.getRemoteAddr());
+
         var userCreated = userPort.save(userToCreate);
         creditCardPort.save(creditCardToSave, userCreated);
 
@@ -122,11 +129,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .flatMap(role -> role.getPermissionsList().stream())
                 .forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName())));
 
+
         return userDtoMapper.toDto(userCreated);
     }
 
     public LoginDto loginUser(UserLoginRequest userLoginRequest) {
-
         var userToLogin = userLoginRequestMapper.toDomain(userLoginRequest);
         String email = userToLogin.getEmail();
         String password = userToLogin.getPassword();
@@ -137,10 +144,25 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         var login = loginDtoMapper.toDto(userToLogin);
         login.setJwt(accessToken);
 
+        String roleStartingWithRole = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(authority -> authority.startsWith("ROLE_"))
+                .findFirst()
+                .orElse(null);
+
+        if (roleStartingWithRole != null && roleStartingWithRole.startsWith("ROLE_")) {
+            login.setRol(roleStartingWithRole.substring(5));
+        }
+
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest();
-
         login.setIp(request.getRemoteAddr());
+
+        var user = userPort.findUserByEmail(email);
+        login.setFirstName(user.getFirstName());
+        login.setSecondName(user.getSecondName());
+        login.setFirstLastname(user.getFirstLastname());
+        login.setSecondLastname(user.getSecondLastname());
 
         return login;
     }
