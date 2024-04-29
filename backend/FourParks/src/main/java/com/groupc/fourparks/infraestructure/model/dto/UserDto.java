@@ -14,6 +14,7 @@ public class UserDto {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String jwt;
+    private String ip;
     private String email;
     private String password;
     private String firstName;

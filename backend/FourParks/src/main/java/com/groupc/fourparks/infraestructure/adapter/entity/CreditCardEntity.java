@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "credit_cards")
+@Table(name = "credit_card")
 public class CreditCardEntity {
 
     @Id

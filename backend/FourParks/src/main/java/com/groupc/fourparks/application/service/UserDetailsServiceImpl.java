@@ -114,6 +114,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userToCreate.setUpdatedAt(LocalDate.now());
         userToCreate.setRoles(roleEntitySet);
 
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest();
+        userToCreate.setIp(request.getRemoteAddr());
+
         var userCreated = userPort.save(userToCreate);
         creditCardPort.save(creditCardToSave, userCreated);
 
@@ -124,6 +128,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .stream()
                 .flatMap(role -> role.getPermissionsList().stream())
                 .forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName())));
+
 
         return userDtoMapper.toDto(userCreated);
     }
