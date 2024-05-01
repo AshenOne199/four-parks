@@ -21,7 +21,8 @@ public class EmailServiceImpl implements EmailService {
         this.templateEngine = templateEngine;
     }
 
-    public void sendEmail(EmailDto email, String templateName) throws MessagingException {
+    @Override
+    public void sendEmail(EmailDto email) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
@@ -30,18 +31,8 @@ public class EmailServiceImpl implements EmailService {
 
         Context context = new Context();
         context.setVariable("body", email.body());
-        String html = templateEngine.process(templateName, context);
+        String html = templateEngine.process("email", context);
         mimeMessageHelper.setText(html, true);
         mailSender.send(mimeMessage);
-    }
-
-    @Override
-    public void sendEmailNewUser(EmailDto email) throws MessagingException {
-        sendEmail(email, "new-user");
-    }
-
-    @Override
-    public void sendEmailBlockedUser(EmailDto email) throws MessagingException {
-        sendEmail(email, "blocked-user");
     }
 }

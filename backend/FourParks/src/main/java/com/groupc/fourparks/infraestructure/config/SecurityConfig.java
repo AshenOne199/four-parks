@@ -68,7 +68,7 @@ public class SecurityConfig {
 
 
                     // private endpoints
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/unlock").hasRole("GERENTE");
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/unlock").hasRole("ADMINISTRADOR");
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();

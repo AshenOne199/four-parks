@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class UserEntity {
 
     @Id
@@ -25,9 +25,6 @@ public class UserEntity {
 
     @Column(name = "password")
     private String password;
-
-    @Column(name = "ip")
-    private String ip;
 
     @Column(name = "first_name")
     private String firstName;
@@ -57,7 +54,7 @@ public class UserEntity {
     private LocalDate createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles = new HashSet<>();
 
     @OneToMany(targetEntity = CreditCardEntity.class, fetch = FetchType.EAGER, mappedBy = "userId")
