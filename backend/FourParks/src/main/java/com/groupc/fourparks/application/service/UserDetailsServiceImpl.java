@@ -3,7 +3,6 @@ package com.groupc.fourparks.application.service;
 import java.time.LocalDate;
 import java.util.*;
 
-
 import com.groupc.fourparks.domain.port.CreditCardPort;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,7 +36,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 @AllArgsConstructor
-
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
@@ -66,27 +64,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final CreditCardDtoMapper creditCardDtoMapper;
 
-    public UserDetailsServiceImpl()
-    {
-        passwordEncoder = null;
-       jwtUtils=null;
-       rolePort=null;
-       userPort=null;
-       creditCardPort=null;
-       emailServiceImpl=null;
-       creditCardServiceImpl=null;
-       passwordGeneratorImpl=null;
-       userRegisterRequestMapper=null;
-       userDtoMapper=null;
-       userLoginRequestMapper=null;
-       loginDtoMapper=null;
-       creditCardDtoMapper=null;
-    }
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var userToLoad = userPort.findUserByEmail(username);
         if (!userToLoad.isAccountActive()){
-            throw new ForbiddenException("El usuario esta inactivo");
+            throw new ForbiddenException("El usuario esta inactivo, cambie de contraseña");
         }
         if (userToLoad.isAccountBlocked()){
             throw new ForbiddenException("El usuario esta bloqueado. Contacte un administrador");
@@ -120,7 +102,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         String password = passwordGeneratorImpl.generateRandomPassword();
         try {
-            emailServiceImpl.sendEmail(new EmailDto(email, "Nueva contraseña", password));
+            emailServiceImpl.sendEmailNewUser(new EmailDto(email, "Nueva contraseña", password));
         } catch (MessagingException e) {
             throw new InternalServerErrorException("Error al enviar email");
         }
@@ -129,6 +111,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userToCreate.setCreatedAt(LocalDate.now());
         userToCreate.setUpdatedAt(LocalDate.now());
         userToCreate.setRoles(roleEntitySet);
+
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+                .getRequest();
+        userToCreate.setIp(request.getRemoteAddr());
 
         var userCreated = userPort.save(userToCreate);
         creditCardPort.save(creditCardToSave, userCreated);
@@ -140,6 +126,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .stream()
                 .flatMap(role -> role.getPermissionsList().stream())
                 .forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName())));
+
 
         return userDtoMapper.toDto(userCreated);
     }
@@ -234,6 +221,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             if (userFound.getLoginAttempts() > 3) {
                 userFound.setAccountBlocked(true);
                 userPort.save(userFound);
+
+                var gerenteFound = userPort.findUserByRoleName("GERENTE");
+                try {
+                    emailServiceImpl.sendEmailBlockedUser(new EmailDto(gerenteFound.getEmail(), "Usuario " + userDetails.getUsername() + "ha sido bloqueado", userDetails.getUsername()));
+                } catch (MessagingException e) {
+                    throw new InternalServerErrorException("Error al enviar email");
+                }
+
                 throw new TooManyRequestsException("Cuenta bloqueada. Mas de 3 intentos fallidos. Contacte con un administrador");
             }
             userPort.save(userFound);
@@ -246,7 +241,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
     }
 
-    public List<SimpleGrantedAuthority> getRoles(com.groupc.fourparks.domain.model.User user) {
+    private List<SimpleGrantedAuthority> getRoles(com.groupc.fourparks.domain.model.User user) {
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
 
         user.getRoles()

@@ -4,5 +4,6 @@ import com.groupc.fourparks.infraestructure.model.dto.EmailDto;
 import jakarta.mail.MessagingException;
 
 public interface EmailService {
-    void sendEmail(EmailDto email) throws MessagingException;
+    void sendEmailNewUser(EmailDto email) throws MessagingException;
+    void sendEmailBlockedUser(EmailDto email) throws MessagingException;
 }

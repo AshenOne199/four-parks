@@ -8,6 +8,5 @@ public interface UserPort {
     Optional<User> findUserByEmailOptional(String username);
     User findUserByEmail(String email);
     User save(User user);
-
-
+    User findUserByRoleName(String role);
 }
