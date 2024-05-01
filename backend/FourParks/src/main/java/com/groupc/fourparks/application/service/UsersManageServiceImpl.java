@@ -7,21 +7,30 @@ import com.groupc.fourparks.domain.port.UserPort;
 import com.groupc.fourparks.infraestructure.adapter.entity.RoleEntity;
 import com.groupc.fourparks.infraestructure.adapter.entity.UserEntity;
 import com.groupc.fourparks.infraestructure.adapter.mapper.UserDboMapper;
+import com.groupc.fourparks.infraestructure.adapter.repository.RoleRepository;
 import com.groupc.fourparks.infraestructure.adapter.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Service
+@AllArgsConstructor
 public class UsersManageServiceImpl implements UsersManageService {
 
-    UserRepository userRepository;
-    UserPort userPort;
-    List<User> allUsers;
-    UserDboMapper userDboMapper;
+    private final UserRepository userRepository;
+    private final  UserPort userPort;
+
+    private final UserDboMapper userDboMapper;
+    private final RoleRepository roleRepository;
 
     @Override
     public List<User> readUsers() {
+        List<User> allUsers = new ArrayList<>(List.of());
         List<UserEntity> usersReceiver = userRepository.findAll();
         for (UserEntity userEntity : usersReceiver) {
             allUsers.add(userDboMapper.toDomain(userEntity));
@@ -31,49 +40,94 @@ public class UsersManageServiceImpl implements UsersManageService {
     }
 
     @Override
-    public List<User> userByRole(String rol) {
+    public List<User> userByRole(Long rol) {
 
+        List<User> allUsers = new ArrayList<>(List.of());
         List<UserEntity> usersReceiver = userRepository.findAll();
 
-        UserDetailsServiceImpl userDetailsServiceImpl = new UserDetailsServiceImpl();
+        RoleEntity roleToVerify = roleRepository.getReferenceById(rol);
 
         for (UserEntity userEntity : usersReceiver) {
-            for (int i = 0; i < userDetailsServiceImpl.getRoles(userDboMapper.toDomain(userEntity)).size(); i++) {
-                if (userDetailsServiceImpl.getRoles(userDboMapper.toDomain(userEntity)).get(i).getAuthority().equals(rol)) {
+
+                if (userEntity.getRoles().contains(roleToVerify)) {
                     allUsers.add(userDboMapper.toDomain(userEntity));
                 }
-            }
-        }
 
+        }
 
         return allUsers;
     }
+    @Override
+    public User getOneUser(String email) {
+        if (userRepository.findUserEntityByEmail(email).isEmpty())
+        {
+            User sampleUser = new User();
+            sampleUser.setId(-1L);
+            sampleUser.setEmail("Usuario no encontrado con este correo");
+            sampleUser.setFirstName("Usuario no encontrado con este correo");
+            sampleUser.setFirstLastname("Usuario no encontrado con este correo");
+            return sampleUser;
+        }
+        else
+        {
+            UserEntity userFound  =  userRepository.findUserEntityByEmail(email).get();
+            return  userDboMapper.toDomain(userFound);
+        }
 
+    }
     @Override
     public User modifyUser(User user)
     {
-        UserEntity userFound  = userRepository.findUserEntityByEmail(user.getEmail()).get();
-        User userToModify = userDboMapper.toDomain(userFound);
-        return userPort.save(userToModify);
+        user.setUpdatedAt(LocalDate.now());
+        User userFound = getOneUser(user.getEmail());
+        if (userFound.getId()==-1L)
+        {
+            return userFound;
+        }
+        else
+        {
+            return userPort.save(user);
+        }
+
+
     }
 
-    @Override
-    public User getOneUser(String email) {
-        UserEntity userFound  =  userRepository.findUserEntityByEmail(email).get();
-        return  userDboMapper.toDomain(userFound);
-    }
+
 
     @Override
     public void deleteUser(String userEmail)
     {
-        UserEntity userFound  =  userRepository.findUserEntityByEmail(userEmail).get();
-        userRepository.deleteById(userFound.getId());
+        User userFound = getOneUser(userEmail);
+
+
+        if (userFound.getId()!=-1L)
+        {
+
+            userRepository.deleteById(userFound.getId());
+        }
+
+
     }
 
-    @Override
+   /* @Override
     public User createUser(User user) {
-        return userPort.save(user);
-    }
+        User sampleUser = new User();
+        sampleUser.setEmail("a");
+        sampleUser.setPassword("a");
+
+        if (getOneUser(user.getEmail()).getId() == -1L)
+        {
+
+
+            return userPort.save(sampleUser);
+        }
+        else
+        {
+
+            sampleUser.setEmail("Ya hay un usuario con este correo");
+            return sampleUser;
+        }
+    }*/
 
 
 }
