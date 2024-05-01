@@ -2,8 +2,6 @@ package com.groupc.fourparks.application.service;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.groupc.fourparks.domain.port.CreditCardPort;
 import jakarta.mail.MessagingException;
@@ -70,7 +68,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var userToLoad = userPort.findUserByEmail(username);
         if (!userToLoad.isAccountActive()){
-            throw new ForbiddenException("El usuario esta inactivo");
+            throw new ForbiddenException("El usuario esta inactivo, cambie de contraseña");
         }
         if (userToLoad.isAccountBlocked()){
             throw new ForbiddenException("El usuario esta bloqueado. Contacte un administrador");
@@ -104,7 +102,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         String password = passwordGeneratorImpl.generateRandomPassword();
         try {
-            emailServiceImpl.sendEmail(new EmailDto(email, "Nueva contraseña", password));
+            emailServiceImpl.sendEmailNewUser(new EmailDto(email, "Nueva contraseña", password));
         } catch (MessagingException e) {
             throw new InternalServerErrorException("Error al enviar email");
         }
@@ -223,6 +221,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             if (userFound.getLoginAttempts() > 3) {
                 userFound.setAccountBlocked(true);
                 userPort.save(userFound);
+
+                var gerenteFound = userPort.findUserByRoleName("GERENTE");
+                try {
+                    emailServiceImpl.sendEmailBlockedUser(new EmailDto(gerenteFound.getEmail(), "Usuario " + userDetails.getUsername() + "ha sido bloqueado", userDetails.getUsername()));
+                } catch (MessagingException e) {
+                    throw new InternalServerErrorException("Error al enviar email");
+                }
+
                 throw new TooManyRequestsException("Cuenta bloqueada. Mas de 3 intentos fallidos. Contacte con un administrador");
             }
             userPort.save(userFound);

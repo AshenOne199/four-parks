@@ -1,5 +1,6 @@
 package com.groupc.fourparks.infraestructure.adapter;
 
+import com.groupc.fourparks.domain.model.RoleEnum;
 import com.groupc.fourparks.domain.model.User;
 import com.groupc.fourparks.domain.port.UserPort;
 import com.groupc.fourparks.infraestructure.adapter.mapper.UserDboMapper;
@@ -43,5 +44,15 @@ public class UserJpaAdapter implements UserPort {
         var userToSave = userDboMapper.toDbo(user);
         var userSaved = userRepository.save(userToSave);
         return userDboMapper.toDomain(userSaved);
+    }
+
+    @Override
+    public User findUserByRoleName(String role) {
+        var roleEnum = RoleEnum.valueOf(role);
+        var optionalUser = userRepository.findUserByRolesRoleEnum(roleEnum);
+        if (optionalUser.isEmpty()){
+            throw new NotFoundException("Admin no registrado");
+        }
+        return userDboMapper.toDomain(optionalUser.get());
     }
 }
