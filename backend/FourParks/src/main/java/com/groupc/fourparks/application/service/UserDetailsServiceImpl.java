@@ -66,22 +66,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final CreditCardDtoMapper creditCardDtoMapper;
 
-    public UserDetailsServiceImpl()
-    {
-        passwordEncoder = null;
-       jwtUtils=null;
-       rolePort=null;
-       userPort=null;
-       creditCardPort=null;
-       emailServiceImpl=null;
-       creditCardServiceImpl=null;
-       passwordGeneratorImpl=null;
-       userRegisterRequestMapper=null;
-       userDtoMapper=null;
-       userLoginRequestMapper=null;
-       loginDtoMapper=null;
-       creditCardDtoMapper=null;
-    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var userToLoad = userPort.findUserByEmail(username);
