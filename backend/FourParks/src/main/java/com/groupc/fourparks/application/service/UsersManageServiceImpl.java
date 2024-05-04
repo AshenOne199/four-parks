@@ -27,29 +27,24 @@ import java.util.Set;
 @AllArgsConstructor
 public class UsersManageServiceImpl implements UsersManageService {
 
-    private final UserRepository userRepository;
     private final  UserPort userPort;
     private final UserRegisterRequestMapper userRegisterRequestMapper;
     private final UserDboMapper userDboMapper;
     private final RoleRepository roleRepository;
     private final RolePort rolePort;
 
+
     @Override
     public List<User> readUsers() {
-        List<User> allUsers = new ArrayList<>(List.of());
-        List<UserEntity> usersReceiver = userRepository.findAll();
-        for (UserEntity userEntity : usersReceiver) {
-            allUsers.add(userDboMapper.toDomain(userEntity));
-        }
 
-        return allUsers;
+        return userPort.findAllUsers();
     }
 
     @Override
     public List<User> userByRole(Long rol) {
 
         List<User> allUsers = new ArrayList<>(List.of());
-        List<UserEntity> usersReceiver = userRepository.findAll();
+        List<UserEntity> usersReceiver = userPort.findAll();
 
         RoleEntity roleToVerify = roleRepository.getReferenceById(rol);
 
@@ -65,20 +60,8 @@ public class UsersManageServiceImpl implements UsersManageService {
     }
     @Override
     public User getOneUser(String email) {
-        if (userRepository.findUserEntityByEmail(email).isEmpty())
-        {
-            User sampleUser = new User();
-            sampleUser.setId(-1L);
-            sampleUser.setEmail("Usuario no encontrado con este correo");
-            sampleUser.setFirstName("Usuario no encontrado con este correo");
-            sampleUser.setFirstLastname("Usuario no encontrado con este correo");
-            return sampleUser;
-        }
-        else
-        {
-            UserEntity userFound  =  userRepository.findUserEntityByEmail(email).get();
-            return  userDboMapper.toDomain(userFound);
-        }
+        return userPort.findUserByEmail(email);
+
 
     }
     @Override
@@ -127,7 +110,7 @@ public class UsersManageServiceImpl implements UsersManageService {
         if (userFound.getId()!=-1L)
         {
 
-            userRepository.deleteById(userFound.getId());
+            userPort.deleteUser(userFound);
         }
 
 
