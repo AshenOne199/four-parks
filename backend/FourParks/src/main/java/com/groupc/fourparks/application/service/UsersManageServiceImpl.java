@@ -1,20 +1,25 @@
 package com.groupc.fourparks.application.service;
 
+import com.groupc.fourparks.application.mapper.UserRegisterRequestMapper;
 import com.groupc.fourparks.application.usecase.UsersManageService;
 import com.groupc.fourparks.domain.model.Role;
 import com.groupc.fourparks.domain.model.User;
+import com.groupc.fourparks.domain.port.RolePort;
 import com.groupc.fourparks.domain.port.UserPort;
 import com.groupc.fourparks.infraestructure.adapter.entity.RoleEntity;
 import com.groupc.fourparks.infraestructure.adapter.entity.UserEntity;
 import com.groupc.fourparks.infraestructure.adapter.mapper.UserDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.repository.RoleRepository;
 import com.groupc.fourparks.infraestructure.adapter.repository.UserRepository;
+import com.groupc.fourparks.infraestructure.exception.BadRequestException;
+import com.groupc.fourparks.infraestructure.model.request.UserRegisterRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,9 +29,10 @@ public class UsersManageServiceImpl implements UsersManageService {
 
     private final UserRepository userRepository;
     private final  UserPort userPort;
-
+    private final UserRegisterRequestMapper userRegisterRequestMapper;
     private final UserDboMapper userDboMapper;
     private final RoleRepository roleRepository;
+    private final RolePort rolePort;
 
     @Override
     public List<User> readUsers() {
@@ -76,17 +82,35 @@ public class UsersManageServiceImpl implements UsersManageService {
 
     }
     @Override
-    public User modifyUser(User user)
+    public User modifyUser(UserRegisterRequest userRegisterRequest)
     {
-        user.setUpdatedAt(LocalDate.now());
+        User user = userRegisterRequestMapper.toDomain(userRegisterRequest);
+
+
+
         User userFound = getOneUser(user.getEmail());
+
+        userFound.setFirstName(user.getFirstName());
+        userFound.setSecondName(user.getSecondName());
+        userFound.setFirstLastname(user.getFirstLastname());
+        userFound.setSecondLastname(user.getSecondLastname());
+
+        userFound.setCreditCard(user.getCreditCard());
+
+
+        Set<RoleEntity> roleEntitySet = new HashSet<>(rolePort.findRolesByEnum(user.getRoleList()));
+        if (roleEntitySet.isEmpty()){
+            throw new BadRequestException("Los roles enviados no existen");
+        }
+        userFound.setRoles(roleEntitySet);
+
         if (userFound.getId()==-1L)
         {
             return userFound;
         }
         else
         {
-            return userPort.save(user);
+            return userPort.save(userFound);
         }
 
 

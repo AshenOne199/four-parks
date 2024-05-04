@@ -4,6 +4,7 @@ import com.groupc.fourparks.application.usecase.UsersManageService;
 import com.groupc.fourparks.domain.model.User;
 
 
+import com.groupc.fourparks.infraestructure.model.request.UserRegisterRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -46,7 +47,7 @@ public class UsersController
 
     }
     @PostMapping("/modifyUser")
-    public ResponseEntity<User> modifyUser(@RequestBody @Valid User user)
+    public ResponseEntity<User> modifyUser(@RequestBody @Valid UserRegisterRequest user)
     {
         return new ResponseEntity<User>(this.usersManageService.modifyUser(user), HttpStatus.OK);
     }
