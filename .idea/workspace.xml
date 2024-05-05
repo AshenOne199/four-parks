@@ -2,7 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d58e64fe-bf88-4fc5-8f96-923be05300e7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/FourParks/src/main/resources/scripts/script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/backend/FourParks/src/main/resources/scripts/script.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/FourParks/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/FourParks/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/FourParks/src/main/java/com/groupc/fourparks/application/service/UsersManageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/FourParks/src/main/java/com/groupc/fourparks/application/service/UsersManageServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/FourParks/src/main/java/com/groupc/fourparks/domain/port/UserPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/FourParks/src/main/java/com/groupc/fourparks/domain/port/UserPort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/FourParks/src/main/java/com/groupc/fourparks/infraestructure/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/FourParks/src/main/java/com/groupc/fourparks/infraestructure/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/FourParks/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/UsersController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/FourParks/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/UsersController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/FourParks/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/FourParks/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/FourParks/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/FourParks/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -12,9 +19,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2fAH08YuX6KKC6tt4ZQ48Cde8XK" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -24,6 +31,7 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "develop",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/temp-codes/four-parks/backend/FourParks",
     "nodejs_package_manager_path": "npm",
@@ -47,6 +55,7 @@
       <option name="presentableId" value="Default" />
       <updated>1713236738768</updated>
       <workItem from="1713236739927" duration="18000" />
+      <workItem from="1714845723057" duration="53000" />
     </task>
     <servers />
   </component>
