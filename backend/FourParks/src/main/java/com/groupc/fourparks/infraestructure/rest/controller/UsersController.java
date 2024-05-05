@@ -5,6 +5,7 @@ import com.groupc.fourparks.domain.model.User;
 
 
 import com.groupc.fourparks.infraestructure.model.request.UserRegisterRequest;
+import com.groupc.fourparks.infraestructure.model.request.UserToShow;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,17 +26,17 @@ public class UsersController
 
     //Colocar Endpoint para traer Operaciones de usuarios
     @GetMapping("/allUsers")
-    public ResponseEntity<List<User>> readUsers()
+    public ResponseEntity<List<UserToShow>> readUsers()
     {
-        return new ResponseEntity<List<User>>(this.usersManageService.readUsers() , HttpStatus.OK);
+        return new ResponseEntity<List<UserToShow>>(this.usersManageService.readUsers() , HttpStatus.OK);
     }
     @GetMapping("/userByRole/{role}")
-    public ResponseEntity<List<User>> userByRole( @PathVariable Long role)
+    public ResponseEntity<List<UserToShow>> userByRole( @PathVariable Long role)
     {
-        return new ResponseEntity<List<User>>(this.usersManageService.userByRole(role) , HttpStatus.OK);
+        return new ResponseEntity<List<UserToShow>>(this.usersManageService.userByRole(role) , HttpStatus.OK);
     }
     @GetMapping("/getOneUser/{email}")
-    public ResponseEntity<User> getOneUser(@PathVariable String email)
+    public ResponseEntity<UserToShow> getOneUser(@PathVariable String email)
     {
 
         return new ResponseEntity<>(this.usersManageService.getOneUser(email),HttpStatus.OK);

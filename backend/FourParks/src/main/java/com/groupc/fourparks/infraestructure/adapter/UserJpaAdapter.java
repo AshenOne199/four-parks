@@ -9,6 +9,7 @@ import com.groupc.fourparks.infraestructure.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,7 +55,7 @@ public class UserJpaAdapter implements UserPort {
 
     @Override
     public void deleteUser(User user) {
-
+        userRepository.deleteAllById(Collections.singleton(user.getId()));
     }
 
     @Override

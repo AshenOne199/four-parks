@@ -118,6 +118,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         var userCreated = userPort.save(userToCreate);
         creditCardPort.save(creditCardToSave, userCreated);
 
+
         ArrayList<SimpleGrantedAuthority> authorityList = new ArrayList<>();
 
         userCreated.getRoles().forEach(role -> authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(role.getRoleEnum().name()))));
