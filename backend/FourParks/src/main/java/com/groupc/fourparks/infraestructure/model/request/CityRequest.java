@@ -1,5 +1,4 @@
 package com.groupc.fourparks.infraestructure.model.request;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +8,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class LocationRequest {
-    String address;
-    String latitude;
-    String longitude;
-    CityRequest city;
+public class CityRequest {
+    String city;
 }

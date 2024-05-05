@@ -52,7 +52,7 @@ public class ParkingServiceImpl{
         var openingHoursToSave = parkingToCreate.getOpeningHours();
         var locationToSave = parkingToCreate.getLocation();
         
-        var locationCreated = locationPort.save(locationToSave, cityPort.findCityByCity(newParkingRequest.getLocation().getCity()));
+        var locationCreated = locationPort.save(locationToSave, cityPort.findCityByCity(newParkingRequest.getLocation().getCity().getCity()));
         var parkingCreated = parkingPort.save(parkingToCreate);
 
         parkingPort.save(parkingCreated, locationCreated, parkingTypeToSave,openingHoursToSave);
@@ -89,7 +89,7 @@ public class ParkingServiceImpl{
         locationFound.setAddress(parkingToModify.getLocation().getAddress());
         locationFound.setLatitude(parkingToModify.getLocation().getLatitude());
         locationFound.setLongitude(parkingToModify.getLocation().getLongitude());
-        var locationCreated = locationPort.save(locationFound, cityPort.findCityByCity(newParkingRequest.getLocation().getCity()));
+        Location locationCreated = locationPort.save(locationFound, cityPort.findCityByCity(newParkingRequest.getLocation().getCity().getCity()));
         
         var parkingModified = parkingPort.save(parking,locationCreated,parkingTypeToSave,openingHoursToSave);
 
