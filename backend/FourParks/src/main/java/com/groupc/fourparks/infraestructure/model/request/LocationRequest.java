@@ -13,5 +13,4 @@ public class LocationRequest {
     String address;
     String latitude;
     String longitude;
-    String city;
 }
