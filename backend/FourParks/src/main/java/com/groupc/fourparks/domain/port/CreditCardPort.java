@@ -6,5 +6,6 @@ import com.groupc.fourparks.domain.model.User;
 public interface CreditCardPort {
 
     void save(CreditCard creditCard, User user);
+    void save(CreditCard creditCard);
     CreditCard  getCC(User user);
 }

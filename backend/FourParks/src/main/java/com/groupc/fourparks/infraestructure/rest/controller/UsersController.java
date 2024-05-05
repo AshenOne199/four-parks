@@ -48,9 +48,9 @@ public class UsersController
 
     }
     @PostMapping("/modifyUser")
-    public ResponseEntity<User> modifyUser(@RequestBody @Valid UserRegisterRequest user)
+    public ResponseEntity<UserToShow> modifyUser(@RequestBody @Valid User user)
     {
-        return new ResponseEntity<User>(this.usersManageService.modifyUser(user), HttpStatus.OK);
+        return new ResponseEntity<UserToShow>(this.usersManageService.modifyUser(user), HttpStatus.OK);
     }
 
     /*@PostMapping("/createUser")

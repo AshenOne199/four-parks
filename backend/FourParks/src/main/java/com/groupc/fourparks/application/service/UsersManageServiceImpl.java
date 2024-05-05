@@ -1,45 +1,31 @@
 package com.groupc.fourparks.application.service;
 
 import com.groupc.fourparks.application.mapper.CreditCardDtoMapper;
-import com.groupc.fourparks.application.mapper.UserRegisterRequestMapper;
-import com.groupc.fourparks.application.mapper.UserToShowMapper;
 import com.groupc.fourparks.application.usecase.UsersManageService;
 import com.groupc.fourparks.domain.model.CreditCard;
-import com.groupc.fourparks.domain.model.Role;
 import com.groupc.fourparks.domain.model.User;
 import com.groupc.fourparks.domain.port.CreditCardPort;
-import com.groupc.fourparks.domain.port.RolePort;
 import com.groupc.fourparks.domain.port.UserPort;
 import com.groupc.fourparks.infraestructure.adapter.entity.RoleEntity;
 import com.groupc.fourparks.infraestructure.adapter.entity.UserEntity;
-import com.groupc.fourparks.infraestructure.adapter.mapper.CreditCardDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.mapper.UserDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.repository.RoleRepository;
-import com.groupc.fourparks.infraestructure.adapter.repository.UserRepository;
-import com.groupc.fourparks.infraestructure.exception.BadRequestException;
-import com.groupc.fourparks.infraestructure.model.request.UserRegisterRequest;
 import com.groupc.fourparks.infraestructure.model.request.UserToShow;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class UsersManageServiceImpl implements UsersManageService {
 
     private final  UserPort userPort;
-    private final UserRegisterRequestMapper userRegisterRequestMapper;
     private final UserDboMapper userDboMapper;
     private final RoleRepository roleRepository;
-    private final RolePort rolePort;
     private final CreditCardPort creditCardPort;
-    private final UserToShowMapper userToShowMapper;
+
     private final CreditCardDtoMapper creditCardDtoMapper;
 
 
@@ -122,37 +108,36 @@ public class UsersManageServiceImpl implements UsersManageService {
         return userPort.findUserByEmail(email);
     }
     @Override
-    public User modifyUser(UserRegisterRequest userRegisterRequest)
+    public UserToShow modifyUser(User user)
     {
-        User user = userRegisterRequestMapper.toDomain(userRegisterRequest);
-
-
-
         User userFound = getUserPrivClass(user.getEmail());
+        UserToShow userToShow = userToAddListConvert(userFound);
 
         userFound.setFirstName(user.getFirstName());
         userFound.setSecondName(user.getSecondName());
         userFound.setFirstLastname(user.getFirstLastname());
         userFound.setSecondLastname(user.getSecondLastname());
-
+        userFound.setLoginAttempts(user.getLoginAttempts());
+        userFound.setAccountActive(user.isAccountActive());
+        userFound.setAccountBlocked(user.isAccountBlocked());
         userFound.setCreditCard(user.getCreditCard());
-
-
-        Set<RoleEntity> roleEntitySet = new HashSet<>(rolePort.findRolesByEnum(user.getRoleList()));
-        if (roleEntitySet.isEmpty()){
-            throw new BadRequestException("Los roles enviados no existen");
-        }
-        userFound.setRoles(roleEntitySet);
 
         if (userFound.getId()==-1L)
         {
-            return userFound;
+            return userToShow;
         }
         else
         {
-            return userPort.save(userFound);
-        }
 
+
+            CreditCard ccSample = creditCardPort.getCC(userFound);
+            ccSample.setCardNumber(userFound.getCreditCard().getCardNumber());
+            ccSample.setCvv(userFound.getCreditCard().getCvv());
+            ccSample.setExpirationDate(userFound.getCreditCard().getExpirationDate());
+            creditCardPort.save(ccSample,user);
+            userToShow = userToAddListConvert(userPort.save(userFound));
+        }
+        return userToShow;
 
     }
 

@@ -23,7 +23,7 @@ public class UserRegisterRequest{
     @NotBlank
     String firstName;
 
-    @NotBlank
+
     String secondName;
 
     @NotBlank

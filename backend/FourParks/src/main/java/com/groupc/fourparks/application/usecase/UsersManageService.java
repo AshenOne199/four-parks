@@ -14,7 +14,7 @@ public interface UsersManageService
 {
      List<UserToShow> readUsers();
      List<UserToShow> userByRole(Long role);
-     User modifyUser(UserRegisterRequest userRegisterRequest);
+     UserToShow modifyUser(User User);
      UserToShow getOneUser(String email);
      void deleteUser(String userEmail);
 

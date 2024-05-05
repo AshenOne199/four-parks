@@ -31,6 +31,12 @@ public class CreditCardJpaAdapter implements CreditCardPort {
         creditCardRepository.save(creditCardToSave);
     }
 
+  @Override
+    public void save(CreditCard creditCard)
+    {
+        creditCardRepository.save(creditCardDboMapper.toDbo(creditCard));
+    }
+
     @Override
     public CreditCard  getCC(User user) {
         CreditCard creditCard = new CreditCard();
