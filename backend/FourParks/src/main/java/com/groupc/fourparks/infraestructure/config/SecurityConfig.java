@@ -1,8 +1,12 @@
 package com.groupc.fourparks.infraestructure.config;
 
+import com.groupc.fourparks.domain.model.User;
+import jakarta.validation.Valid;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -21,6 +25,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import com.groupc.fourparks.application.service.UserDetailsServiceImpl;
 import com.groupc.fourparks.infraestructure.config.jwt.JwtTokenValidator;
 import com.groupc.fourparks.infraestructure.config.jwt.JwtUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Configuration
 @EnableWebSecurity
@@ -45,7 +52,7 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/log-in").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/new-password").permitAll();
 
-                    //Users endpoints
+                            //Users endpoints
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/allUsers").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/userByRole/{role}").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/Users").permitAll();
@@ -54,12 +61,11 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/api/v1/users/modifyUser").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/users/createUser").permitAll();
 
-                    //Parking endpoints
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/parking/**").permitAll();
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/parking/**").permitAll();
-                    http.requestMatchers(HttpMethod.PUT, "/api/v1/parking/**").permitAll();
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/parking/getParking/{name}").permitAll();
-                    http.requestMatchers(HttpMethod.DELETE, "/api/v1/parking/deleteParking/{name}").permitAll();
+
+
+
+
+
 
                     // private endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/unlock").hasRole("ADMINISTRADOR");
