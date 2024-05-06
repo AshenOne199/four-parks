@@ -1,35 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="d58e64fe-bf88-4fc5-8f96-923be05300e7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/backend/FourParks/src/main/resources/scripts/script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/backend/FourParks/src/main/resources/scripts/script.sql" afterDir="false" />
-    </list>
+    <list default="true" id="b3a97a6a-dd53-481b-bd86-caa5e85232d5" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Record" />
+        <option value="Interface" />
+        <option value="Class" />
+        <option value="Dockerfile" />
+      </list>
+    </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
-  <component name="ProjectId" id="2fAH08YuX6KKC6tt4ZQ48Cde8XK" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2fDH16QY63CVBVfye56PcuRYH40" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Maven.fourparks [clean].executor": "Run",
+    "Maven.fourparks [compile].executor": "Run",
+    "Maven.fourparks [install].executor": "Run",
+    "Maven.fourparks [validate].executor": "Run",
+    "Maven.fourparks [verify].executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "develop",
+    "Spring Boot.FourParksApplication.executor": "Run",
+    "extract.method.default.visibility": "private",
+    "git-widget-placeholder": "test/deploy",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/temp-codes/four-parks/backend/FourParks",
+    "last_opened_file_path": "D:/U/2024-1/Patrones/four-parks/backend/FourParks/src/main/resources/scripts",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\U\2024-1\Patrones\four-parks\backend\FourParks\src\main\resources\scripts" />
+      <recent name="D:\U\2024-1\Patrones\four-parks\backend\FourParks\src\main\resources\templates" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="FourParksApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="fourparks" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.groupc.fourparks.FourParksApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -41,16 +92,40 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="d58e64fe-bf88-4fc5-8f96-923be05300e7" name="Changes" comment="" />
-      <created>1713236738768</created>
+      <changelist id="b3a97a6a-dd53-481b-bd86-caa5e85232d5" name="Changes" comment="" />
+      <created>1713328509567</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1713236738768</updated>
-      <workItem from="1713236739927" duration="18000" />
+      <updated>1713328509567</updated>
+      <workItem from="1713328510577" duration="7846000" />
+      <workItem from="1713473828696" duration="4363000" />
+      <workItem from="1713493702288" duration="9528000" />
+      <workItem from="1713503787718" duration="925000" />
+      <workItem from="1713558988318" duration="11793000" />
+      <workItem from="1713570887172" duration="87000" />
+      <workItem from="1713570980414" duration="19273000" />
+      <workItem from="1713630543223" duration="383000" />
+      <workItem from="1713726742415" duration="1725000" />
+      <workItem from="1713736250626" duration="7607000" />
+      <workItem from="1713825425227" duration="7199000" />
+      <workItem from="1713921540195" duration="1109000" />
+      <workItem from="1713976067955" duration="3508000" />
+      <workItem from="1714337862482" duration="812000" />
+      <workItem from="1714350837895" duration="3387000" />
+      <workItem from="1714437987206" duration="3987000" />
+      <workItem from="1714578699006" duration="3462000" />
+      <workItem from="1714612075386" duration="2836000" />
+      <workItem from="1714933309449" duration="2323000" />
+      <workItem from="1715008284413" duration="345000" />
+      <workItem from="1715015225157" duration="916000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
