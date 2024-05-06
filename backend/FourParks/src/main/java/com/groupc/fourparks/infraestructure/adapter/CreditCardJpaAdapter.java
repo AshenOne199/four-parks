@@ -10,6 +10,7 @@ import com.groupc.fourparks.infraestructure.adapter.repository.CreditCardReposit
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,5 +51,22 @@ public class CreditCardJpaAdapter implements CreditCardPort {
         }
 
         return creditCard;
+    }
+
+    @Override
+    public List<CreditCard> getAllCC() {
+        List<CreditCard> returnable = new ArrayList<>();
+        List<CreditCardEntity> catcher ;
+        catcher = creditCardRepository.findAll();
+        for (CreditCardEntity cc : catcher)
+        {
+            returnable.add(creditCardDboMapper.toDomain(cc));
+        }
+        return returnable;
+    }
+
+    @Override
+    public void delete(CreditCard creditCard) {
+        creditCardRepository.deleteById(creditCard.getId());
     }
 }

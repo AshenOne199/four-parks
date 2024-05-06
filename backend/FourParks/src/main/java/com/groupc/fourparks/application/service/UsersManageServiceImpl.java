@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -148,7 +149,17 @@ public class UsersManageServiceImpl implements UsersManageService {
     {
         User userFound = getUserPrivClass(userEmail);
 
+        /*Deleting credit cards FK to user*/
+        List<CreditCard> allCCs = new ArrayList<>();
+        allCCs = creditCardPort.getAllCC();
 
+        for(CreditCard cc:allCCs)
+        {
+            if (Objects.equals(cc.getUserId().getId(), userFound.getId()))
+            {
+                creditCardPort.delete(cc);
+            }
+        }
         if (userFound.getId()!=-1L)
         {
 
@@ -158,25 +169,7 @@ public class UsersManageServiceImpl implements UsersManageService {
 
     }
 
-   /* @Override
-    public User createUser(User user) {
-        User sampleUser = new User();
-        sampleUser.setEmail("a");
-        sampleUser.setPassword("a");
 
-        if (getOneUser(user.getEmail()).getId() == -1L)
-        {
-
-
-            return userPort.save(sampleUser);
-        }
-        else
-        {
-
-            sampleUser.setEmail("Ya hay un usuario con este correo");
-            return sampleUser;
-        }
-    }*/
 
 
 }
