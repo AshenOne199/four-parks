@@ -1,5 +1,6 @@
 package com.groupc.fourparks.infraestructure.config;
 
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,12 +22,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import com.groupc.fourparks.application.service.UserDetailsServiceImpl;
 import com.groupc.fourparks.infraestructure.config.jwt.JwtTokenValidator;
 import com.groupc.fourparks.infraestructure.config.jwt.JwtUtils;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -43,6 +38,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
@@ -51,8 +47,14 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/log-in").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/new-password").permitAll();
 
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/test-post-body").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/test-post").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/auth/test").permitAll();
+
                     // private endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/unlock").hasRole("GERENTE");
+
+                    http.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();
@@ -70,7 +72,6 @@ public class SecurityConfig {
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder(){

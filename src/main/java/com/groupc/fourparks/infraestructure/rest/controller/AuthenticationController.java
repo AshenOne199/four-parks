@@ -17,6 +17,7 @@ import com.groupc.fourparks.infraestructure.model.request.UserLoginRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/auth")
+@CrossOrigin(origins = "four-parks-production.up.railway.app")
 public class AuthenticationController {
 
     private final UserDetailsServiceImpl userDetailsService;
@@ -41,4 +42,18 @@ public class AuthenticationController {
         return new ResponseEntity<>(this.userDetailsService.unlock(userLoginRequest), HttpStatus.OK);
     }
 
+    @GetMapping("/test")
+    public ResponseEntity<String> testGet(){
+        return ResponseEntity.accepted().body("OK GET");
+    }
+
+    @PostMapping("/test-post")
+    public ResponseEntity<String> testPost(){
+        return ResponseEntity.accepted().body("OK POST");
+    }
+
+    @PostMapping("/test-post-body")
+    public ResponseEntity<String> testPostBody(@RequestBody @Valid UserLoginRequest userLoginRequest){
+        return ResponseEntity.accepted().body("OK POST BODY");
+    }
 }
