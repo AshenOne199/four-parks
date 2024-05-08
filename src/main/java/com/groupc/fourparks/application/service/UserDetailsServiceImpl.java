@@ -151,9 +151,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             login.setRol(roleStartingWithRole.substring(5));
         }
 
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest();
-        login.setIp(request.getRemoteAddr());
+        ServletRequestAttributes requestCurrent = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = requestCurrent.getRequest();
+        String remoteAddr = request.getRemoteAddr();
+        if (remoteAddr == null) {
+            remoteAddr = "::1";
+        }
+        login.setIp(remoteAddr);
 
         var user = userPort.findUserByEmail(email);
         login.setFirstName(user.getFirstName());
