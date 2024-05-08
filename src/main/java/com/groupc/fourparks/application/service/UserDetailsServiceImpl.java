@@ -115,6 +115,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userToCreate.setUpdatedAt(LocalDate.now());
         userToCreate.setRoles(roleEntitySet);
 
+        ServletRequestAttributes requestCurrent = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = requestCurrent.getRequest();
+        String remoteAddr = request.getRemoteAddr();
+        if (remoteAddr == null) {
+            remoteAddr = "::1";
+        }
+        userToCreate.setIp(remoteAddr);
+
         var userCreated = userPort.save(userToCreate);
         creditCardPort.save(creditCardToSave, userCreated);
 
