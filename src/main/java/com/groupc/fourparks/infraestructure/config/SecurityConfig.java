@@ -41,13 +41,19 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/sign-up").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/log-in").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/new-password").permitAll();
-
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/test-post-body").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/test-post").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/auth/test").permitAll();
 
                     // private endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/unlock").hasRole("GERENTE");
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/allUsers").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/userByRole/{role}").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/Users").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/getOneUser/{email}").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/deleteUser/{email}").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/users/modifyUser").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/users/createUser").permitAll();
 
                     http.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
                 })
