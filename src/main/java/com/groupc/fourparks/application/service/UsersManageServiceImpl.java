@@ -26,12 +26,9 @@ public class UsersManageServiceImpl implements UsersManageService {
     private final UserDboMapper userDboMapper;
     private final RoleRepository roleRepository;
     private final CreditCardPort creditCardPort;
-
     private final CreditCardDtoMapper creditCardDtoMapper;
 
-
-    private UserToShow userToAddListConvert(User user)
-    {
+    private UserToShow userToAddListConvert(User user) {
         UserToShow userToAddList = new UserToShow();
         userToAddList.setCreditCard(creditCardDtoMapper.toDto(creditCardPort.getCC(user)));
         userToAddList.setId(user.getId());
@@ -47,27 +44,21 @@ public class UsersManageServiceImpl implements UsersManageService {
         userToAddList.setAccountBlocked(user.isAccountBlocked());
 
         List<String> roleListToAdd = new ArrayList<>();
-        for(RoleEntity role :user.getRoles())
-        {
+        for(RoleEntity role :user.getRoles()) {
             roleListToAdd.add(role.getRoleEnum().name());
         }
         userToAddList.setRoleList(roleListToAdd);
         return userToAddList;
     }
+
     @Override
     public List<UserToShow> readUsers() {
 
         List<UserToShow> userToShows = new ArrayList<>();
-
         List<User> receiver = userPort.findAllUsers();
 
-
         for (User user : receiver) {
-
-
-
             userToShows.add((userToAddListConvert(user)));
-
         }
 
         return userToShows;
@@ -75,42 +66,35 @@ public class UsersManageServiceImpl implements UsersManageService {
 
     @Override
     public List<UserToShow> userByRole(Long rol) {
-
         List<User> allUsers = new ArrayList<>(List.of());
         List<UserEntity> usersReceiver = userPort.findAll();
         List<UserToShow> userToShows = new ArrayList<>();
         RoleEntity roleToVerify = roleRepository.getReferenceById(rol);
 
         for (UserEntity userEntity : usersReceiver) {
-
-                if (userEntity.getRoles().contains(roleToVerify)) {
-                    allUsers.add(userDboMapper.toDomain(userEntity));
-                }
-
+            if (userEntity.getRoles().contains(roleToVerify)) {
+                allUsers.add(userDboMapper.toDomain(userEntity));
+            }
         }
         for (User user : allUsers) {
-
-
             userToShows.add((userToAddListConvert(user)));
         }
 
         return userToShows;
     }
+
     @Override
     public UserToShow getOneUser(String email) {
         User user = userPort.findUserByEmail(email);
-
         return userToAddListConvert(user);
-
-
     }
+
     private User getUserPrivClass(String email)
     {
         return userPort.findUserByEmail(email);
     }
     @Override
-    public UserToShow modifyUser(User user)
-    {
+    public UserToShow modifyUser(User user) {
         User userFound = getUserPrivClass(user.getEmail());
         UserToShow userToShow = userToAddListConvert(userFound);
 
@@ -123,14 +107,9 @@ public class UsersManageServiceImpl implements UsersManageService {
         userFound.setAccountBlocked(user.isAccountBlocked());
         userFound.setCreditCard(user.getCreditCard());
 
-        if (userFound.getId()==-1L)
-        {
+        if (userFound.getId()==-1L) {
             return userToShow;
-        }
-        else
-        {
-
-
+        } else {
             CreditCard ccSample = creditCardPort.getCC(userFound);
             ccSample.setCardNumber(userFound.getCreditCard().getCardNumber());
             ccSample.setCvv(userFound.getCreditCard().getCvv());
@@ -139,37 +118,23 @@ public class UsersManageServiceImpl implements UsersManageService {
             userToShow = userToAddListConvert(userPort.save(userFound));
         }
         return userToShow;
-
     }
 
-
-
     @Override
-    public void deleteUser(String userEmail)
-    {
+    public void deleteUser(String userEmail) {
         User userFound = getUserPrivClass(userEmail);
 
         /*Deleting credit cards FK to user*/
         List<CreditCard> allCCs = new ArrayList<>();
         allCCs = creditCardPort.getAllCC();
 
-        for(CreditCard cc:allCCs)
-        {
-            if (Objects.equals(cc.getUserId().getId(), userFound.getId()))
-            {
+        for(CreditCard cc:allCCs) {
+            if (Objects.equals(cc.getUserId().getId(), userFound.getId())) {
                 creditCardPort.delete(cc);
             }
         }
-        if (userFound.getId()!=-1L)
-        {
-
+        if (userFound.getId()!=-1L) {
             userPort.deleteUser(userFound);
         }
-
-
     }
-
-
-
-
 }

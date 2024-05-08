@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/backend/FourParks/fourparks.iml" filepath="$PROJECT_DIR$/backend/FourParks/fourparks.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fourparks.iml" filepath="$PROJECT_DIR$/fourparks.iml" />
     </modules>
   </component>
 </project>
