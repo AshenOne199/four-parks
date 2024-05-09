@@ -5,108 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b3a97a6a-dd53-481b-bd86-caa5e85232d5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/mapper/LocationDtoMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/mapper/NewParkingRequestMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/mapper/ParkingDtoMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/mapper/ParkingRateDtoMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/mapper/ParkingRateRequestMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/mapper/ParkingSlotDtoMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/mapper/ParkingSlotRequestMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/mapper/SetAdminToParkingRequestMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/ParkingRateServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/ParkingServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/ParkingSlotServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/usecase/ParkingRateService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/usecase/ParkingService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/usecase/ParkingSlotService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/City.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/Location.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/OpeningHours.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/Parking.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/ParkingRate.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/ParkingSlot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/ParkingType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/ParkingTypeEnum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/SlotStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/SlotStatusEnum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/VehicleType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/VehicleTypeEnum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/CityPort.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/LocationPort.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/OpeningHoursPort.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/ParkingPort.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/ParkingRatePort.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/ParkingSlotPort.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/ParkingTypePort.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/SlotStatusPort.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/VehicleTypePort.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/CityJpaAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/LocationJpaAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/OpeningHoursJpaAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/ParkingJpaAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/ParkingRateJpaAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/ParkingSlotJpaAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/ParkingTypeAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/SlotStatusJpaAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/VehicleTypeJpaAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/CityEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/LocationEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/OpeningHoursEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/ParkingEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/ParkingRateEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/ParkingSlotEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/ParkingTypeEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/SlotStatusEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/VehicleTypeEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/mapper/CityDboMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/mapper/LocationDboMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/mapper/OpeningHoursDboMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/mapper/ParkingDboMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/mapper/ParkingRateDboMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/mapper/ParkingSlotDboMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/mapper/ParkingTypeDboMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/mapper/SlotStatusDboMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/mapper/VehicleTypeDboMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/repository/CityRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/repository/LocationRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/repository/OpeningHoursRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/repository/ParkingRateRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/repository/ParkingRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/repository/ParkingSlotRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/repository/ParkingTypeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/repository/SlotStatusRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/repository/VehicleTypeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/dto/CityDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/dto/LocationDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/dto/OpeningHoursDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/dto/ParkingDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/dto/ParkingRateDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/dto/ParkingSlotDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/dto/ParkingTypeDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/dto/SlotStatusDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/dto/VehicleTypeDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/CityRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/LocationRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/NewParkingRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/OpeningHoursRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/ParkingRateRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/ParkingSlotRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/ParkingTypeRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/SetAdminToParkingRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/SlotStatusRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/VehicleTypeRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/ParkingController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/ParkingRateController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/ParkingSlotController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/UserPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/UserPort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/UserJpaAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/UserJpaAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/UserEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/UserEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/scripts/database_script.sql" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/scripts/insert_script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/scripts/insert_script.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -159,7 +60,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.FourParksApplication.executor": "Run",
     "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "Merging develop-merge",
+    "git-widget-placeholder": "develop-merge",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/U/2024-1/Patrones/four-parks",
     "node.js.detected.package.eslint": "true",

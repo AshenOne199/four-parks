@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -42,19 +43,19 @@ public class UserEntity {
     private String secondLastname;
 
     @Column(name = "account_active")
-    private boolean accountActive;
+    private Boolean accountActive;
 
     @Column(name = "account_blocked")
-    private boolean accountBlocked;
+    private Boolean accountBlocked;
 
     @Column(name = "login_attempts")
-    private int loginAttempts;
+    private Integer loginAttempts;
 
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private Date updatedAt;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private Date createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))

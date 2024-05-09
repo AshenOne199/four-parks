@@ -52,12 +52,12 @@ public class SecurityConfig {
 
 
                     // private endpoints
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/unlock").hasAnyRole("GERENTE", "ADMINISTRADOR");
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/all").hasAnyRole("GERENTE", "ADMINISTRADOR");
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/role/{role}").hasAnyRole("GERENTE", "ADMINISTRADOR");
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/email/{email}").hasAnyRole("GERENTE", "ADMINISTRADOR");
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/delete/{email}").hasAnyRole("GERENTE", "ADMINISTRADOR");
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/users/user/modify").hasAnyRole("GERENTE", "ADMINISTRADOR");
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/auth/unlock").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/all").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/role/{role}").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/email/{email}").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/delete/{email}").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/users/user/modify").permitAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();
