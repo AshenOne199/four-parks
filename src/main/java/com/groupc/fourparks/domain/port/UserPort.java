@@ -13,5 +13,4 @@ public interface UserPort {
     void deleteUser(User user);
     User save(User user);
     List<UserEntity> findAll();
-
 }

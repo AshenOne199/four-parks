@@ -17,7 +17,6 @@ import com.groupc.fourparks.infraestructure.model.request.UserLoginRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/auth")
-@CrossOrigin(origins = "four-parks-production.up.railway.app")
 public class AuthenticationController {
 
     private final UserDetailsServiceImpl userDetailsService;

@@ -1,7 +1,7 @@
 package com.groupc.fourparks.application.service;
 
 import com.groupc.fourparks.application.mapper.CreditCardDtoMapper;
-import com.groupc.fourparks.application.usecase.UsersManageService;
+import com.groupc.fourparks.application.usecase.ManagerService;
 import com.groupc.fourparks.domain.model.CreditCard;
 import com.groupc.fourparks.domain.model.User;
 import com.groupc.fourparks.domain.port.CreditCardPort;
@@ -20,47 +20,21 @@ import java.util.Objects;
 
 @Service
 @AllArgsConstructor
-public class UsersManageServiceImpl implements UsersManageService {
+public class UsersManageServiceImpl implements ManagerService {
 
-    private final  UserPort userPort;
+    private final UserPort userPort;
     private final UserDboMapper userDboMapper;
     private final RoleRepository roleRepository;
     private final CreditCardPort creditCardPort;
     private final CreditCardDtoMapper creditCardDtoMapper;
 
-    private UserToShow userToAddListConvert(User user) {
-        UserToShow userToAddList = new UserToShow();
-        userToAddList.setCreditCard(creditCardDtoMapper.toDto(creditCardPort.getCC(user)));
-        userToAddList.setId(user.getId());
-
-        userToAddList.setEmail(user.getEmail());
-        userToAddList.setFirstName(user.getFirstName());
-        userToAddList.setSecondName(user.getSecondName());
-        userToAddList.setFirstLastname(user.getFirstLastname());
-        userToAddList.setSecondLastname(user.getSecondLastname());
-        userToAddList.setLoginAttempts(user.getLoginAttempts());
-
-        userToAddList.setAccountActive(user.isAccountActive());
-        userToAddList.setAccountBlocked(user.isAccountBlocked());
-
-        List<String> roleListToAdd = new ArrayList<>();
-        for(RoleEntity role :user.getRoles()) {
-            roleListToAdd.add(role.getRoleEnum().name());
-        }
-        userToAddList.setRoleList(roleListToAdd);
-        return userToAddList;
-    }
-
     @Override
     public List<UserToShow> readUsers() {
-
         List<UserToShow> userToShows = new ArrayList<>();
         List<User> receiver = userPort.findAllUsers();
-
         for (User user : receiver) {
             userToShows.add((userToAddListConvert(user)));
         }
-
         return userToShows;
     }
 
@@ -70,7 +44,6 @@ public class UsersManageServiceImpl implements UsersManageService {
         List<UserEntity> usersReceiver = userPort.findAll();
         List<UserToShow> userToShows = new ArrayList<>();
         RoleEntity roleToVerify = roleRepository.getReferenceById(rol);
-
         for (UserEntity userEntity : usersReceiver) {
             if (userEntity.getRoles().contains(roleToVerify)) {
                 allUsers.add(userDboMapper.toDomain(userEntity));
@@ -79,7 +52,6 @@ public class UsersManageServiceImpl implements UsersManageService {
         for (User user : allUsers) {
             userToShows.add((userToAddListConvert(user)));
         }
-
         return userToShows;
     }
 
@@ -89,13 +61,9 @@ public class UsersManageServiceImpl implements UsersManageService {
         return userToAddListConvert(user);
     }
 
-    private User getUserPrivClass(String email)
-    {
-        return userPort.findUserByEmail(email);
-    }
     @Override
     public UserToShow modifyUser(User user) {
-        User userFound = getUserPrivClass(user.getEmail());
+        User userFound = userPort.findUserByEmail(user.getEmail());
         UserToShow userToShow = userToAddListConvert(userFound);
 
         userFound.setFirstName(user.getFirstName());
@@ -122,12 +90,8 @@ public class UsersManageServiceImpl implements UsersManageService {
 
     @Override
     public void deleteUser(String userEmail) {
-        User userFound = getUserPrivClass(userEmail);
-
-        /*Deleting credit cards FK to user*/
-        List<CreditCard> allCCs = new ArrayList<>();
-        allCCs = creditCardPort.getAllCC();
-
+        User userFound = userPort.findUserByEmail(userEmail);
+        List<CreditCard> allCCs = creditCardPort.getAllCC();
         for(CreditCard cc:allCCs) {
             if (Objects.equals(cc.getUserId().getId(), userFound.getId())) {
                 creditCardPort.delete(cc);
@@ -136,5 +100,28 @@ public class UsersManageServiceImpl implements UsersManageService {
         if (userFound.getId()!=-1L) {
             userPort.deleteUser(userFound);
         }
+    }
+
+    private UserToShow userToAddListConvert(User user) {
+        UserToShow userToAddList = new UserToShow();
+        userToAddList.setCreditCard(creditCardDtoMapper.toDto(creditCardPort.getCC(user)));
+        userToAddList.setId(user.getId());
+
+        userToAddList.setEmail(user.getEmail());
+        userToAddList.setFirstName(user.getFirstName());
+        userToAddList.setSecondName(user.getSecondName());
+        userToAddList.setFirstLastname(user.getFirstLastname());
+        userToAddList.setSecondLastname(user.getSecondLastname());
+        userToAddList.setLoginAttempts(user.getLoginAttempts());
+
+        userToAddList.setAccountActive(user.isAccountActive());
+        userToAddList.setAccountBlocked(user.isAccountBlocked());
+
+        List<String> roleListToAdd = new ArrayList<>();
+        for(RoleEntity role :user.getRoles()) {
+            roleListToAdd.add(role.getRoleEnum().name());
+        }
+        userToAddList.setRoleList(roleListToAdd);
+        return userToAddList;
     }
 }

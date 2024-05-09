@@ -21,7 +21,6 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import com.groupc.fourparks.application.service.UserDetailsServiceImpl;
 import com.groupc.fourparks.infraestructure.config.jwt.JwtTokenValidator;
 import com.groupc.fourparks.infraestructure.config.jwt.JwtUtils;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 @EnableWebSecurity

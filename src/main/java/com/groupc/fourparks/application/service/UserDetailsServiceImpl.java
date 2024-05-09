@@ -41,31 +41,18 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
-
     private final JwtUtils jwtUtils;
-
     private final RolePort rolePort;
-
     private final UserPort userPort;
-
     private final CreditCardPort creditCardPort;
-
     private final EmailServiceImpl emailServiceImpl;
-
     private final CreditCardServiceImpl creditCardServiceImpl;
-
     private final PasswordGeneratorImpl passwordGeneratorImpl;
-
     private final UserRegisterRequestMapper userRegisterRequestMapper;
-
     private final UserDtoMapper userDtoMapper;
-
     private final UserLoginRequestMapper userLoginRequestMapper;
-
     private final LoginDtoMapper loginDtoMapper;
-
     private final CreditCardDtoMapper creditCardDtoMapper;
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
