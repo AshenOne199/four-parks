@@ -30,8 +30,9 @@ public class ParkingEntity {
     @Column(name = "loyalty")
     private boolean loyalty;
 
-    @Column(name = "admin_id")
-    private UserEntity adminId;
+    @OneToOne(targetEntity = UserEntity.class, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "admin_id")
+    private UserEntity admin;
 
     @OneToOne(targetEntity = LocationEntity.class, cascade = CascadeType.MERGE)
     @JoinColumn(name = "location_id")

@@ -102,7 +102,7 @@ public class ParkingJpaAdapter implements ParkingPort{
     public Parking save(Parking parking, User user) {
         var parkingToSave = parkingDboMapper.toDbo(parking);
         var userToSave = userDboMapper.toDbo(user);
-        parkingToSave.setAdminId(userToSave);
+        /*parkingToSave.setAdminId(userToSave);*/
         return parkingDboMapper.toDomain(parkingRepository.save(parkingToSave));
     }
 }

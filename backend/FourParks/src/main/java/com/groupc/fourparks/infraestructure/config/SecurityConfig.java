@@ -61,10 +61,11 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/api/v1/users/modifyUser").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/users/createUser").permitAll();
 
-
-
-
-
+                    //parking endpoints
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/parking/**").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/parking/**").permitAll();
+                    http.requestMatchers(HttpMethod.DELETE, "/api/v1/parking/**").permitAll();
+                    http.requestMatchers(HttpMethod.PUT, "/api/v1/parking/**").permitAll();
 
 
                     // private endpoints

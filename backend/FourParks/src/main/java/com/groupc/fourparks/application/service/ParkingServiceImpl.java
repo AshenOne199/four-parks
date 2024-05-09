@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.groupc.fourparks.application.mapper.NewParkingRequestMapper;
 import com.groupc.fourparks.application.mapper.ParkingDtoMapper;
+import com.groupc.fourparks.application.mapper.SetAdminToParkingRequestMapper;
 import com.groupc.fourparks.application.usecase.ParkingService;
 import com.groupc.fourparks.domain.model.Location;
 import com.groupc.fourparks.domain.model.OpeningHours;
@@ -21,6 +22,7 @@ import com.groupc.fourparks.infraestructure.exception.InternalServerErrorExcepti
 import com.groupc.fourparks.infraestructure.model.dto.ParkingDto;
 import com.groupc.fourparks.infraestructure.model.request.NewParkingRequest;
 import com.groupc.fourparks.infraestructure.model.request.ParkingSlotRequest;
+import com.groupc.fourparks.infraestructure.model.request.SetAdminToParkingRequest;
 import com.groupc.fourparks.infraestructure.model.request.SlotStatusRequest;
 import com.groupc.fourparks.infraestructure.model.request.VehicleTypeRequest;
 
@@ -31,6 +33,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ParkingServiceImpl implements ParkingService{
     private final NewParkingRequestMapper newParkingRequestMapper;
+    private final SetAdminToParkingRequestMapper setAdminToParkingRequestMapper;
 
     private final ParkingPort parkingPort;
     private final LocationPort locationPort;
@@ -120,13 +123,13 @@ public class ParkingServiceImpl implements ParkingService{
     }
 
     @Override
-    public ParkingDto setAdmin(NewParkingRequest newParkingRequest) {
-        Parking parkingToModify = newParkingRequestMapper.toDomain(newParkingRequest);
-        Parking parking = parkingPort.findParkingByName(newParkingRequest.getName());
-        var userToSave = userPort.findUserByEmail(newParkingRequest.getAdminId());
+    public ParkingDto setAdmin(SetAdminToParkingRequest setAdminToParkingRequest) {
+        Parking parking = parkingPort.findParkingByName(setAdminToParkingRequest.getParkingId().getName());
+        var adminToSave = userPort.findUserById(Long.parseLong(setAdminToParkingRequest.getAdminId()));
 
-        /*var parkingModified = parkingPort.save(parking,);*/
+        var parkingModified = parkingPort.save(parking,adminToSave);
 
         return parkingDtoMapper.toDto(parkingModified);
+
     }
 }

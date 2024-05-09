@@ -15,8 +15,6 @@ public class NewParkingRequest {
 
     String id;
 
-    String adminId;
-
     @NotBlank
     String available_slots;
 

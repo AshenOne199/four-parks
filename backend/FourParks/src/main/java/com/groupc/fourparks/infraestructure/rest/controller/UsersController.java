@@ -3,8 +3,6 @@ package com.groupc.fourparks.infraestructure.rest.controller;
 import com.groupc.fourparks.application.usecase.UsersManageService;
 import com.groupc.fourparks.domain.model.User;
 
-
-import com.groupc.fourparks.infraestructure.model.request.UserRegisterRequest;
 import com.groupc.fourparks.infraestructure.model.request.UserToShow;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -18,14 +16,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 @AllArgsConstructor
-@RestController
-@RequestMapping("/api/v1/users")
-@AllArgsConstructor
 public class UsersController
 {
-
-    private final UsersManageService usersManageService;
-
 
     private final UsersManageService usersManageService;
 
@@ -47,8 +39,6 @@ public class UsersController
 
         return new ResponseEntity<>(this.usersManageService.getOneUser(email),HttpStatus.OK);
     }
-    @GetMapping("/deleteUser/{email}")
-    public  void  deleteUser( @PathVariable String email)
     @GetMapping("/deleteUser/{email}")
     public  void  deleteUser( @PathVariable String email)
     {

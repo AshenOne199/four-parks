@@ -9,6 +9,7 @@ import lombok.*;
 @NoArgsConstructor
 public class Parking {
     private Long id;
+    private User admin;
     private String name;
     private int total_slots;
     private int available_slots;

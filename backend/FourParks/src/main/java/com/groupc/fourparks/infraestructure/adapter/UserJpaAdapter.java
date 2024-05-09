@@ -3,7 +3,6 @@ package com.groupc.fourparks.infraestructure.adapter;
 import com.groupc.fourparks.domain.model.User;
 import com.groupc.fourparks.domain.port.UserPort;
 import com.groupc.fourparks.infraestructure.adapter.entity.UserEntity;
-import com.groupc.fourparks.infraestructure.adapter.entity.UserEntity;
 import com.groupc.fourparks.infraestructure.adapter.mapper.UserDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.repository.UserRepository;
 import com.groupc.fourparks.infraestructure.exception.NotFoundException;
@@ -70,6 +69,12 @@ public class UserJpaAdapter implements UserPort {
     public List<UserEntity> findAll() {
 
         return userRepository.findAll();
+    }
+
+    @Override
+    public User findUserById(Long id) {
+        var optionalUser = userRepository.findById(id);
+        return userDboMapper.toDomain(optionalUser.get()) ;
     }
 
 

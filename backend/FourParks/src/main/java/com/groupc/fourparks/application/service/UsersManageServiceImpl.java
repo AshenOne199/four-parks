@@ -20,8 +20,6 @@ import java.util.Objects;
 
 @Service
 @AllArgsConstructor
-@Service
-@AllArgsConstructor
 public class UsersManageServiceImpl implements UsersManageService {
 
     private final  UserPort userPort;
@@ -84,8 +82,6 @@ public class UsersManageServiceImpl implements UsersManageService {
         RoleEntity roleToVerify = roleRepository.getReferenceById(rol);
 
         for (UserEntity userEntity : usersReceiver) {
-
-                if (userEntity.getRoles().contains(roleToVerify)) {
 
                 if (userEntity.getRoles().contains(roleToVerify)) {
                     allUsers.add(userDboMapper.toDomain(userEntity));

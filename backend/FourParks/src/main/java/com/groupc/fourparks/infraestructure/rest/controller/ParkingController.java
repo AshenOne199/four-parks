@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.groupc.fourparks.application.service.ParkingServiceImpl;
 import com.groupc.fourparks.infraestructure.model.dto.ParkingDto;
 import com.groupc.fourparks.infraestructure.model.request.NewParkingRequest;
+import com.groupc.fourparks.infraestructure.model.request.SetAdminToParkingRequest;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -53,8 +54,8 @@ public class ParkingController {
         return new ResponseEntity<>(this.parkingServiceImpl.modifyParking(newParkingRequest), HttpStatus.OK);
     }
 
-    @PutMapping("/setAdmin/{id}")
-    public ResponseEntity<ParkingDto> putMethodName(@RequestBody @Valid NewParkingRequest newParkingRequest) {
-        return new ResponseEntity<>(this.parkingServiceImpl.modifyParking(newParkingRequest), HttpStatus.OK);
+    @PutMapping("/setAdmin")
+    public ResponseEntity<ParkingDto> putMethodName(@RequestBody @Valid SetAdminToParkingRequest setAdminToParkingRequest) {
+        return new ResponseEntity<>(this.parkingServiceImpl.setAdmin(setAdminToParkingRequest), HttpStatus.OK);
     }
 }
