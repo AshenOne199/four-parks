@@ -62,4 +62,10 @@ public class UserJpaAdapter implements UserPort {
     public List<UserEntity> findAll() {
         return userRepository.findAll();
     }
+
+    @Override
+    public User findUserById(Long id) {
+        var optionalUser = userRepository.findById(id);
+        return userDboMapper.toDomain(optionalUser.get()) ;
+    }
 }

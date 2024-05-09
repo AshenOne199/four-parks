@@ -44,6 +44,13 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/log-in").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/new-password").permitAll();
 
+                    //parking endpoints
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/parking/**").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/parking/**").permitAll();
+                    http.requestMatchers(HttpMethod.DELETE, "/api/v1/parking/**").permitAll();
+                    http.requestMatchers(HttpMethod.PUT, "/api/v1/parking/**").permitAll();
+
+
                     // private endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/unlock").hasAnyRole("GERENTE", "ADMINISTRADOR");
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/all").hasAnyRole("GERENTE", "ADMINISTRADOR");

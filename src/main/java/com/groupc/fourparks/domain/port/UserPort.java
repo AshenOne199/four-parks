@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface UserPort {
     Optional<User> findUserByEmailOptional(String username);
     User findUserByEmail(String email);
+    User findUserById(Long id);
     List<User> findAllUsers();
     void deleteUser(User user);
     User save(User user);
