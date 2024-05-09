@@ -9,7 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ParkingTypeRequest {
+public class SlotStatusRequest {
     Long id;
-    String type;
+    String status;
 }

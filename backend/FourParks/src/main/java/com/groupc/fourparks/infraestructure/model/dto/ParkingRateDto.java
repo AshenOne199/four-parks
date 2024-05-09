@@ -1,5 +1,4 @@
-package com.groupc.fourparks.infraestructure.model.request;
-
+package com.groupc.fourparks.infraestructure.model.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +8,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class ParkingTypeRequest {
+public class ParkingRateDto {
     Long id;
-    String type;
+    float rate;
+    ParkingDto parkingId;
+    VehicleTypeDto vehicleTypeId;
 }

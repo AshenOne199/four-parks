@@ -30,6 +30,9 @@ public class ParkingEntity {
     @Column(name = "loyalty")
     private boolean loyalty;
 
+    @Column(name = "admin_id")
+    private UserEntity adminId;
+
     @OneToOne(targetEntity = LocationEntity.class, cascade = CascadeType.MERGE)
     @JoinColumn(name = "location_id")
     private LocationEntity location;
@@ -42,6 +45,4 @@ public class ParkingEntity {
     @JoinColumn(name = "opening_hours_id")
     private OpeningHoursEntity openingHours;
 
-    /*@OneToMany(targetEntity = ParkingRateEntity.class,fetch = FetchType.EAGER, mappedBy = "id")
-    private Set<ParkingRateEntity> rates = new HashSet<>();*/
 }

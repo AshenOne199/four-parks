@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LocationRequest {
+    Long id;
     String address;
     String latitude;
     String longitude;

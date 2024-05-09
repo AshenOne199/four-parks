@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "parking_rate")
+@Table(name = "parking_rate",uniqueConstraints = { @UniqueConstraint(columnNames = {"vehicle_type_id"})})
 public class ParkingRateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,11 +18,11 @@ public class ParkingRateEntity {
     @Column(name = "rate")
     private float rate;
 
-    @ManyToOne(targetEntity = VehicleTypeEntity.class)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "vehicle_type_id")
     private VehicleTypeEntity vehicleTypeId;
 
-    @ManyToOne(targetEntity = OpeningHoursEntity.class)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "parking_id")
     private ParkingEntity parkingId;
 }

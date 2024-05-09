@@ -18,8 +18,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/users")
 @AllArgsConstructor
+@RestController
+@RequestMapping("/api/v1/users")
+@AllArgsConstructor
 public class UsersController
 {
+
+    private final UsersManageService usersManageService;
+
 
     private final UsersManageService usersManageService;
 
@@ -43,6 +49,8 @@ public class UsersController
     }
     @GetMapping("/deleteUser/{email}")
     public  void  deleteUser( @PathVariable String email)
+    @GetMapping("/deleteUser/{email}")
+    public  void  deleteUser( @PathVariable String email)
     {
         usersManageService.deleteUser(email);
 
@@ -53,6 +61,7 @@ public class UsersController
         return new ResponseEntity<UserToShow>(this.usersManageService.modifyUser(user), HttpStatus.OK);
     }
 
+    /*@PostMapping("/createUser")
     /*@PostMapping("/createUser")
     public ResponseEntity<User> createUser( @RequestBody @Valid User user)
     {

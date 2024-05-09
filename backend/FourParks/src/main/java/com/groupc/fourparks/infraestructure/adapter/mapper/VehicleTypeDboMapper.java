@@ -8,8 +8,8 @@ import com.groupc.fourparks.infraestructure.adapter.entity.VehicleTypeEntity;
 
 @Mapper(componentModel = "spring")
 public interface VehicleTypeDboMapper {
-    VehicleTypeEntity toDbo(VehicleType creditCard);
+    VehicleTypeEntity toDbo(VehicleType vehicleType);
 
     @InheritInverseConfiguration
-    VehicleType toDomain(VehicleTypeEntity creditCardEntity);
+    VehicleType toDomain(VehicleTypeEntity vehicleTypeEntity);
 }

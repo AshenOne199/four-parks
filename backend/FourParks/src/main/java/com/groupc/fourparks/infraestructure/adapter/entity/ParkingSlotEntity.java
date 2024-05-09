@@ -15,15 +15,15 @@ public class ParkingSlotEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(targetEntity = ParkingEntity.class)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "parking_id")
     private ParkingEntity parkingId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "slot_status_id")
-    private SlotStatusEntity slotStatusEntity;
+    private SlotStatusEntity slotStatusId;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "vehicle_type_id")
-    private VehicleTypeEntity vehicleTypeEntity;
+    private VehicleTypeEntity vehicleTypeId;
 }

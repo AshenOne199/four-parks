@@ -1,6 +1,5 @@
 package com.groupc.fourparks.application.service;
 
-import org.springframework.data.rest.webmvc.support.ExceptionMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -8,6 +7,7 @@ import java.util.List;
 
 import com.groupc.fourparks.application.mapper.NewParkingRequestMapper;
 import com.groupc.fourparks.application.mapper.ParkingDtoMapper;
+import com.groupc.fourparks.application.usecase.ParkingService;
 import com.groupc.fourparks.domain.model.Location;
 import com.groupc.fourparks.domain.model.OpeningHours;
 import com.groupc.fourparks.domain.model.Parking;
@@ -16,18 +16,20 @@ import com.groupc.fourparks.domain.port.LocationPort;
 import com.groupc.fourparks.domain.port.OpeningHoursPort;
 import com.groupc.fourparks.domain.port.ParkingPort;
 import com.groupc.fourparks.domain.port.ParkingTypePort;
-import com.groupc.fourparks.infraestructure.exception.BadRequestException;
+import com.groupc.fourparks.domain.port.UserPort;
 import com.groupc.fourparks.infraestructure.exception.InternalServerErrorException;
 import com.groupc.fourparks.infraestructure.model.dto.ParkingDto;
 import com.groupc.fourparks.infraestructure.model.request.NewParkingRequest;
+import com.groupc.fourparks.infraestructure.model.request.ParkingSlotRequest;
+import com.groupc.fourparks.infraestructure.model.request.SlotStatusRequest;
+import com.groupc.fourparks.infraestructure.model.request.VehicleTypeRequest;
 
-import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class ParkingServiceImpl{
+public class ParkingServiceImpl implements ParkingService{
     private final NewParkingRequestMapper newParkingRequestMapper;
 
     private final ParkingPort parkingPort;
@@ -35,8 +37,11 @@ public class ParkingServiceImpl{
     private final OpeningHoursPort openingHoursPort;
     private final CityPort cityPort;
     private final ParkingTypePort parkingTypePort;
+    private final UserPort userPort;
 
     private final ParkingDtoMapper parkingDtoMapper;
+
+    private final ParkingSlotServiceImpl parkingSlotServiceImpl;
 
     @Transactional
     public ParkingDto newParking(NewParkingRequest newParkingRequest) {
@@ -53,9 +58,17 @@ public class ParkingServiceImpl{
         var locationToSave = parkingToCreate.getLocation();
         
         var locationCreated = locationPort.save(locationToSave, cityPort.findCityByCity(newParkingRequest.getLocation().getCity().getCity()));
-        var parkingCreated = parkingPort.save(parkingToCreate);
+        var parkingCreated = parkingPort.save(parkingToCreate, locationCreated, parkingTypeToSave,openingHoursToSave);
 
-        parkingPort.save(parkingCreated, locationCreated, parkingTypeToSave,openingHoursToSave);
+        
+        ParkingSlotRequest newParkingSlotRequest = new ParkingSlotRequest();
+        for(int i=0;i<parkingCreated.getTotal_slots();i++){
+            newParkingSlotRequest.setParkingId(newParkingRequest);
+            newParkingSlotRequest.setSlotStatusId(new SlotStatusRequest(Long.parseLong("1"),"EMPTY"));
+            newParkingSlotRequest.setVehicleTypeId(new VehicleTypeRequest(Long.parseLong("1"),"CARRO"));
+            parkingSlotServiceImpl.newParkingSlot(newParkingSlotRequest);
+        }
+
         return parkingDtoMapper.toDto(parkingCreated);
     }
 
@@ -104,5 +117,16 @@ public class ParkingServiceImpl{
                 locationPort.deleteLocation(locationToDelete);
                 openingHoursPort.deleteOpeningHours(openingHours);
                 return "Eliminacion correcta";   
+    }
+
+    @Override
+    public ParkingDto setAdmin(NewParkingRequest newParkingRequest) {
+        Parking parkingToModify = newParkingRequestMapper.toDomain(newParkingRequest);
+        Parking parking = parkingPort.findParkingByName(newParkingRequest.getName());
+        var userToSave = userPort.findUserByEmail(newParkingRequest.getAdminId());
+
+        /*var parkingModified = parkingPort.save(parking,);*/
+
+        return parkingDtoMapper.toDto(parkingModified);
     }
 }

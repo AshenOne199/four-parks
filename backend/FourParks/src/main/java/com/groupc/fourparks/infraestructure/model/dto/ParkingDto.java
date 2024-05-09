@@ -19,4 +19,6 @@ public class ParkingDto {
     String name;
     String total_slots;
     LocationDto location;
+    OpeningHoursDto openingHours;
+    ParkingTypeDto parkingType;
 }

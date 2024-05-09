@@ -11,6 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OpeningHoursRequest {
+    Long id;
     LocalTime close_time;
     LocalTime open_time;
     public OpeningHoursRequest(String close_time, String open_time) throws ParseException {

@@ -1,6 +1,4 @@
 package com.groupc.fourparks.infraestructure.model.request;
-import com.groupc.fourparks.domain.model.OpeningHours;
-import com.groupc.fourparks.domain.model.ParkingType;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -14,6 +12,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class NewParkingRequest {
+
+    String id;
+
+    String adminId;
+
     @NotBlank
     String available_slots;
 

@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "slot_status")
+@Table(name = "slot_status",uniqueConstraints = { @UniqueConstraint(columnNames = {"status"})})
 public class SlotStatusEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

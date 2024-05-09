@@ -6,10 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.groupc.fourparks.application.service.ParkingServiceImpl;
@@ -44,14 +42,19 @@ public class ParkingController {
     public ResponseEntity<List<ParkingDto>> getParkings() {
         return new ResponseEntity<>(this.parkingServiceImpl.getParkings(), HttpStatus.OK);
     }
+
     @DeleteMapping("/deleteParking/{name}")
     public String deleteParking(@PathVariable(required = true) String name) {
-        
         return this.parkingServiceImpl.deleteParking(name);
     }
 
     @PutMapping("/modifyParking")
     public ResponseEntity<ParkingDto> modifyParking(@RequestBody @Valid NewParkingRequest newParkingRequest){
+        return new ResponseEntity<>(this.parkingServiceImpl.modifyParking(newParkingRequest), HttpStatus.OK);
+    }
+
+    @PutMapping("/setAdmin/{id}")
+    public ResponseEntity<ParkingDto> putMethodName(@RequestBody @Valid NewParkingRequest newParkingRequest) {
         return new ResponseEntity<>(this.parkingServiceImpl.modifyParking(newParkingRequest), HttpStatus.OK);
     }
 }

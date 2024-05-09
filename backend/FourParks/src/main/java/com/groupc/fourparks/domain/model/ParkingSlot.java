@@ -13,6 +13,6 @@ import lombok.*;
 public class ParkingSlot {
     private Long id; 
     private ParkingEntity parkingId;
-    private SlotStatusEntity slotStatusEntity;
-    private VehicleTypeEntity vehicleTypeEntity;
+    private SlotStatusEntity slotStatusId;
+    private VehicleTypeEntity vehicleTypeId;
 }
