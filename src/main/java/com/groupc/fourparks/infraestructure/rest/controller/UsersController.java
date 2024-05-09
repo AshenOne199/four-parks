@@ -17,30 +17,30 @@ import java.util.List;
 @RequestMapping("/api/v1/users")
 @AllArgsConstructor
 public class UsersController {
+
     private final UsersManageService usersManageService;
 
-    @GetMapping("/allUsers")
+    @GetMapping("/all")
     public ResponseEntity<List<UserToShow>> readUsers() {
         return new ResponseEntity<>(this.usersManageService.readUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/userByRole/{role}")
+    @GetMapping("/user/role/{role}")
     public ResponseEntity<List<UserToShow>> userByRole( @PathVariable Long role) {
         return new ResponseEntity<>(this.usersManageService.userByRole(role), HttpStatus.OK);
     }
 
-    @GetMapping("/getOneUser/{email}")
+    @GetMapping("/user/email/{email}")
     public ResponseEntity<UserToShow> getOneUser(@PathVariable String email) {
-
         return new ResponseEntity<>(this.usersManageService.getOneUser(email),HttpStatus.OK);
     }
 
-    @GetMapping("/deleteUser/{email}")
+    @GetMapping("/user/delete/{email}")
     public  void  deleteUser( @PathVariable String email) {
         usersManageService.deleteUser(email);
     }
 
-    @PostMapping("/modifyUser")
+    @PostMapping("/user/modify")
     public ResponseEntity<UserToShow> modifyUser(@RequestBody @Valid User user) {
         return new ResponseEntity<>(this.usersManageService.modifyUser(user), HttpStatus.OK);
     }

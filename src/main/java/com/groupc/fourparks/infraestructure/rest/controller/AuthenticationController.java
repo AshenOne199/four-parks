@@ -41,19 +41,4 @@ public class AuthenticationController {
     public ResponseEntity<UserDto> unlock(@RequestBody @Valid UserLoginRequest userLoginRequest){
         return new ResponseEntity<>(this.userDetailsService.unlock(userLoginRequest), HttpStatus.OK);
     }
-
-    @GetMapping("/test")
-    public ResponseEntity<String> testGet(){
-        return ResponseEntity.accepted().body("OK GET");
-    }
-
-    @PostMapping("/test-post")
-    public ResponseEntity<String> testPost(){
-        return ResponseEntity.accepted().body("OK POST");
-    }
-
-    @PostMapping("/test-post-body")
-    public ResponseEntity<String> testPostBody(@RequestBody @Valid UserLoginRequest userLoginRequest){
-        return ResponseEntity.accepted().body("OK POST BODY");
-    }
 }
