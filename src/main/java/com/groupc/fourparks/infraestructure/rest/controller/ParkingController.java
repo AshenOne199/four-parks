@@ -17,39 +17,34 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/parking")
+@RequestMapping("/api/v1/parkings")
 // @CrossOrigin(origins = "http://localhost:3000")
 @CrossOrigin(origins = "https://fourparks.vercel.app/")
 public class ParkingController {
     private final ParkingServiceImpl parkingServiceImpl;
 
-    @PostMapping("/newParking")
+    @PostMapping("/parking/new")
     public ResponseEntity<ParkingDto> newParking(@RequestBody @Valid NewParkingRequest newParkingRequest){
         return new ResponseEntity<>(this.parkingServiceImpl.newParking(newParkingRequest), HttpStatus.OK);
     }
 
-    @GetMapping("/getParking/{name}")
-    public ResponseEntity<ParkingDto> getParking(@PathVariable(required = true) String name) {
+    @GetMapping("/parking/name/{name}")
+    public ResponseEntity<ParkingDto> getParking(@PathVariable String name) {
         return new ResponseEntity<>(this.parkingServiceImpl.getParking(name), HttpStatus.OK);
     }
 
-    @GetMapping("/getParkings")
+    @GetMapping("/all")
     public ResponseEntity<List<ParkingDto>> getParkings() {
         return new ResponseEntity<>(this.parkingServiceImpl.getParkings(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteParking/{name}")
-    public String deleteParking(@PathVariable(required = true) String name) {
+    @DeleteMapping("/parking/delete/name/{name}")
+    public String deleteParking(@PathVariable String name) {
         return this.parkingServiceImpl.deleteParking(name);
     }
 
-    @PutMapping("/modifyParking")
+    @PutMapping("/parking/update")
     public ResponseEntity<ParkingDto> modifyParking(@RequestBody @Valid NewParkingRequest newParkingRequest){
         return new ResponseEntity<>(this.parkingServiceImpl.modifyParking(newParkingRequest), HttpStatus.OK);
-    }
-
-    @PutMapping("/setAdmin")
-    public ResponseEntity<ParkingDto> putMethodName(@RequestBody @Valid SetAdminToParkingRequest setAdminToParkingRequest) {
-        return new ResponseEntity<>(this.parkingServiceImpl.setAdmin(setAdminToParkingRequest), HttpStatus.OK);
     }
 }

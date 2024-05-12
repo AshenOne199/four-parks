@@ -27,7 +27,7 @@ public class ManagerController {
         return new ResponseEntity<>(this.managerService.readUsers(), HttpStatus.OK);
     }
 
-    @GetMapping("/user/role/{role}")
+    @GetMapping("/role/{role}")
     public ResponseEntity<List<UserToShow>> getUserByRole(@PathVariable Long role) {
         return new ResponseEntity<>(this.managerService.userByRole(role), HttpStatus.OK);
     }
@@ -37,12 +37,12 @@ public class ManagerController {
         return new ResponseEntity<>(this.managerService.getOneUser(email),HttpStatus.OK);
     }
 
-    @GetMapping("/user/delete/{email}")
+    @DeleteMapping("/user/delete/email/{email}")
     public void deleteUser( @PathVariable String email) {
         managerService.deleteUser(email);
     }
 
-    @PostMapping("/user/modify")
+    @PutMapping("/user/update")
     public ResponseEntity<UserToShow> modifyUser(@RequestBody @Valid User user) {
         return new ResponseEntity<>(this.managerService.modifyUser(user), HttpStatus.OK);
     }

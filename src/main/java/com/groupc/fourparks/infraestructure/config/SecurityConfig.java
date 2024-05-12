@@ -39,25 +39,34 @@ public class SecurityConfig {
                 .authorizeHttpRequests(http -> {
                     // public endpoints
                     http.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/sign-up").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/log-in").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/new-password").permitAll();
-
-                    //parking endpoints
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/parking/**").permitAll();
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/parking/**").permitAll();
-                    http.requestMatchers(HttpMethod.DELETE, "/api/v1/parking/**").permitAll();
-                    http.requestMatchers(HttpMethod.PUT, "/api/v1/parking/**").permitAll();
-
-
-                    // private endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/unlock").permitAll();
+
+                    // parking endpoints
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/parkings/parking/new").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/parkings/parking/name/{name}").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/parkings/all").permitAll();
+                    http.requestMatchers(HttpMethod.DELETE, "/api/v1/parkings/parking/delete/name/{name}").permitAll();
+                    http.requestMatchers(HttpMethod.PUT, "/api/v1/parkings/parking/update").permitAll();
+
+                    // rate endpoints
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/rates/rate/new").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/rates/rate/id/{id}").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/rates/parking/id/{id}").permitAll();
+                    http.requestMatchers(HttpMethod.DELETE, "/api/v1/rates/rate/delete/{id}").permitAll();
+                    http.requestMatchers(HttpMethod.PUT, "/api/v1/rates/rate/update").permitAll();
+
+                    // slot endpoints
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/slots/slot/new").permitAll();
+
+                    // manager endpoints
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/all").permitAll();
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/role/{role}").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/role/{role}").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/email/{email}").permitAll();
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/delete/{email}").permitAll();
-                    http.requestMatchers(HttpMethod.POST, "/api/v1/users/user/modify").permitAll();
+                    http.requestMatchers(HttpMethod.DELETE, "/api/v1/users/user/delete/email/{email}").permitAll();
+                    http.requestMatchers(HttpMethod.PUT, "/api/v1/users/user/update").permitAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();

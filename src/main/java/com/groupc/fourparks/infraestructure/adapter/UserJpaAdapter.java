@@ -66,6 +66,9 @@ public class UserJpaAdapter implements UserPort {
     @Override
     public User findUserById(Long id) {
         var optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()){
+            throw new NotFoundException("Usuario: " + id + " no registrado");
+        }
         return userDboMapper.toDomain(optionalUser.get()) ;
     }
 }

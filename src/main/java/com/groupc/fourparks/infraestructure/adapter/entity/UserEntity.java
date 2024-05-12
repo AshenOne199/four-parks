@@ -42,13 +42,13 @@ public class UserEntity {
     @Column(name = "second_lastname")
     private String secondLastname;
 
-    @Column(name = "account_active")
+    @Column(name = "account_active", columnDefinition = "integer default 1")
     private Boolean accountActive;
 
-    @Column(name = "account_blocked")
+    @Column(name = "account_blocked", columnDefinition = "integer default 0")
     private Boolean accountBlocked;
 
-    @Column(name = "login_attempts")
+    @Column(name = "login_attempts", columnDefinition = "integer default 0")
     private Integer loginAttempts;
 
     @Column(name = "updated_at")

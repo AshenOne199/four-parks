@@ -32,8 +32,9 @@ import lombok.AllArgsConstructor;
 @Service
 @AllArgsConstructor
 public class ParkingServiceImpl implements ParkingService{
+
     private final NewParkingRequestMapper newParkingRequestMapper;
-    private final SetAdminToParkingRequestMapper setAdminToParkingRequestMapper;
+    private final ParkingDtoMapper parkingDtoMapper;
 
     private final ParkingPort parkingPort;
     private final LocationPort locationPort;
@@ -42,16 +43,16 @@ public class ParkingServiceImpl implements ParkingService{
     private final ParkingTypePort parkingTypePort;
     private final UserPort userPort;
 
-    private final ParkingDtoMapper parkingDtoMapper;
-
     private final ParkingSlotServiceImpl parkingSlotServiceImpl;
 
     @Transactional
     public ParkingDto newParking(NewParkingRequest newParkingRequest) {
         var parkingToCreate = newParkingRequestMapper.toDomain(newParkingRequest);
 
-        String name = parkingToCreate.getName();
+        var adminToSet = userPort.findUserById(Long.parseLong(String.valueOf(newParkingRequest.getAdminId())));
+        parkingToCreate.setAdmin(adminToSet);
 
+        String name = parkingToCreate.getName();
         var parking = parkingPort.findParkingByNameOptional(name);
         if (parking.isPresent()) {
             throw new InternalServerErrorException("Parqueadero con ese mismo nombre ya registrado");
@@ -59,11 +60,9 @@ public class ParkingServiceImpl implements ParkingService{
         var parkingTypeToSave = parkingTypePort.findParkingTypeByType(newParkingRequest.getParkingType().getType());
         var openingHoursToSave = parkingToCreate.getOpeningHours();
         var locationToSave = parkingToCreate.getLocation();
-        
         var locationCreated = locationPort.save(locationToSave, cityPort.findCityByCity(newParkingRequest.getLocation().getCity().getCity()));
-        var parkingCreated = parkingPort.save(parkingToCreate, locationCreated, parkingTypeToSave,openingHoursToSave);
+        var parkingCreated = parkingPort.save(parkingToCreate, locationCreated, parkingTypeToSave, openingHoursToSave);
 
-        
         ParkingSlotRequest newParkingSlotRequest = new ParkingSlotRequest();
         for(int i=0;i<parkingCreated.getTotal_slots();i++){
             newParkingSlotRequest.setParkingId(newParkingRequest);
@@ -94,9 +93,9 @@ public class ParkingServiceImpl implements ParkingService{
         Parking parking = parkingPort.findParkingByName(newParkingRequest.getName());
         //Modify parking values
         parking.setName(newParkingRequest.getName());
-        parking.setAvailable_slots(Integer.valueOf(newParkingRequest.getAvailable_slots()));
-        parking.setTotal_slots(Integer.valueOf(newParkingRequest.getTotal_slots()));
-        parking.setLoyalty(Boolean.parseBoolean(newParkingRequest.getLoyalty()));
+        parking.setAvailable_slots(newParkingRequest.getAvailableSlots());
+        parking.setTotal_slots(newParkingRequest.getTotalSlots());
+        parking.setLoyalty(newParkingRequest.getLoyalty());
         var parkingTypeToSave = parkingTypePort.findParkingTypeByType(newParkingRequest.getParkingType().getType());
         var openingHoursToSave = parkingToModify.getOpeningHours();
 
@@ -120,16 +119,5 @@ public class ParkingServiceImpl implements ParkingService{
                 locationPort.deleteLocation(locationToDelete);
                 openingHoursPort.deleteOpeningHours(openingHours);
                 return "Eliminacion correcta";   
-    }
-
-    @Override
-    public ParkingDto setAdmin(SetAdminToParkingRequest setAdminToParkingRequest) {
-        Parking parking = parkingPort.findParkingByName(setAdminToParkingRequest.getParkingId().getName());
-        var adminToSave = userPort.findUserById(Long.parseLong(setAdminToParkingRequest.getAdminId()));
-
-        var parkingModified = parkingPort.save(parking,adminToSave);
-
-        return parkingDtoMapper.toDto(parkingModified);
-
     }
 }

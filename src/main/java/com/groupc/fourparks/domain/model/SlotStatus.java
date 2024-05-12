@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SlotStatus {
-    private long id;
+    private Long id;
     private SlotStatusEnum status;
 
 }

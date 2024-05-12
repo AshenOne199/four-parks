@@ -33,7 +33,7 @@ public class ParkingSlotServiceImpl implements ParkingSlotService{
     private final ParkingSlotDtoMapper parkingSlotDtoMapper;
     @Override
     public ParkingSlotDto newParkingSlot(ParkingSlotRequest parkingSlotRequest) {
-        if(parkingSlotPort.getParkingSlotsByParking(parkingPort.findParkingByName(parkingSlotRequest.getParkingId().getName())).size()< Integer.parseInt(parkingSlotRequest.getParkingId().getTotal_slots())){
+        if(parkingSlotPort.getParkingSlotsByParking(parkingPort.findParkingByName(parkingSlotRequest.getParkingId().getName())).size() < Integer.parseInt(String.valueOf(parkingSlotRequest.getParkingId().getTotalSlots()))){
             var parkingSlotToCreate = parkingSlotRequestMapper.toDomain(parkingSlotRequest);
             var parkingToSave = parkingPort.findParkingByName(parkingSlotRequest.getParkingId().getName());
             var vehicleTypeToSave = vehicleTypePort.findVehicleTypeByType(parkingSlotRequest.getVehicleTypeId().getType());

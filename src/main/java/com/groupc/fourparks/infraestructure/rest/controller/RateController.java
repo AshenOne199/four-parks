@@ -15,33 +15,33 @@ import lombok.AllArgsConstructor;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/parking/rate")
+@RequestMapping("/api/v1/rates")
 // @CrossOrigin(origins = "http://localhost:3000")
 @CrossOrigin(origins = "https://fourparks.vercel.app/")
-public class ParkingRateController {
+public class RateController {
     private final ParkingRateServiceImpl parkingRateServiceImpl;
 
-    @PostMapping("/newRate")
+    @PostMapping("/rate/new")
     public ResponseEntity<ParkingRateDto> newSlot(@RequestBody @Valid ParkingRateRequest parkingRateRequest){
         return new ResponseEntity<>(this.parkingRateServiceImpl.newParkingRate(parkingRateRequest), HttpStatus.OK);
     }
 
-    @GetMapping("/getRate/{id}")
+    @GetMapping("/rate/id/{id}")
     public ResponseEntity<ParkingRateDto> getSlot(@PathVariable(required = true) String id) {
         return new ResponseEntity<>(this.parkingRateServiceImpl.getParkingRate(Long.parseLong(id)), HttpStatus.OK);
     }
 
-    @GetMapping("/getRates/{id}")
+    @GetMapping("/parking/id/{id}")
     public ResponseEntity<List<ParkingRateDto>> getSlotsByParking(@PathVariable(required = true) String id) {
         return new ResponseEntity<>(this.parkingRateServiceImpl.getParkingRatesByParking(Long.parseLong(id)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteRate/{id}")
+    @DeleteMapping("/rate/delete/{id}")
     public String deleteSlot(@PathVariable(required = true) String id) {
         return this.parkingRateServiceImpl.deleteParkingRate(Long.parseLong(id));
     }
 
-    @PutMapping("/modifyRate")
+    @PutMapping("/rate/update")
     public ResponseEntity<ParkingRateDto> modifySlot(@RequestBody @Valid ParkingRateRequest parkingRateRequest){
         return new ResponseEntity<>(this.parkingRateServiceImpl.modifyParkingRate(parkingRateRequest), HttpStatus.OK);
     }

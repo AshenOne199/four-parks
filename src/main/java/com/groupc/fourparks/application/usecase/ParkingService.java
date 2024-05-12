@@ -10,7 +10,6 @@ public interface ParkingService {
     ParkingDto newParking(NewParkingRequest newParkingRequest);
     ParkingDto getParking(String name);
     List<ParkingDto> getParkings();
-    ParkingDto setAdmin(SetAdminToParkingRequest setAdminToParkingRequest);
     ParkingDto modifyParking(NewParkingRequest newParkingRequest);
     String deleteParking(String name);
 }

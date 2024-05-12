@@ -1,6 +1,5 @@
 package com.groupc.fourparks.infraestructure.model.request;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,19 +12,17 @@ import lombok.Setter;
 @Setter
 public class NewParkingRequest {
 
-    String id;
+    Long id;
 
-    @NotBlank
-    String available_slots;
+    Long adminId;
 
-    @NotBlank
-    String loyalty;
+    Integer availableSlots;
 
-    @NotBlank
+    Boolean loyalty;
+
     String name;
 
-    @NotBlank
-    String total_slots;
+    Integer totalSlots;
 
     LocationRequest location;
 

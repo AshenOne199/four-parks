@@ -11,9 +11,9 @@ public class Parking {
     private Long id;
     private User admin;
     private String name;
-    private int total_slots;
-    private int available_slots;
-    private boolean loyalty;
+    private Integer total_slots;
+    private Integer available_slots;
+    private Boolean loyalty;
     private Location location;
     private ParkingType parkingType;
     private OpeningHours openingHours;

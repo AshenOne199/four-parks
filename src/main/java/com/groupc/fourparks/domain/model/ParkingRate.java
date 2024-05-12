@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 public class ParkingRate {
     private Long id;
-    private float rate;
+    private Float rate;
     private VehicleTypeEntity vehicleTypeId;
     private ParkingEntity parkingId;
 }

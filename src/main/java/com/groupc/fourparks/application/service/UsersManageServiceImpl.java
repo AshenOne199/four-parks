@@ -71,8 +71,8 @@ public class UsersManageServiceImpl implements ManagerService {
         userFound.setFirstLastname(user.getFirstLastname());
         userFound.setSecondLastname(user.getSecondLastname());
         userFound.setLoginAttempts(user.getLoginAttempts());
-        userFound.setAccountActive(user.isAccountActive());
-        userFound.setAccountBlocked(user.isAccountBlocked());
+        userFound.setAccountActive(user.getAccountActive());
+        userFound.setAccountBlocked(user.getAccountBlocked());
         userFound.setCreditCard(user.getCreditCard());
 
         if (userFound.getId()==-1L) {
@@ -113,8 +113,8 @@ public class UsersManageServiceImpl implements ManagerService {
         userToAddList.setFirstLastname(user.getFirstLastname());
         userToAddList.setSecondLastname(user.getSecondLastname());
         userToAddList.setLoginAttempts(user.getLoginAttempts());
-        userToAddList.setAccountActive(user.isAccountActive());
-        userToAddList.setAccountBlocked(user.isAccountBlocked());
+        userToAddList.setAccountActive(user.getAccountActive());
+        userToAddList.setAccountBlocked(user.getAccountBlocked());
 
         List<String> roleListToAdd = new ArrayList<>();
         for(RoleEntity role :user.getRoles()) {

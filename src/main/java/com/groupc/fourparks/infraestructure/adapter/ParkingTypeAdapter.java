@@ -1,5 +1,6 @@
 package com.groupc.fourparks.infraestructure.adapter;
 
+import com.groupc.fourparks.infraestructure.exception.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.groupc.fourparks.domain.model.ParkingType;
@@ -12,12 +13,16 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @Service
 public class ParkingTypeAdapter implements ParkingTypePort{
-    final private ParkingTypeRepository parkingTypeRepository;
 
+    final private ParkingTypeRepository parkingTypeRepository;
     final private ParkingTypeDboMapper parkingTypeDboMapper;
+
     @Override
     public ParkingType findParkingTypeByType(String type) {
-        return   parkingTypeDboMapper.toDomain(parkingTypeRepository.findParkingTypeByType(type)) ;
+        var parkingType = parkingTypeRepository.findParkingTypeByType(type);
+        if (parkingType.isEmpty()) {
+            throw new NotFoundException("El tipo de parking no es valido");
+        }
+        return parkingTypeDboMapper.toDomain(parkingType.get()) ;
     }
-    
 }

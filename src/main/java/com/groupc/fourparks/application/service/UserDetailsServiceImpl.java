@@ -57,10 +57,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var userToLoad = userPort.findUserByEmail(username);
-        if (!userToLoad.isAccountActive()){
+        if (!userToLoad.getAccountActive()){
             throw new ForbiddenException("El usuario esta inactivo");
         }
-        if (userToLoad.isAccountBlocked()){
+        if (userToLoad.getAccountBlocked()){
             throw new ForbiddenException("El usuario esta bloqueado. Contacte un administrador");
         }
 
@@ -175,7 +175,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         var user = userPort.findUserByEmail(email);
 
-        if (user.isAccountBlocked()){
+        if (user.getAccountBlocked()){
             throw new ForbiddenException("El usuario esta bloqueado. Contacte un administrador");
         }
 
@@ -210,7 +210,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         var userFound = userPort.findUserByEmail(username);
-        if (userFound.isAccountBlocked()){
+        if (userFound.getAccountBlocked()){
             throw new ForbiddenException("El usuario esta bloqueado. Contacte un administrador");
         }
 

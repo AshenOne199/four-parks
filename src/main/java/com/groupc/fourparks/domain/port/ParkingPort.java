@@ -11,7 +11,7 @@ import com.groupc.fourparks.domain.model.User;
 
 public interface ParkingPort {
     Parking save(Parking parking);
-    Parking save(Parking parking, Location location,ParkingType parkingType,OpeningHours openingHours);
+    Parking save(Parking parking, Location location, ParkingType parkingType, OpeningHours openingHours);
     Parking save(Parking parking, User user);
     Parking findParkingByName(String name);
     List<Parking> findParkings();
