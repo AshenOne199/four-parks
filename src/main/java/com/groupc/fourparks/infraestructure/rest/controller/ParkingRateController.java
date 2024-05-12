@@ -43,7 +43,6 @@ public class ParkingRateController {
 
     @DeleteMapping("/deleteRate/{id}")
     public String deleteSlot(@PathVariable(required = true) String id) {
-        
         return this.parkingRateServiceImpl.deleteParkingRate(Long.parseLong(id));
     }
 
