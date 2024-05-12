@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/parking")

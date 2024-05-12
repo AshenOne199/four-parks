@@ -113,7 +113,6 @@ public class UsersManageServiceImpl implements ManagerService {
         userToAddList.setFirstLastname(user.getFirstLastname());
         userToAddList.setSecondLastname(user.getSecondLastname());
         userToAddList.setLoginAttempts(user.getLoginAttempts());
-
         userToAddList.setAccountActive(user.isAccountActive());
         userToAddList.setAccountBlocked(user.isAccountBlocked());
 

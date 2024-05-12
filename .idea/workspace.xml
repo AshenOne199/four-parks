@@ -6,9 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="b3a97a6a-dd53-481b-bd86-caa5e85232d5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/UserEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/UserEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/scripts/insert_script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/scripts/insert_script.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/UsersManageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/UsersManageServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/ParkingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/ParkingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/ParkingRateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/ParkingRateController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,7 +60,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "Spring Boot.FourParksApplication.executor": "Run",
     "extract.method.default.visibility": "private",
-    "git-widget-placeholder": "develop-merge",
+    "git-widget-placeholder": "develop",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/U/2024-1/Patrones/four-parks",
     "node.js.detected.package.eslint": "true",
