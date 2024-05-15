@@ -63,10 +63,12 @@ public class SecurityConfig {
 
                     // manager endpoints
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/all").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/freeAdmins").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/role/{role}").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/email/{email}").permitAll();
                     http.requestMatchers(HttpMethod.DELETE, "/api/v1/users/user/delete/email/{email}").permitAll();
                     http.requestMatchers(HttpMethod.PUT, "/api/v1/users/user/update").permitAll();
+
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();

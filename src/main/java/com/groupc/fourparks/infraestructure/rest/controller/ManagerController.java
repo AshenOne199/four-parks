@@ -34,6 +34,12 @@ public class ManagerController {
         return new ResponseEntity<>(this.managerService.userByRole(role), HttpStatus.OK);
     }
 
+    @GetMapping("/freeAdmins")
+    public ResponseEntity<List<UserDto>> getFreeAdmins()
+    {
+        return new ResponseEntity<>(this.managerService.getFreeAdmins(), HttpStatus.OK);
+    }
+
     @GetMapping("/user/email/{email}")
     public ResponseEntity<UserDto> getUser(@PathVariable String email) {
         return new ResponseEntity<>(this.managerService.getOneUser(email),HttpStatus.OK);

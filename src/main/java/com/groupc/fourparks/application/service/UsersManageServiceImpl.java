@@ -3,6 +3,7 @@ package com.groupc.fourparks.application.service;
 import com.groupc.fourparks.application.mapper.UserRegisterRequestMapper;
 import com.groupc.fourparks.application.mapper.CreditCardDtoMapper;
 import com.groupc.fourparks.application.usecase.ManagerService;
+import com.groupc.fourparks.application.usecase.ParkingService;
 import com.groupc.fourparks.domain.model.CreditCard;
 import com.groupc.fourparks.domain.model.User;
 import com.groupc.fourparks.domain.port.CreditCardPort;
@@ -10,6 +11,7 @@ import com.groupc.fourparks.domain.port.UserPort;
 import com.groupc.fourparks.infraestructure.adapter.entity.RoleEntity;
 import com.groupc.fourparks.infraestructure.adapter.mapper.UserDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.repository.RoleRepository;
+import com.groupc.fourparks.infraestructure.model.dto.ParkingDto;
 import com.groupc.fourparks.infraestructure.model.dto.UserDto;
 import com.groupc.fourparks.infraestructure.model.request.UserRegisterRequest;
 
@@ -30,6 +32,8 @@ public class UsersManageServiceImpl implements ManagerService {
     private final RoleRepository roleRepository;
     private final CreditCardPort creditCardPort;
     private final CreditCardDtoMapper creditCardDtoMapper;
+
+    private final ParkingService parkingService;
 
 
     @Override
@@ -114,10 +118,34 @@ public class UsersManageServiceImpl implements ManagerService {
         }
     }
 
+    @Override
+    public List<UserDto> getFreeAdmins() {
+        List<UserDto> returnable = new ArrayList<>();
+        List<UserDto> receiver = new ArrayList<>();
+
+        List<ParkingDto> parkingsDtos = new ArrayList<>();
+        returnable = userByRole(2L);
+
+        parkingsDtos = parkingService.getParkings();
+
+        for (UserDto userDto : returnable) {
+            for (ParkingDto parkingDto : parkingsDtos) {
+                if (parkingDto.getAdmin() != null) {
+                    if (Objects.equals(parkingDto.getAdmin().getEmail(), userDto.getEmail())) {
+                        returnable.remove(userDto);
+                    }
+                }
+
+            }
+        }
+
+
+        return returnable;
+    }
+
     private UserDto userToAddListConvert(User user) {
 
         UserDto userToAddList = new UserDto();
-
 
 
         userToAddList.setCreditCard(creditCardDtoMapper.toDto(creditCardPort.getCC(user)));

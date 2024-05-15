@@ -13,4 +13,6 @@ public interface ManagerService {
      UserDto modifyUser(UserRegisterRequest User);
      UserDto getOneUser(String email);
      void deleteUser(String userEmail);
+
+     List<UserDto> getFreeAdmins();
 }
