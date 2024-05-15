@@ -1,14 +1,13 @@
 package com.groupc.fourparks.application.usecase;
 
-import com.groupc.fourparks.domain.model.User;
-import com.groupc.fourparks.infraestructure.model.request.UserToShow;
-
+import com.groupc.fourparks.infraestructure.model.dto.UserDto;
+import com.groupc.fourparks.infraestructure.model.request.UserRegisterRequest;
 import java.util.List;
 
 public interface ManagerService {
-     List<UserToShow> readUsers();
-     List<UserToShow> userByRole(Long role);
-     UserToShow modifyUser(User User);
-     UserToShow getOneUser(String email);
+     List<UserDto> readUsers();
+     List<UserDto> userByRole(Long role);
+     UserDto modifyUser(UserRegisterRequest User);
+     UserDto getOneUser(String email);
      void deleteUser(String userEmail);
 }

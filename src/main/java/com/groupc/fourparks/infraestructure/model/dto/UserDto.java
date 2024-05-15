@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -20,5 +22,11 @@ public class UserDto {
     private String secondName;
     private String firstLastname;
     private String secondLastname;
+
+    private boolean accountActive;
+    private boolean accountBlocked;
+    private int loginAttempts;
+    private List<String> roleList;
+    private CreditCardDto creditCard;
 
 }

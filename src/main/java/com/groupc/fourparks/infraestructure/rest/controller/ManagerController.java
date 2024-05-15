@@ -1,9 +1,9 @@
 package com.groupc.fourparks.infraestructure.rest.controller;
 
 import com.groupc.fourparks.application.usecase.ManagerService;
-import com.groupc.fourparks.domain.model.User;
 
-import com.groupc.fourparks.infraestructure.model.request.UserToShow;
+import com.groupc.fourparks.infraestructure.model.dto.UserDto;
+import com.groupc.fourparks.infraestructure.model.request.UserRegisterRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,17 +23,17 @@ public class ManagerController {
     private final ManagerService managerService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<UserToShow>> getAllUsers() {
+    public ResponseEntity<List<UserDto>> getAllUsers() {
         return new ResponseEntity<>(this.managerService.readUsers(), HttpStatus.OK);
     }
 
     @GetMapping("/role/{role}")
-    public ResponseEntity<List<UserToShow>> getUserByRole(@PathVariable Long role) {
+    public ResponseEntity<List<UserDto>> getUserByRole(@PathVariable Long role) {
         return new ResponseEntity<>(this.managerService.userByRole(role), HttpStatus.OK);
     }
 
     @GetMapping("/user/email/{email}")
-    public ResponseEntity<UserToShow> getUser(@PathVariable String email) {
+    public ResponseEntity<UserDto> getUser(@PathVariable String email) {
         return new ResponseEntity<>(this.managerService.getOneUser(email),HttpStatus.OK);
     }
 
@@ -43,7 +43,8 @@ public class ManagerController {
     }
 
     @PutMapping("/user/update")
-    public ResponseEntity<UserToShow> modifyUser(@RequestBody @Valid User user) {
-        return new ResponseEntity<>(this.managerService.modifyUser(user), HttpStatus.OK);
+    public ResponseEntity<UserDto> modifyUser(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
+
+        return new ResponseEntity<>(this.managerService.modifyUser(userRegisterRequest), HttpStatus.OK);
     }
 }
