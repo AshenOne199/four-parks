@@ -28,11 +28,7 @@ public class AuditoryController {
     private final AuditoryService auditoryService;
 
     @PostMapping("/save")
-    public ResponseEntity<AuditoryDto> saveAuditory(@RequestBody @Valid AuditoryRequest auditoryRequest)
-    {
+    public ResponseEntity<AuditoryDto> saveAuditory(@RequestBody @Valid AuditoryRequest auditoryRequest) {
         return new ResponseEntity<>(this.auditoryService.RegisterActivity(auditoryRequest), HttpStatus.OK);
-
     }
-
-
 }

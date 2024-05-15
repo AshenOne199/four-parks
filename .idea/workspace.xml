@@ -5,29 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b3a97a6a-dd53-481b-bd86-caa5e85232d5" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/ParkingServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/ParkingServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/ParkingSlotServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/ParkingSlotServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/UserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/UserDetailsServiceImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/UsersManageServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/UsersManageServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/usecase/ParkingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/usecase/ParkingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/Parking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/Parking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/ParkingRate.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/ParkingRate.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/SlotStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/SlotStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/ParkingPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/ParkingPort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/ParkingTypeAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/ParkingTypeAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/UserJpaAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/UserJpaAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/UserEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/entity/UserEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/repository/ParkingTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/repository/ParkingTypeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/NewParkingRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/NewParkingRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/OpeningHoursRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/model/request/OpeningHoursRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/ManagerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/ManagerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/ParkingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/ParkingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/ParkingRateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/RateController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/ParkingSlotController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/SlotController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +55,7 @@
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.FourParksApplication.executor": "Debug",
+    "Spring Boot.FourParksApplication.executor": "Run",
     "extract.method.default.visibility": "private",
     "git-widget-placeholder": "develop",
     "kotlin-language-version-configured": "true",
@@ -162,26 +140,21 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <ignored-roots>
       <path value="$PROJECT_DIR$/../.." />
     </ignored-roots>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/UsersManageServiceImpl.java</url>
-          <line>105</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/UsersManageServiceImpl.java</url>
-          <line>65</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

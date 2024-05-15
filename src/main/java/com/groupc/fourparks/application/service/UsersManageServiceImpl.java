@@ -26,7 +26,6 @@ public class UsersManageServiceImpl implements ManagerService {
 
     private final UserRegisterRequestMapper userRegisterRequestMapper;
     private final UserPort userPort;
-    private final UserDboMapper userDboMapper;
     private final RoleRepository roleRepository;
     private final CreditCardPort creditCardPort;
     private final CreditCardDtoMapper creditCardDtoMapper;
@@ -35,77 +34,49 @@ public class UsersManageServiceImpl implements ManagerService {
     @Override
     public List<UserDto> readUsers() {
         List<UserDto> returnable = new ArrayList<>();
-
         List<User> receiver = userPort.findAllUsers();
-
         for (User user : receiver) {
             returnable.add((userToAddListConvert(user)));
         }
-
         return returnable;
     }
 
     @Override
     public List<UserDto> userByRole(Long rol) {
-
         List<UserDto> returnable = new ArrayList<>();
         List<User> receiver = userPort.findAllUsers();
-
         RoleEntity roleToVerify = roleRepository.getReferenceById(rol);
-
         for (User user : receiver) {
             if (user.getRoles().contains(roleToVerify)) {
                 returnable.add((userToAddListConvert(user)));
             }
         }
-
-
         return returnable;
     }
 
     @Override
     public UserDto getOneUser(String email) {
         User user = userPort.findUserByEmail(email);
-
         return userToAddListConvert(user);
-
-
     }
-    private User getUserPrivClass(String email)
-    {
-        return userPort.findUserByEmail(email);
-    }
+
     @Override
     public UserDto modifyUser(UserRegisterRequest userRegisterRequest) {
-        //UserRegisterRequestMapperImpl
-
-        UserDto returnable = getOneUser(userRegisterRequest.getEmail());
-
         User userFound = userPort.findUserByEmail(userRegisterRequest.getEmail());
-
-
         userFound.setFirstName(userRegisterRequest.getFirstName());
         userFound.setSecondName(userRegisterRequest.getSecondName());
         userFound.setFirstLastname(userRegisterRequest.getFirstLastname());
         userFound.setSecondLastname(userRegisterRequest.getSecondLastname());
-
         userFound.setCreditCard(userRegisterRequestMapper.toDomain(userRegisterRequest).getCreditCard());
 
-        if (userFound.getId() == -1L) {
-            return returnable;
+        CreditCard ccSample = creditCardPort.getCC(userFound);
+        ccSample.setCardNumber(userFound.getCreditCard().getCardNumber());
+        ccSample.setCvv(userFound.getCreditCard().getCvv());
+        ccSample.setExpirationDate(userFound.getCreditCard().getExpirationDate());
+        creditCardPort.save(ccSample, userFound);
 
-        } else {
-            CreditCard ccSample = creditCardPort.getCC(userFound);
-            ccSample.setCardNumber(userFound.getCreditCard().getCardNumber());
-            ccSample.setCvv(userFound.getCreditCard().getCvv());
-            ccSample.setExpirationDate(userFound.getCreditCard().getExpirationDate());
-            creditCardPort.save(ccSample, userFound);
-            returnable = userToAddListConvert(userPort.save(userFound));
-        }
-        return returnable;
+        return userToAddListConvert(userPort.save(userFound));
     }
-
-
 
     @Override
     public void deleteUser(String userEmail) {
@@ -116,20 +87,12 @@ public class UsersManageServiceImpl implements ManagerService {
                 creditCardPort.delete(cc);
             }
         }
-        if (userFound.getId() != -1L) {
-            userPort.deleteUser(userFound);
-        }
+        userPort.deleteUser(userFound);
     }
 
     private UserDto userToAddListConvert(User user) {
-
         UserDto userToAddList = new UserDto();
-
-
-
         userToAddList.setCreditCard(creditCardDtoMapper.toDto(creditCardPort.getCC(user)));
-
-
         userToAddList.setEmail(user.getEmail());
         userToAddList.setFirstName(user.getFirstName());
         userToAddList.setSecondName(user.getSecondName());
