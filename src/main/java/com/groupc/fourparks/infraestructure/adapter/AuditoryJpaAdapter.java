@@ -13,13 +13,15 @@ import com.groupc.fourparks.infraestructure.adapter.mapper.AuditoryDboMapper;
 @AllArgsConstructor
 public class AuditoryJpaAdapter  implements AuditoryPort {
 
-
+    private final  AuditoryDboMapper auditoryDboMapper;
     @Override
     public Auditory save(Auditory Auditory) {
 
-/*
-        AuditoryEntity auditToSave = AuditoryDboMapper.toDbo(Auditory);
-        var userSaved = userRepository.save(userToSave);
+
+        AuditoryEntity auditToSave = auditoryDboMapper.toDbo(Auditory);
+
+
+        /*var userSaved = userRepository.save(userToSave);
         return userDboMapper.toDomain(userSaved);*/
         return null;
     }
