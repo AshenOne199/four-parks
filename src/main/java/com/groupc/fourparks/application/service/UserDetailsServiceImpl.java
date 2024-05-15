@@ -41,39 +41,26 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
-
     private final JwtUtils jwtUtils;
-
     private final RolePort rolePort;
-
     private final UserPort userPort;
-
     private final CreditCardPort creditCardPort;
-
     private final EmailServiceImpl emailServiceImpl;
-
     private final CreditCardServiceImpl creditCardServiceImpl;
-
     private final PasswordGeneratorImpl passwordGeneratorImpl;
-
     private final UserRegisterRequestMapper userRegisterRequestMapper;
-
     private final UserDtoMapper userDtoMapper;
-
     private final UserLoginRequestMapper userLoginRequestMapper;
-
     private final LoginDtoMapper loginDtoMapper;
-
     private final CreditCardDtoMapper creditCardDtoMapper;
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var userToLoad = userPort.findUserByEmail(username);
-        if (!userToLoad.isAccountActive()){
+        if (!userToLoad.getAccountActive()){
             throw new ForbiddenException("El usuario esta inactivo");
         }
-        if (userToLoad.isAccountBlocked()){
+        if (userToLoad.getAccountBlocked()){
             throw new ForbiddenException("El usuario esta bloqueado. Contacte un administrador");
         }
 
@@ -115,6 +102,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userToCreate.setUpdatedAt(LocalDate.now());
         userToCreate.setRoles(roleEntitySet);
 
+        ServletRequestAttributes requestCurrent = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = requestCurrent.getRequest();
+        String remoteAddr = request.getRemoteAddr();
+        if (remoteAddr == null) {
+            remoteAddr = "::1";
+        }
+        userToCreate.setIp(remoteAddr);
+
         var userCreated = userPort.save(userToCreate);
         creditCardPort.save(creditCardToSave, userCreated);
 
@@ -151,9 +146,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             login.setRol(roleStartingWithRole.substring(5));
         }
 
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-                .getRequest();
-        login.setIp(request.getRemoteAddr());
+        ServletRequestAttributes requestCurrent = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = requestCurrent.getRequest();
+        String remoteAddr = request.getRemoteAddr();
+        if (remoteAddr == null) {
+            remoteAddr = "::1";
+        }
+        login.setIp(remoteAddr);
 
         var user = userPort.findUserByEmail(email);
         login.setFirstName(user.getFirstName());
@@ -176,7 +175,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         var user = userPort.findUserByEmail(email);
 
-        if (user.isAccountBlocked()){
+        if (user.getAccountBlocked()){
             throw new ForbiddenException("El usuario esta bloqueado. Contacte un administrador");
         }
 
@@ -211,7 +210,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         var userFound = userPort.findUserByEmail(username);
-        if (userFound.isAccountBlocked()){
+        if (userFound.getAccountBlocked()){
             throw new ForbiddenException("El usuario esta bloqueado. Contacte un administrador");
         }
 

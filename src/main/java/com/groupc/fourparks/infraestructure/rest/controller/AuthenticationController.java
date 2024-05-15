@@ -17,6 +17,8 @@ import com.groupc.fourparks.infraestructure.model.request.UserLoginRequest;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/auth")
+// @CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://fourparks.vercel.app/")
 public class AuthenticationController {
 
     private final UserDetailsServiceImpl userDetailsService;
@@ -40,5 +42,4 @@ public class AuthenticationController {
     public ResponseEntity<UserDto> unlock(@RequestBody @Valid UserLoginRequest userLoginRequest){
         return new ResponseEntity<>(this.userDetailsService.unlock(userLoginRequest), HttpStatus.OK);
     }
-
 }

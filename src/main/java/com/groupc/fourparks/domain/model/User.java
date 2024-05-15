@@ -18,13 +18,14 @@ public class User {
     private Long id;
     private String email;
     private String password;
+    private String ip;
     private String firstName;
     private String secondName;
     private String firstLastname;
     private String secondLastname;
-    private boolean accountActive;
-    private boolean accountBlocked;
-    private int loginAttempts;
+    private Boolean accountActive;
+    private Boolean accountBlocked;
+    private Integer loginAttempts;
     private LocalDate updatedAt;
     private LocalDate createdAt;
     private Set<RoleEntity> roles = new HashSet<>();

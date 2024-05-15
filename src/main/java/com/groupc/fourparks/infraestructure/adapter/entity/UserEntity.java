@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class UserEntity {
 
     @Id
@@ -25,6 +26,9 @@ public class UserEntity {
 
     @Column(name = "password")
     private String password;
+
+    @Column(name = "ip")
+    private String ip;
 
     @Column(name = "first_name")
     private String firstName;
@@ -38,23 +42,23 @@ public class UserEntity {
     @Column(name = "second_lastname")
     private String secondLastname;
 
-    @Column(name = "account_active")
-    private boolean accountActive;
+    @Column(name = "account_active", columnDefinition = "integer default 1")
+    private Boolean accountActive;
 
-    @Column(name = "account_blocked")
-    private boolean accountBlocked;
+    @Column(name = "account_blocked", columnDefinition = "integer default 0")
+    private Boolean accountBlocked;
 
-    @Column(name = "login_attempts")
-    private int loginAttempts;
+    @Column(name = "login_attempts", columnDefinition = "integer default 0")
+    private Integer loginAttempts;
 
     @Column(name = "updated_at")
-    private LocalDate updatedAt;
+    private Date updatedAt;
 
     @Column(name = "created_at")
-    private LocalDate createdAt;
+    private Date createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleEntity> roles = new HashSet<>();
 
     @OneToMany(targetEntity = CreditCardEntity.class, fetch = FetchType.EAGER, mappedBy = "userId")

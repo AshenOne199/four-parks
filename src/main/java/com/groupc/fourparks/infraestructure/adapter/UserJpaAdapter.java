@@ -6,6 +6,7 @@ import com.groupc.fourparks.infraestructure.adapter.entity.UserEntity;
 import com.groupc.fourparks.infraestructure.adapter.mapper.UserDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.repository.UserRepository;
 import com.groupc.fourparks.infraestructure.exception.NotFoundException;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,16 +15,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class UserJpaAdapter implements UserPort {
 
     private final UserRepository userRepository;
-
     private final UserDboMapper userDboMapper;
-
-    public UserJpaAdapter(final UserRepository userRepository, final UserDboMapper userDboMapper) {
-        this.userRepository = userRepository;
-        this.userDboMapper = userDboMapper;
-    }
 
     @Override
     public Optional<User> findUserByEmailOptional(String email) {
@@ -34,11 +30,9 @@ public class UserJpaAdapter implements UserPort {
     @Override
     public User findUserByEmail(String email) {
         var optionalUser = userRepository.findUserEntityByEmail(email);
-
         if (optionalUser.isEmpty()){
             throw new NotFoundException("Email: " + email +" no registrado");
         }
-
         return userDboMapper.toDomain(optionalUser.get());
     }
 
@@ -50,7 +44,6 @@ public class UserJpaAdapter implements UserPort {
             allUsers.add(userDboMapper.toDomain(userEntity));
         }
         return  allUsers;
-
     }
 
     @Override
@@ -67,9 +60,15 @@ public class UserJpaAdapter implements UserPort {
 
     @Override
     public List<UserEntity> findAll() {
-
         return userRepository.findAll();
     }
 
-
+    @Override
+    public User findUserById(Long id) {
+        var optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()){
+            throw new NotFoundException("Usuario: " + id + " no registrado");
+        }
+        return userDboMapper.toDomain(optionalUser.get()) ;
+    }
 }
