@@ -12,7 +12,7 @@ import lombok.Setter;
 public class LocationRequest {
     Long id;
     String address;
-    String latitude;
-    String longitude;
+    Double latitude;
+    Double longitude;
     CityRequest city;
 }
