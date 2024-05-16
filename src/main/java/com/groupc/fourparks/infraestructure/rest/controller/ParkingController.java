@@ -14,7 +14,6 @@ import com.groupc.fourparks.application.service.ParkingServiceImpl;
 import com.groupc.fourparks.infraestructure.model.dto.CityDto;
 import com.groupc.fourparks.infraestructure.model.dto.ParkingDto;
 import com.groupc.fourparks.infraestructure.model.request.NewParkingRequest;
-import com.groupc.fourparks.infraestructure.model.request.ParkingToShow;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -34,17 +33,17 @@ public class ParkingController {
     private final ParkingServiceImpl parkingServiceImpl;
 
     @PostMapping("/parking/new")
-    public ResponseEntity<ParkingToShow> newParking(@RequestBody @Valid NewParkingRequest newParkingRequest){
+    public ResponseEntity<ParkingDto> newParking(@RequestBody @Valid NewParkingRequest newParkingRequest){
         return new ResponseEntity<>(this.parkingServiceImpl.newParking(newParkingRequest), HttpStatus.OK);
     }
 
     @GetMapping("/parking/name/{name}")
-    public ResponseEntity<ParkingToShow> getParking(@PathVariable String name) {
+    public ResponseEntity<ParkingDto> getParking(@PathVariable String name) {
         return new ResponseEntity<>(this.parkingServiceImpl.getParking(name), HttpStatus.OK);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<ParkingToShow>> getParkings() {
+    public ResponseEntity<List<ParkingDto>> getParkings() {
         return new ResponseEntity<>(this.parkingServiceImpl.getParkings(), HttpStatus.OK);
     }
 
@@ -59,7 +58,7 @@ public class ParkingController {
     }
 
     @PutMapping("/parking/update")
-    public ResponseEntity<ParkingToShow> modifyParking(@RequestBody @Valid NewParkingRequest newParkingRequest){
+    public ResponseEntity<ParkingDto> modifyParking(@RequestBody @Valid NewParkingRequest newParkingRequest){
         return new ResponseEntity<>(this.parkingServiceImpl.modifyParking(newParkingRequest), HttpStatus.OK);
     }
 

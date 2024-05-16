@@ -16,7 +16,7 @@ public class ParkingRateEntity {
     private Long id;
 
     @Column(name = "rate")
-    private float rate;
+    private Double rate;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "vehicle_type_id")

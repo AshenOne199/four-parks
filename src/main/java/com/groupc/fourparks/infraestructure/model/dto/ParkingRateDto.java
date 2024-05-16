@@ -1,4 +1,6 @@
 package com.groupc.fourparks.infraestructure.model.dto;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,9 +10,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ParkingRateDto {
     Long id;
-    float rate;
+    Double rate;
     ParkingDto parkingId;
     VehicleTypeDto vehicleTypeId;
 }

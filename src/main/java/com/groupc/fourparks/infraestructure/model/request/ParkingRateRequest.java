@@ -1,4 +1,6 @@
 package com.groupc.fourparks.infraestructure.model.request;
+
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Setter
@@ -8,7 +10,13 @@ import lombok.*;
 @NoArgsConstructor
 public class ParkingRateRequest {
     Long id;
+
+    @NotNull
     Long parkingId;
+
+    @NotNull
     VehicleTypeRequest vehicleTypeId;
-    Float rate;
+
+    @NotNull
+    Double rate;
 }

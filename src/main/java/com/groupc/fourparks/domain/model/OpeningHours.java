@@ -11,6 +11,6 @@ import lombok.*;
 @NoArgsConstructor
 public class OpeningHours {
     private Long id;
-    private LocalTime open_time;
-    private LocalTime close_time;
+    private LocalTime openTime;
+    private LocalTime closeTime;
 }

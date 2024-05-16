@@ -1,4 +1,9 @@
 package com.groupc.fourparks.infraestructure.model.dto;
+
+import java.time.LocalTime;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,8 +13,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OpeningHoursDto {
     Long id;
-    String open_time;
-    String close_time;
+    LocalTime openTime;
+    LocalTime closeTime;
 }
