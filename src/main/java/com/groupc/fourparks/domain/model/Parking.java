@@ -21,4 +21,5 @@ public class Parking {
     private Location location;
     private ParkingType parkingType;
     private OpeningHours openingHours;
+    private ParkingRate parkingRate;
 }

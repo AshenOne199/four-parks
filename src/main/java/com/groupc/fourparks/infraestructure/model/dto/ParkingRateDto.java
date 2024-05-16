@@ -1,4 +1,5 @@
 package com.groupc.fourparks.infraestructure.model.dto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.Setter;
 public class ParkingRateDto {
     Long id;
     Double rate;
+    @JsonIgnore
     ParkingDto parkingId;
     VehicleTypeDto vehicleTypeId;
 }

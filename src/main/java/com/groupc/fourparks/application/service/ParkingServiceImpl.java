@@ -1,15 +1,14 @@
 package com.groupc.fourparks.application.service;
 
+import com.groupc.fourparks.application.mapper.*;
+import com.groupc.fourparks.infraestructure.model.dto.ParkingRateDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import com.groupc.fourparks.application.mapper.CityDtoMapper;
-import com.groupc.fourparks.application.mapper.LocationDtoMapper;
-import com.groupc.fourparks.application.mapper.NewParkingRequestMapper;
-import com.groupc.fourparks.application.mapper.OpeningHoursDtoMapper;
-import com.groupc.fourparks.application.mapper.ParkingTypeDtoMapper;
 import com.groupc.fourparks.application.usecase.ParkingService;
 import com.groupc.fourparks.domain.model.City;
 import com.groupc.fourparks.domain.model.Location;
@@ -47,6 +46,7 @@ public class ParkingServiceImpl implements ParkingService{
     private final LocationDtoMapper locationDtoMapper;
     private final ParkingTypeDtoMapper parkingTypeDtoMapper;
     private final OpeningHoursDtoMapper openingHoursDtoMapper;
+    private final ParkingRateDtoMapper parkingRateDtoMapper;
     private final ParkingPort parkingPort;
     private final LocationPort locationPort;
     private final OpeningHoursPort openingHoursPort;
@@ -56,6 +56,7 @@ public class ParkingServiceImpl implements ParkingService{
     private final ParkingSlotPort parkingSlotPort;
     private final ParkingRatePort parkingRatePort;
     private final ParkingSlotServiceImpl parkingSlotServiceImpl;
+    private final ParkingRateDtoMapperImpl parkingRateDtoMapperImpl;
 
     @Transactional
     public ParkingDto newParking(NewParkingRequest newParkingRequest) {
@@ -233,21 +234,26 @@ public class ParkingServiceImpl implements ParkingService{
     }
 
     private ParkingDto parkingToAddListConvert(Parking parking) {
-        ParkingDto parkingToAddList = new ParkingDto();
-        parkingToAddList.setId(parking.getId());
-        parkingToAddList.setName(parking.getName());
-        parkingToAddList.setAvailableSlots(parking.getAvailableSlots());
-        parkingToAddList.setTotalSlots(parking.getTotalSlots());
-        parkingToAddList.setCarSlots(parking.getCarSlots());
-        parkingToAddList.setMotorcycleSlots(parking.getMotorcycleSlots());
-        parkingToAddList.setBicycleSlots(parking.getBicycleSlots());
-        parkingToAddList.setHeavyVehicleSlots(parking.getHeavyVehicleSlots());
-        parkingToAddList.setLoyalty(parking.getLoyalty());
-        parkingToAddList.setAdmin(convertToDto(parking));
-        parkingToAddList.setLocation(locationDtoMapper.toDto(parking.getLocation()));
-        parkingToAddList.setParkingType(parkingTypeDtoMapper.toDto(parking.getParkingType()));
-        parkingToAddList.setOpeningHours(openingHoursDtoMapper.toDto(parking.getOpeningHours()));
-        return parkingToAddList;
+        List<ParkingRate> rates = parkingRatePort.getParkingRatesByParking(parking);
+        List<ParkingRateDto> ratesDto = rates.stream()
+                .map(parkingRateDtoMapper::toDto)
+                .toList();
+        return ParkingDto.builder()
+                .id(parking.getId())
+                .name(parking.getName())
+                .availableSlots(parking.getAvailableSlots())
+                .totalSlots(parking.getTotalSlots())
+                .carSlots(parking.getCarSlots())
+                .motorcycleSlots(parking.getMotorcycleSlots())
+                .bicycleSlots(parking.getBicycleSlots())
+                .heavyVehicleSlots(parking.getHeavyVehicleSlots())
+                .loyalty(parking.getLoyalty())
+                .admin(convertToDto(parking))
+                .location(locationDtoMapper.toDto(parking.getLocation()))
+                .parkingType(parkingTypeDtoMapper.toDto(parking.getParkingType()))
+                .openingHours(openingHoursDtoMapper.toDto(parking.getOpeningHours()))
+                .parkingRate(ratesDto)
+                .build();
     }
 
     public UserDto convertToDto(Parking parking) {
