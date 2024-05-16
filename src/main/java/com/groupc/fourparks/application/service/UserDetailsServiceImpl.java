@@ -37,7 +37,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 @AllArgsConstructor
-
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;

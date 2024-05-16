@@ -3,7 +3,7 @@ package com.groupc.fourparks.application.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.coyote.BadRequestException;
+import com.groupc.fourparks.infraestructure.exception.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import com.groupc.fourparks.application.mapper.ParkingRateRequestMapper;
@@ -37,7 +37,7 @@ public class ParkingRateServiceImpl implements ParkingRateService{
         try{
             parkingRateToSave = parkingRatePort.save(parkingRateToCreate, parkingToSave,vehicleTypeToSave);
         }catch(Exception e){
-            throw new com.groupc.fourparks.infraestructure.exception.BadRequestException("Ya existe un precio para ese tipo de vehiculo");
+            throw new BadRequestException("Ya existe un precio para ese tipo de vehiculo");
         }
         
         return rateToShowMapper.toShow(parkingRateToSave); 
@@ -51,7 +51,7 @@ public class ParkingRateServiceImpl implements ParkingRateService{
     public List<RateToShow> getParkingRatesByParking(Long parkingId) {
         List<ParkingRate> list = parkingRatePort.getParkingRatesByParking(parkingPort.findById(parkingId));
         
-        List<RateToShow> finalList = new ArrayList<RateToShow>();
+        List<RateToShow> finalList = new ArrayList<>();
         for (ParkingRate parkingRate : list) {
             finalList.add(rateToShowMapper.toShow(parkingRate));
         }
@@ -68,7 +68,7 @@ public class ParkingRateServiceImpl implements ParkingRateService{
         try{
             parkingRateModified = parkingRatePort.save(parkingRate,parkingToSave, vehicleTypeToSave);
         }catch(Exception e){
-            throw new com.groupc.fourparks.infraestructure.exception.BadRequestException("Ya existe un precio para ese tipo de vehiculo");
+            throw new BadRequestException("Ya existe un precio para ese tipo de vehiculo");
         }
         return rateToShowMapper.toShow(parkingRateModified);
     }

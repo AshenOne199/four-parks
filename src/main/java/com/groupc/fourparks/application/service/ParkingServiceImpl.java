@@ -8,7 +8,6 @@ import java.util.List;
 import com.groupc.fourparks.application.mapper.CityDtoMapper;
 import com.groupc.fourparks.application.mapper.NewParkingRequestMapper;
 import com.groupc.fourparks.application.mapper.ParkingToShowMapper;
-import com.groupc.fourparks.application.mapper.UserToShowMapper;
 import com.groupc.fourparks.application.usecase.ParkingService;
 import com.groupc.fourparks.domain.model.City;
 import com.groupc.fourparks.domain.model.Location;
@@ -56,8 +55,6 @@ public class ParkingServiceImpl implements ParkingService{
     private final ParkingRatePort parkingRatePort;
 
     private final ParkingSlotServiceImpl parkingSlotServiceImpl;
-    
-    
 
     @Transactional
     public ParkingToShow newParking(NewParkingRequest newParkingRequest) {
@@ -67,8 +64,10 @@ public class ParkingServiceImpl implements ParkingService{
         var adminToSet = userPort.findUserById(Long.parseLong(String.valueOf(newParkingRequest.getAdminId())));
         parkingToCreate.setAdmin(adminToSet);
         for(UserDto userToShow: usersManageServiceImpl.userByRole(Long.parseLong("2"))){
-            if(adminToSet.getEmail().equals(userToShow.getEmail()))
+            if (adminToSet.getEmail().equals(userToShow.getEmail())) {
                 rolCheck = true;
+                break;
+            }
         }
 
         if (!rolCheck) {
@@ -80,13 +79,13 @@ public class ParkingServiceImpl implements ParkingService{
         if (parking.isPresent()) {
             throw new InternalServerErrorException("Parqueadero con ese mismo nombre ya registrado");
         }
-        parkingToCreate.setTotal_slots(newParkingRequest.getCar_slots()+newParkingRequest.getMotorcycle_slots()+newParkingRequest.getBicycle_slots()+newParkingRequest.getHeavy_vehicle_slots());
-        parkingToCreate.setAvailable_slots(parkingToCreate.getTotal_slots());
+        parkingToCreate.setTotalSlots(newParkingRequest.getCarSlots()+newParkingRequest.getMotorcycleSlots()+newParkingRequest.getBicycleSlots()+newParkingRequest.getHeavyVehicleSlots());
+        parkingToCreate.setAvailableSlots(parkingToCreate.getTotalSlots());
 
-        parkingToCreate.setCar_slots(newParkingRequest.getCar_slots());
-        parkingToCreate.setMotorcycle_slots(newParkingRequest.getMotorcycle_slots());
-        parkingToCreate.setBicycle_slots(newParkingRequest.getBicycle_slots());
-        parkingToCreate.setHeavy_vehicle_slots(newParkingRequest.getHeavy_vehicle_slots());
+        parkingToCreate.setCarSlots(newParkingRequest.getCarSlots());
+        parkingToCreate.setMotorcycleSlots(newParkingRequest.getMotorcycleSlots());
+        parkingToCreate.setBicycleSlots(newParkingRequest.getBicycleSlots());
+        parkingToCreate.setHeavyVehicleSlots(newParkingRequest.getHeavyVehicleSlots());
 
         var parkingTypeToSave = parkingTypePort.findParkingTypeByType(newParkingRequest.getParkingType().getType());
         var openingHoursToSave = parkingToCreate.getOpeningHours();
@@ -95,25 +94,25 @@ public class ParkingServiceImpl implements ParkingService{
         var parkingCreated = parkingPort.save(parkingToCreate, locationCreated, parkingTypeToSave, openingHoursToSave);
 
         ParkingSlotRequest newParkingSlotRequest = new ParkingSlotRequest();
-        for(int i=0;i<parkingCreated.getCar_slots();i++){
+        for(int i = 0; i<parkingCreated.getCarSlots(); i++){
             newParkingSlotRequest.setParkingId(parkingCreated.getId());
             newParkingSlotRequest.setSlotStatusId(new SlotStatusRequest(Long.parseLong("1"),"EMPTY"));
             newParkingSlotRequest.setVehicleTypeId(new VehicleTypeRequest(Long.parseLong("1"),"CARRO"));
             parkingSlotServiceImpl.newParkingSlot(newParkingSlotRequest);
         }
-        for(int i=0;i<parkingCreated.getMotorcycle_slots();i++){
+        for(int i = 0; i<parkingCreated.getMotorcycleSlots(); i++){
             newParkingSlotRequest.setParkingId(parkingCreated.getId());
             newParkingSlotRequest.setSlotStatusId(new SlotStatusRequest(Long.parseLong("1"),"EMPTY"));
             newParkingSlotRequest.setVehicleTypeId(new VehicleTypeRequest(Long.parseLong("2"),"MOTO"));
             parkingSlotServiceImpl.newParkingSlot(newParkingSlotRequest);
         }
-        for(int i=0;i<parkingCreated.getBicycle_slots();i++){
+        for(int i = 0; i<parkingCreated.getBicycleSlots(); i++){
             newParkingSlotRequest.setParkingId(parkingCreated.getId());
             newParkingSlotRequest.setSlotStatusId(new SlotStatusRequest(Long.parseLong("1"),"EMPTY"));
             newParkingSlotRequest.setVehicleTypeId(new VehicleTypeRequest(Long.parseLong("3"),"BICICLETA"));
             parkingSlotServiceImpl.newParkingSlot(newParkingSlotRequest);
         }
-        for(int i=0;i<parkingCreated.getHeavy_vehicle_slots();i++){
+        for(int i = 0; i<parkingCreated.getHeavyVehicleSlots(); i++){
             newParkingSlotRequest.setParkingId(parkingCreated.getId());
             newParkingSlotRequest.setSlotStatusId(new SlotStatusRequest(Long.parseLong("1"),"EMPTY"));
             newParkingSlotRequest.setVehicleTypeId(new VehicleTypeRequest(Long.parseLong("4"),"VEHICULO_PESADO"));
@@ -130,7 +129,7 @@ public class ParkingServiceImpl implements ParkingService{
 
     public List<ParkingToShow> getParkings(){
         List<Parking> list = parkingPort.findParkings();
-        List<ParkingToShow> finalList = new ArrayList<ParkingToShow>();
+        List<ParkingToShow> finalList = new ArrayList<>();
         for (Parking parking : list) {
             finalList.add(parkingToShowMapper.toShow(parking));
         }
@@ -140,20 +139,17 @@ public class ParkingServiceImpl implements ParkingService{
     public ParkingToShow modifyParking(NewParkingRequest newParkingRequest){
         Parking parkingToModify = newParkingRequestMapper.toDomain(newParkingRequest);
         Parking parking = parkingPort.findParkingByName(newParkingRequest.getName());
-        //Modify parking values
         parking.setName(newParkingRequest.getName());
-        parking.setTotal_slots(newParkingRequest.getCar_slots()+newParkingRequest.getMotorcycle_slots()+newParkingRequest.getBicycle_slots()+newParkingRequest.getHeavy_vehicle_slots());
-        parking.setAvailable_slots(parking.getTotal_slots());
-
-        parking.setCar_slots(newParkingRequest.getCar_slots());
-        parking.setMotorcycle_slots(newParkingRequest.getMotorcycle_slots());
-        parking.setBicycle_slots(newParkingRequest.getBicycle_slots());
-        parking.setHeavy_vehicle_slots(newParkingRequest.getHeavy_vehicle_slots());
-
+        parking.setTotalSlots(newParkingRequest.getCarSlots()+newParkingRequest.getMotorcycleSlots()+newParkingRequest.getBicycleSlots()+newParkingRequest.getHeavyVehicleSlots());
+        parking.setAvailableSlots(parking.getTotalSlots());
+        parking.setCarSlots(newParkingRequest.getCarSlots());
+        parking.setMotorcycleSlots(newParkingRequest.getMotorcycleSlots());
+        parking.setBicycleSlots(newParkingRequest.getBicycleSlots());
+        parking.setHeavyVehicleSlots(newParkingRequest.getHeavyVehicleSlots());
         parking.setLoyalty(newParkingRequest.getLoyalty());
+
         var parkingTypeToSave = parkingTypePort.findParkingTypeByType(newParkingRequest.getParkingType().getType());
         var openingHoursToSave = parkingToModify.getOpeningHours();
-
         var adminToSet = userPort.findUserById(Long.parseLong(String.valueOf(newParkingRequest.getAdminId())));
         parking.setAdmin(adminToSet);
 
@@ -167,31 +163,31 @@ public class ParkingServiceImpl implements ParkingService{
         var parkingModified = parkingPort.save(parking,locationCreated,parkingTypeToSave,openingHoursToSave);
         
         List<ParkingSlot> slotsToDelete = parkingSlotPort.getParkingSlotsByParking(parkingPort.findParkingByName(parkingModified.getName()));
-        if(slotsToDelete.size()>0){
+        if(!slotsToDelete.isEmpty()){
             for (ParkingSlot parkingSlot : slotsToDelete) {
                 parkingSlotPort.deleteParkingSlot(parkingSlot);
             }
         }
         ParkingSlotRequest newParkingSlotRequest = new ParkingSlotRequest();
-        for(int i=0;i<parkingModified.getCar_slots();i++){
+        for(int i = 0; i<parkingModified.getCarSlots(); i++){
             newParkingSlotRequest.setParkingId(parkingModified.getId());
             newParkingSlotRequest.setSlotStatusId(new SlotStatusRequest(Long.parseLong("1"),"EMPTY"));
             newParkingSlotRequest.setVehicleTypeId(new VehicleTypeRequest(Long.parseLong("1"),"CARRO"));
             parkingSlotServiceImpl.newParkingSlot(newParkingSlotRequest);
         }
-        for(int i=0;i<parkingModified.getMotorcycle_slots();i++){
+        for(int i = 0; i<parkingModified.getMotorcycleSlots(); i++){
             newParkingSlotRequest.setParkingId(parkingModified.getId());
             newParkingSlotRequest.setSlotStatusId(new SlotStatusRequest(Long.parseLong("1"),"EMPTY"));
             newParkingSlotRequest.setVehicleTypeId(new VehicleTypeRequest(Long.parseLong("2"),"MOTO"));
             parkingSlotServiceImpl.newParkingSlot(newParkingSlotRequest);
         }
-        for(int i=0;i<parkingModified.getBicycle_slots();i++){
+        for(int i = 0; i<parkingModified.getBicycleSlots(); i++){
             newParkingSlotRequest.setParkingId(parkingModified.getId());
             newParkingSlotRequest.setSlotStatusId(new SlotStatusRequest(Long.parseLong("1"),"EMPTY"));
             newParkingSlotRequest.setVehicleTypeId(new VehicleTypeRequest(Long.parseLong("3"),"BICICLETA"));
             parkingSlotServiceImpl.newParkingSlot(newParkingSlotRequest);
         }
-        for(int i=0;i<parkingModified.getHeavy_vehicle_slots();i++){
+        for(int i = 0; i<parkingModified.getHeavyVehicleSlots(); i++){
             newParkingSlotRequest.setParkingId(parkingModified.getId());
             newParkingSlotRequest.setSlotStatusId(new SlotStatusRequest(Long.parseLong("1"),"EMPTY"));
             newParkingSlotRequest.setVehicleTypeId(new VehicleTypeRequest(Long.parseLong("4"),"VEHICULO_PESADO"));
@@ -204,7 +200,7 @@ public class ParkingServiceImpl implements ParkingService{
     public String deleteParking(String name){
         //Delete all parking slots
         List<ParkingSlot> slotsToDelete = parkingSlotPort.getParkingSlotsByParking(parkingPort.findParkingByName(name));
-        if(slotsToDelete.size()>0){
+        if(!slotsToDelete.isEmpty()){
             for (ParkingSlot parkingSlot : slotsToDelete) {
                 parkingSlotPort.deleteParkingSlot(parkingSlot);
             }
@@ -212,7 +208,7 @@ public class ParkingServiceImpl implements ParkingService{
 
         //Delete all parking rates
         List<ParkingRate> ratesToDelete = parkingRatePort.getParkingRatesByParking(parkingPort.findParkingByName(name));
-        if(ratesToDelete.size()>0){
+        if(!ratesToDelete.isEmpty()){
             for (ParkingRate parkingRate : ratesToDelete) {
                 parkingRatePort.deleteParkingRate(parkingRate);
             }
@@ -230,7 +226,7 @@ public class ParkingServiceImpl implements ParkingService{
     @Override
     public List<CityDto> getCities() {
         List<City> list = cityPort.findAll();
-        List<CityDto> finalList = new ArrayList<CityDto>();
+        List<CityDto> finalList = new ArrayList<>();
         for (City city : list) {
             finalList.add(cityDtoMapper.toDto(city));
         }

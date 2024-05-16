@@ -12,26 +12,26 @@ import lombok.Setter;
 @Setter
 public class NewParkingRequest {
 
-    Long id;
+    private Long id;
 
-    Long adminId;
+    private Long adminId;
 
-    String name;
+    private String name;
 
-    Integer car_slots;
+    private Integer carSlots;
 
-    Integer bicycle_slots;
+    private Integer bicycleSlots;
 
-    Integer motorcycle_slots;
+    private Integer motorcycleSlots;
 
-    Integer heavy_vehicle_slots;
+    private Integer heavyVehicleSlots;
 
-    Boolean loyalty;
+    private Boolean loyalty;
 
-    LocationRequest location;
+    private LocationRequest location;
 
-    OpeningHoursRequest openingHours;
+    private OpeningHoursRequest openingHours;
 
-    ParkingTypeRequest parkingType;
+    private ParkingTypeRequest parkingType;
 
 }

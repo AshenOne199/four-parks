@@ -1,6 +1,5 @@
 package com.groupc.fourparks.infraestructure.adapter.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,9 +21,9 @@ public class OpeningHoursEntity {
 
     @Column(name = "open_time")
     @JsonFormat(pattern = "HH:mm")
-    private LocalTime open_time;
+    private LocalTime openTime;
 
     @Column(name = "close_time")
     @JsonFormat(pattern = "HH:mm")
-    private LocalTime close_time;
+    private LocalTime closeTime;
 }

@@ -2,6 +2,7 @@ package com.groupc.fourparks.application.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ public class ParkingSlotServiceImpl implements ParkingSlotService{
     @Override
     public SlotToShow newParkingSlot(ParkingSlotRequest parkingSlotRequest) {
         Parking parking = parkingPort.findById(parkingSlotRequest.getParkingId());
-        if(parkingSlotPort.getParkingSlotsByParking(parkingPort.findParkingByName(parking.getName())).size() < Integer.parseInt(String.valueOf(parking.getTotal_slots()))){
+        if(parkingSlotPort.getParkingSlotsByParking(parkingPort.findParkingByName(parking.getName())).size() < Integer.parseInt(String.valueOf(parking.getTotalSlots()))){
             var parkingSlotToCreate = parkingSlotRequestMapper.toDomain(parkingSlotRequest);
             var parkingToSave = parkingPort.findParkingByName(parking.getName());
             var vehicleTypeToSave = vehicleTypePort.findVehicleTypeByType(parkingSlotRequest.getVehicleTypeId().getType());
@@ -57,7 +58,7 @@ public class ParkingSlotServiceImpl implements ParkingSlotService{
     public List<SlotToShow> getParkingSlotsByParking(Long parkingId) {
         List<ParkingSlot> list = parkingSlotPort.getParkingSlotsByParking(parkingPort.findById(parkingId));
         
-        List<SlotToShow> finalList = new ArrayList<SlotToShow>();
+        List<SlotToShow> finalList = new ArrayList<>();
         for (ParkingSlot parkingSlot : list) {
             finalList.add(slotToShowMapper.toShow(parkingSlot));
         }
@@ -72,24 +73,22 @@ public class ParkingSlotServiceImpl implements ParkingSlotService{
         var parkingToSave = parkingPort.findParkingByName(parking.getName());
         var vehicleTypeToSave = vehicleTypePort.findVehicleTypeByType(parkingSlotToModify.getVehicleTypeId().getType());
         var SlotStatusToSave = slotStatusPort.findSlotStatusByStatus(parkingSlotRequest.getSlotStatusId().getStatus());
-        if(parkingSlot.getSlotStatusId().getStatus() != parkingSlotRequest.getSlotStatusId().getStatus()){
+        if(!Objects.equals(parkingSlot.getSlotStatusId().getStatus(), parkingSlotRequest.getSlotStatusId().getStatus())){
             if(SlotStatusToSave.getStatus()==SlotStatusEnum.FULL){
-                parkingToSave.setAvailable_slots(parkingToSave.getAvailable_slots()-1);
+                parkingToSave.setAvailableSlots(parkingToSave.getAvailableSlots()-1);
             }else{
-                parkingToSave.setAvailable_slots(parkingToSave.getAvailable_slots()+1);
+                parkingToSave.setAvailableSlots(parkingToSave.getAvailableSlots()+1);
             }
-            return slotToShowMapper.toShow(parkingSlotPort.save(parkingSlot,SlotStatusToSave, parkingToSave, vehicleTypeToSave));
-        }else{
-            return slotToShowMapper.toShow(parkingSlotPort.save(parkingSlot,SlotStatusToSave, parkingToSave, vehicleTypeToSave));
         }
+        return slotToShowMapper.toShow(parkingSlotPort.save(parkingSlot,SlotStatusToSave, parkingToSave, vehicleTypeToSave));
     }
 
     @Override
     public String deleteParkingSlot(Long id) {
         ParkingSlot parkingSlotToDelete = parkingSlotPort.getParkingSlot(id);
         Parking parking = parkingPort.findById(parkingSlotToDelete.getParkingId().getId());
-        if(parkingSlotToDelete.getSlotStatusId().getStatus()=="FULL"){
-            parking.setAvailable_slots(parking.getAvailable_slots()+1);
+        if(Objects.equals(parkingSlotToDelete.getSlotStatusId().getStatus(), "FULL")){
+            parking.setAvailableSlots(parking.getAvailableSlots()+1);
             parkingPort.save(parking);
         }
         parkingSlotPort.deleteParkingSlot(parkingSlotToDelete);

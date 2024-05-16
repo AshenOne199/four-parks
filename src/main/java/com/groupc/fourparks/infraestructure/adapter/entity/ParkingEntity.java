@@ -1,8 +1,5 @@
 package com.groupc.fourparks.infraestructure.adapter.entity;
 
-/*import java.util.HashSet;
-import java.util.Set;*/
-
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,22 +19,22 @@ public class ParkingEntity {
     private String name;
 
     @Column(name = "total_slots")
-    private Integer total_slots;
+    private Integer totalSlots;
 
     @Column(name = "car_slots")
-    private Integer car_slots;
+    private Integer carSlots;
 
     @Column(name = "bicycle_slots")
-    private Integer bicycle_slots;
+    private Integer bicycleSlots;
 
     @Column(name = "motorcycle_slots")
-    private Integer motorcycle_slots;
+    private Integer motorcycleSlots;
 
     @Column(name = "heavy_vehicle_slots")
-    private Integer heavy_vehicle_slots;
+    private Integer heavyVehicleSlots;
     
     @Column(name = "available_slots")
-    private Integer available_slots;
+    private Integer availableSlots;
 
     @Column(name = "loyalty")
     private Boolean loyalty;

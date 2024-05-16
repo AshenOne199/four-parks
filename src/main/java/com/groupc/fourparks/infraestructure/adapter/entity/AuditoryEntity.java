@@ -25,7 +25,7 @@ public class AuditoryEntity {
     private String ip;
 
     @Column(name = "happening_date")
-    private Date happening_date;
+    private Date happeningDate;
 
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private ActivityEntity activity;

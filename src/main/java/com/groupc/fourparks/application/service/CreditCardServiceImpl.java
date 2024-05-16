@@ -56,14 +56,12 @@ public class CreditCardServiceImpl implements CreditCardService {
         return isLuhnValid(cardNumber);
     }
 
-    private static boolean isLuhnValid(String cardNo)
-    {
+    private static boolean isLuhnValid(String cardNo) {
         int nDigits = cardNo.length();
 
         int nSum = 0;
         boolean isSecond = false;
-        for (int i = nDigits - 1; i >= 0; i--)
-        {
+        for (int i = nDigits - 1; i >= 0; i--) {
 
             int d = cardNo.charAt(i) - '0';
 

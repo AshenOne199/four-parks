@@ -11,6 +11,6 @@ import lombok.Setter;
 @Setter
 public class OpeningHoursRequest {
     Long id;
-    LocalTime close_time;
-    LocalTime open_time;
+    LocalTime closeTime;
+    LocalTime openTime;
 }

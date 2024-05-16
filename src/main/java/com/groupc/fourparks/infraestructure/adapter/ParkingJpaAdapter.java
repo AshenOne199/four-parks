@@ -26,13 +26,9 @@ import org.springframework.stereotype.Service;
 public class ParkingJpaAdapter implements ParkingPort{
 
     final private ParkingRepository parkingRepository;
-
     final private ParkingDboMapper parkingDboMapper;
-
     final private LocationDboMapper locationDboMapper;
-
     final private ParkingTypeDboMapper parkingTypeDboMapper;
-
     final private OpeningHoursDboMapper openingHoursDboMapper;
 
     @Override

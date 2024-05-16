@@ -8,7 +8,6 @@ import com.groupc.fourparks.domain.model.User;
 import com.groupc.fourparks.domain.port.CreditCardPort;
 import com.groupc.fourparks.domain.port.UserPort;
 import com.groupc.fourparks.infraestructure.adapter.entity.RoleEntity;
-import com.groupc.fourparks.infraestructure.adapter.mapper.UserDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.repository.RoleRepository;
 import com.groupc.fourparks.infraestructure.model.dto.UserDto;
 import com.groupc.fourparks.infraestructure.model.request.UserRegisterRequest;
@@ -92,6 +91,7 @@ public class UsersManageServiceImpl implements ManagerService {
 
     private UserDto userToAddListConvert(User user) {
         UserDto userToAddList = new UserDto();
+        userToAddList.setId(user.getId());
         userToAddList.setCreditCard(creditCardDtoMapper.toDto(creditCardPort.getCC(user)));
         userToAddList.setEmail(user.getEmail());
         userToAddList.setFirstName(user.getFirstName());

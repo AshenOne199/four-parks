@@ -15,8 +15,8 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String jwt;
+    private Long id;
     private String email;
     private String password;
     private String firstName;

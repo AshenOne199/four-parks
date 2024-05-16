@@ -43,8 +43,7 @@ public class AuditoryServiceImpl implements AuditoryService {
 
     @Override
     public AuditoryDto RegisterActivity(AuditoryRequest auditoryRequest) {
-        Auditory auditory = new Auditory();
-        auditory = auditoryRequestMapper.toDomain(auditoryRequest);
+        var auditory = auditoryRequestMapper.toDomain(auditoryRequest);
         return auditoryDtoMapper.toDto(auditoryPort.save(auditory));
     }
 }
