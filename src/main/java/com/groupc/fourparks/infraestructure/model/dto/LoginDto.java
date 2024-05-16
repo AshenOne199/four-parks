@@ -10,10 +10,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LoginDto{
-    String email;
-    String jwt;
-    String rol;
-    String ip;
+    private String email;
+    private String jwt;
+    private String rol;
+    private String ip;
+    private Long id;
     private String firstName;
     private String secondName;
     private String firstLastname;

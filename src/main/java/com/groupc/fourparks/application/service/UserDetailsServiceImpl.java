@@ -155,6 +155,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         login.setIp(remoteAddr);
 
         var user = userPort.findUserByEmail(email);
+        login.setId(user.getId());
         login.setFirstName(user.getFirstName());
         login.setSecondName(user.getSecondName());
         login.setFirstLastname(user.getFirstLastname());
