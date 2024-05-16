@@ -1,4 +1,5 @@
 package com.groupc.fourparks.infraestructure.model.request;
+
 import lombok.*;
 
 @Setter
@@ -6,9 +7,11 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParkingRateRequest {
+public class AdminToShow {
     Long id;
-    Long parkingId;
-    VehicleTypeRequest vehicleTypeId;
-    Float rate;
+    String email;
+    String firstName;
+    String secondName;
+    String firstLastname;
+    String secondLastname;
 }

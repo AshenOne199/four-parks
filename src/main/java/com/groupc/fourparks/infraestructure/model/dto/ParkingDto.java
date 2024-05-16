@@ -12,10 +12,14 @@ import lombok.Setter;
 public class ParkingDto {
     Long id;
     UserDto admin;
-    String available_slots;
-    String loyalty;
+    Integer available_slots;
+    Boolean loyalty;
     String name;
-    String total_slots;
+    Integer total_slots;
+    Integer car_slots;
+    Integer bicycle_slots;
+    Integer motorcycle_slots;
+    Integer heavy_vehicle_slots;
     LocationDto location;
     OpeningHoursDto openingHours;
     ParkingTypeDto parkingType;

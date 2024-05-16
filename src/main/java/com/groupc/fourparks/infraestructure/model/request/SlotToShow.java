@@ -6,9 +6,9 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ParkingRateRequest {
+public class SlotToShow {
     Long id;
     Long parkingId;
-    VehicleTypeRequest vehicleTypeId;
-    Float rate;
+    String slotStatusId;
+    String vehicleTypeId;
 }

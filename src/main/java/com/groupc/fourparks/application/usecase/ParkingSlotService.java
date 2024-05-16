@@ -2,13 +2,13 @@ package com.groupc.fourparks.application.usecase;
 
 import java.util.List;
 
-import com.groupc.fourparks.infraestructure.model.dto.ParkingSlotDto;
 import com.groupc.fourparks.infraestructure.model.request.ParkingSlotRequest;
+import com.groupc.fourparks.infraestructure.model.request.SlotToShow;
 
 public interface ParkingSlotService {
-    ParkingSlotDto newParkingSlot(ParkingSlotRequest newParkingRequest);
-    ParkingSlotDto getParkingSlot(Long id);
-    List<ParkingSlotDto> getParkingSlotsByParking(Long id);
-    ParkingSlotDto modifyParkingSlot(ParkingSlotRequest newParkingRequest);
+    SlotToShow newParkingSlot(ParkingSlotRequest newParkingRequest);
+    SlotToShow getParkingSlot(Long id);
+    List<SlotToShow> getParkingSlotsByParking(Long id);
+    SlotToShow modifyParkingSlot(ParkingSlotRequest newParkingRequest);
     String deleteParkingSlot(Long id);
 }

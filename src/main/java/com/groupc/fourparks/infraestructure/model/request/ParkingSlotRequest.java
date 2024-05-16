@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 public class ParkingSlotRequest {
     Long id;
-    NewParkingRequest parkingId;
+    Long parkingId;
     SlotStatusRequest slotStatusId;
     VehicleTypeRequest vehicleTypeId;
 }

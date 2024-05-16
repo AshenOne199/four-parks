@@ -22,13 +22,25 @@ public class ParkingEntity {
     private String name;
 
     @Column(name = "total_slots")
-    private int total_slots;
+    private Integer total_slots;
 
+    @Column(name = "car_slots")
+    private Integer car_slots;
+
+    @Column(name = "bicycle_slots")
+    private Integer bicycle_slots;
+
+    @Column(name = "motorcycle_slots")
+    private Integer motorcycle_slots;
+
+    @Column(name = "heavy_vehicle_slots")
+    private Integer heavy_vehicle_slots;
+    
     @Column(name = "available_slots")
-    private int available_slots;
+    private Integer available_slots;
 
     @Column(name = "loyalty")
-    private boolean loyalty;
+    private Boolean loyalty;
 
     @OneToOne(targetEntity = UserEntity.class, cascade = CascadeType.MERGE)
     @JoinColumn(name = "admin_id")

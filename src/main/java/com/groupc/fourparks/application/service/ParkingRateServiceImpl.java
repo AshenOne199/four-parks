@@ -3,17 +3,18 @@ package com.groupc.fourparks.application.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
-import com.groupc.fourparks.application.mapper.ParkingRateDtoMapper;
 import com.groupc.fourparks.application.mapper.ParkingRateRequestMapper;
+import com.groupc.fourparks.application.mapper.RateToShowMapper;
 import com.groupc.fourparks.application.usecase.ParkingRateService;
 import com.groupc.fourparks.domain.model.ParkingRate;
 import com.groupc.fourparks.domain.port.ParkingPort;
 import com.groupc.fourparks.domain.port.ParkingRatePort;
 import com.groupc.fourparks.domain.port.VehicleTypePort;
-import com.groupc.fourparks.infraestructure.model.dto.ParkingRateDto;
 import com.groupc.fourparks.infraestructure.model.request.ParkingRateRequest;
+import com.groupc.fourparks.infraestructure.model.request.RateToShow;
 
 import lombok.AllArgsConstructor;
 
@@ -26,40 +27,50 @@ public class ParkingRateServiceImpl implements ParkingRateService{
     private final ParkingPort parkingPort;
     private final VehicleTypePort vehicleTypePort;
 
-    private final ParkingRateDtoMapper parkingRateDtoMapper;
+    private final RateToShowMapper rateToShowMapper;
     @Override
-    public ParkingRateDto newParkingRate(ParkingRateRequest parkingRateRequest) {
+    public RateToShow newParkingRate(ParkingRateRequest parkingRateRequest) {
+        ParkingRate parkingRateToSave;
         var parkingRateToCreate = parkingRateRequestMapper.toDomain(parkingRateRequest);
-        var parkingToSave = parkingPort.findParkingByName(parkingRateRequest.getParkingId().getName());
+        var parkingToSave = parkingPort.findById(parkingRateRequest.getParkingId());
         var vehicleTypeToSave = vehicleTypePort.findVehicleTypeByType(parkingRateRequest.getVehicleTypeId().getType());
-        return parkingRateDtoMapper.toDto(parkingRatePort.save(parkingRateToCreate, parkingToSave,vehicleTypeToSave));
+        try{
+            parkingRateToSave = parkingRatePort.save(parkingRateToCreate, parkingToSave,vehicleTypeToSave);
+        }catch(Exception e){
+            throw new com.groupc.fourparks.infraestructure.exception.BadRequestException("Ya existe un precio para ese tipo de vehiculo");
+        }
+        
+        return rateToShowMapper.toShow(parkingRateToSave); 
     }
     @Override
-    public ParkingRateDto getParkingRate(Long id) {
+    public RateToShow getParkingRate(Long id) {
         ParkingRate parkingSlot = parkingRatePort.getParkingRate(id);
-        return parkingRateDtoMapper.toDto(parkingSlot);
+        return rateToShowMapper.toShow(parkingSlot);
     }
     @Override
-    public List<ParkingRateDto> getParkingRatesByParking(Long parkingId) {
+    public List<RateToShow> getParkingRatesByParking(Long parkingId) {
         List<ParkingRate> list = parkingRatePort.getParkingRatesByParking(parkingPort.findById(parkingId));
         
-        List<ParkingRateDto> finalList = new ArrayList<ParkingRateDto>();
+        List<RateToShow> finalList = new ArrayList<RateToShow>();
         for (ParkingRate parkingRate : list) {
-            finalList.add(parkingRateDtoMapper.toDto(parkingRate));
+            finalList.add(rateToShowMapper.toShow(parkingRate));
         }
         return finalList;
     }
     @Override
-    public ParkingRateDto modifyParkingRate(ParkingRateRequest parkingRateRequest) {
+    public RateToShow modifyParkingRate(ParkingRateRequest parkingRateRequest) {
+        ParkingRate parkingRateModified;
         ParkingRate parkingRateToModify = parkingRateRequestMapper.toDomain(parkingRateRequest);
         ParkingRate parkingRate = parkingRatePort.getParkingRate(parkingRateRequest.getId());
-
-        var parkingToSave = parkingPort.findParkingByName(parkingRateRequest.getParkingId().getName());
+        var parkingToSave = parkingPort.findById(parkingRateRequest.getParkingId());
         var vehicleTypeToSave = vehicleTypePort.findVehicleTypeByType(parkingRateToModify.getVehicleTypeId().getType());
-        parkingRate.setRate(Float.parseFloat(parkingRateRequest.getRate()));
-        var parkingRateModified = parkingRatePort.save(parkingRate,parkingToSave, vehicleTypeToSave);
-
-        return parkingRateDtoMapper.toDto(parkingRateModified);
+        parkingRate.setRate(parkingRateRequest.getRate());
+        try{
+            parkingRateModified = parkingRatePort.save(parkingRate,parkingToSave, vehicleTypeToSave);
+        }catch(Exception e){
+            throw new com.groupc.fourparks.infraestructure.exception.BadRequestException("Ya existe un precio para ese tipo de vehiculo");
+        }
+        return rateToShowMapper.toShow(parkingRateModified);
     }
     @Override
     public String deleteParkingRate(Long id) {

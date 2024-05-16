@@ -48,9 +48,10 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/api/v1/parkings/parking/new").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/parkings/parking/name/{name}").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/parkings/all").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/parkings/cities").permitAll();
                     http.requestMatchers(HttpMethod.DELETE, "/api/v1/parkings/parking/delete/name/{name}").permitAll();
                     http.requestMatchers(HttpMethod.PUT, "/api/v1/parkings/parking/update").permitAll();
-
+                    
                     // rate endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/rates/rate/new").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/rates/rate/id/{id}").permitAll();
@@ -60,6 +61,10 @@ public class SecurityConfig {
 
                     // slot endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/slots/slot/new").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/slots/slot/id/{id}").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/slots/parking/id/{id}").permitAll();
+                    http.requestMatchers(HttpMethod.DELETE, "/api/v1/slots/slot/delete/{id}").permitAll();
+                    http.requestMatchers(HttpMethod.PUT, "/api/v1/slots/slot/update").permitAll();
 
                     // manager endpoints
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/all").permitAll();

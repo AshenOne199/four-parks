@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "parking_rate",uniqueConstraints = { @UniqueConstraint(columnNames = {"vehicle_type_id"})})
+@Table(name = "parking_rate")
 public class ParkingRateEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

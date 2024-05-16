@@ -1,5 +1,5 @@
 -- Tipos de Vehiculos
-INSERT INTO vehicle_type (type) VALUES  ('CARRO'), ('MOTO'), ('BICICLETA'),('VEHICULO PESADO');
+INSERT INTO vehicle_type (type) VALUES  ('CARRO'), ('MOTO'), ('BICICLETA'),('VEHICULO_PESADO');
 -- Tipos de Parqueaderos
 INSERT INTO parking_type (type) VALUES  ('CUBIERTO'), ('SEMI-CUBIERTO'), ('DESCUBIERTO');
 INSERT INTO slot_status (status) VALUES  ('EMPTY'), ('FULL');

@@ -1,6 +1,5 @@
 package com.groupc.fourparks.infraestructure.model.request;
 
-import java.text.ParseException;
 import java.time.LocalTime;
 
 import lombok.Getter;

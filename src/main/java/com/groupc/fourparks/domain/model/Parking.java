@@ -13,6 +13,10 @@ public class Parking {
     private String name;
     private Integer total_slots;
     private Integer available_slots;
+    private Integer car_slots;
+    private Integer bicycle_slots;
+    private Integer motorcycle_slots;
+    private Integer heavy_vehicle_slots;
     private Boolean loyalty;
     private Location location;
     private ParkingType parkingType;

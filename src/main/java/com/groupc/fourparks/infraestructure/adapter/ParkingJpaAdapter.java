@@ -4,14 +4,12 @@ import com.groupc.fourparks.domain.model.Location;
 import com.groupc.fourparks.domain.model.OpeningHours;
 import com.groupc.fourparks.domain.model.Parking;
 import com.groupc.fourparks.domain.model.ParkingType;
-import com.groupc.fourparks.domain.model.User;
 import com.groupc.fourparks.domain.port.ParkingPort;
 import com.groupc.fourparks.infraestructure.adapter.entity.ParkingEntity;
 import com.groupc.fourparks.infraestructure.adapter.mapper.LocationDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.mapper.OpeningHoursDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.mapper.ParkingDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.mapper.ParkingTypeDboMapper;
-import com.groupc.fourparks.infraestructure.adapter.mapper.UserDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.repository.ParkingRepository;
 import com.groupc.fourparks.infraestructure.exception.NotFoundException;
 
@@ -32,8 +30,6 @@ public class ParkingJpaAdapter implements ParkingPort{
     final private ParkingDboMapper parkingDboMapper;
 
     final private LocationDboMapper locationDboMapper;
-
-    final private UserDboMapper userDboMapper;
 
     final private ParkingTypeDboMapper parkingTypeDboMapper;
 
@@ -95,14 +91,10 @@ public class ParkingJpaAdapter implements ParkingPort{
     @Override
     public Parking findById(Long id) {
         var optionalParking = parkingRepository.findById(id);
+        if (optionalParking.isEmpty()){
+            throw new NotFoundException("Parqueadero: " + id + " no registrado");
+        }
         return optionalParking.map(parkingDboMapper::toDomain).get();
     }
 
-    @Override
-    public Parking save(Parking parking, User user) {
-        var parkingToSave = parkingDboMapper.toDbo(parking);
-        var userToSave = userDboMapper.toDbo(user);
-        /*parkingToSave.setAdminId(userToSave);*/
-        return parkingDboMapper.toDomain(parkingRepository.save(parkingToSave));
-    }
 }

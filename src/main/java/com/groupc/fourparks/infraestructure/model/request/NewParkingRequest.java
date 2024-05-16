@@ -16,13 +16,17 @@ public class NewParkingRequest {
 
     Long adminId;
 
-    Integer availableSlots;
-
-    Boolean loyalty;
-
     String name;
 
-    Integer totalSlots;
+    Integer car_slots;
+
+    Integer bicycle_slots;
+
+    Integer motorcycle_slots;
+
+    Integer heavy_vehicle_slots;
+
+    Boolean loyalty;
 
     LocationRequest location;
 
