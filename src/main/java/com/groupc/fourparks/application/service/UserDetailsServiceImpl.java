@@ -101,6 +101,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userToCreate.setCreatedAt(LocalDate.now());
         userToCreate.setUpdatedAt(LocalDate.now());
         userToCreate.setRoles(roleEntitySet);
+        userToCreate.setLoginAttempts(0);
+        userToCreate.setAccountBlocked(false);
+        userToCreate.setAccountActive(false);
 
         ServletRequestAttributes requestCurrent = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = requestCurrent.getRequest();
