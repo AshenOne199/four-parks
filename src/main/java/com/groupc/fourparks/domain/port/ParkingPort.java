@@ -12,6 +12,7 @@ public interface ParkingPort {
     Parking save(Parking parking);
     Parking save(Parking parking, Location location, ParkingType parkingType, OpeningHours openingHours);
     Parking findParkingByName(String name);
+    void findParkingByAdminId(Long adminId);
     List<Parking> findParkings();
     Optional<Parking> findParkingByNameOptional(String name);
     void deleteParking(Parking parking);

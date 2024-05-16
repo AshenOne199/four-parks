@@ -53,23 +53,10 @@ public class LocationJpaAdapter implements LocationPort {
     }
 
     @Override
-    public Location findLocationByAddress(String address) {
+    public void findLocationByAddress(String address) {
         var optionalLocation = locationRepository.findLocationByAddress(address);
-
-        if (optionalLocation.isEmpty()){
-            throw new NotFoundException("Address: " + address +" no registrado");
+        if (optionalLocation.isPresent()){
+            throw new NotFoundException("Localizacion ya registrada");
         }
-
-        return locationDboMapper.toDomain(optionalLocation.get());
-    }
-
-    @Override
-    public Long findIdLocationByAddress(String address) {
-        var optionalLocation = locationRepository.findLocationByAddress(address); 
-        if (optionalLocation.isEmpty()){
-            throw new NotFoundException("Address: " + address +" no registrado");
-        }
-
-        return optionalLocation.get().getId();
     }
 }

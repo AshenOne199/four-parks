@@ -7,7 +7,6 @@ public interface LocationPort {
     Location save(Location location, City city);
     Location save(Location location);
     Location findLocationByIDLocation(Long id);
-    Location findLocationByAddress(String address);
-    Long findIdLocationByAddress(String address);
+    void findLocationByAddress(String address);
     void deleteLocation(Location location);
 }

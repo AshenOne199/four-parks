@@ -28,7 +28,6 @@ import com.groupc.fourparks.domain.port.UserPort;
 import com.groupc.fourparks.infraestructure.exception.BadRequestException;
 import com.groupc.fourparks.infraestructure.exception.InternalServerErrorException;
 import com.groupc.fourparks.infraestructure.model.dto.CityDto;
-import com.groupc.fourparks.infraestructure.model.dto.OpeningHoursDto;
 import com.groupc.fourparks.infraestructure.model.dto.ParkingDto;
 import com.groupc.fourparks.infraestructure.model.dto.UserDto;
 import com.groupc.fourparks.infraestructure.model.request.NewParkingRequest;
@@ -48,37 +47,26 @@ public class ParkingServiceImpl implements ParkingService{
     private final LocationDtoMapper locationDtoMapper;
     private final ParkingTypeDtoMapper parkingTypeDtoMapper;
     private final OpeningHoursDtoMapper openingHoursDtoMapper;
-  
-
     private final ParkingPort parkingPort;
     private final LocationPort locationPort;
     private final OpeningHoursPort openingHoursPort;
     private final CityPort cityPort;
     private final ParkingTypePort parkingTypePort;
     private final UserPort userPort;
-    private final UsersManageServiceImpl usersManageServiceImpl;
     private final ParkingSlotPort parkingSlotPort;
     private final ParkingRatePort parkingRatePort;
-
     private final ParkingSlotServiceImpl parkingSlotServiceImpl;
 
     @Transactional
     public ParkingDto newParking(NewParkingRequest newParkingRequest) {
-        boolean rolCheck=false;
         var parkingToCreate = newParkingRequestMapper.toDomain(newParkingRequest);
 
         var adminToSet = userPort.findUserById(Long.parseLong(String.valueOf(newParkingRequest.getAdminId())));
+        if (adminToSet.getRoles().stream().noneMatch(rol -> rol.getRoleEnum().name().equals("ADMINISTRADOR"))) {
+            throw new BadRequestException("El adminId no pertenece a un usuario con rol administrador");
+        }
+        parkingPort.findParkingByAdminId(adminToSet.getId());
         parkingToCreate.setAdmin(adminToSet);
-        for(UserDto userToShow: usersManageServiceImpl.userByRole(Long.parseLong("2"))){
-            if (adminToSet.getEmail().equals(userToShow.getEmail())) {
-                rolCheck = true;
-                break;
-            }
-        }
-
-        if (!rolCheck) {
-            throw new BadRequestException("El usuario debe tener como rol Administrador");
-        }
 
         String name = parkingToCreate.getName();
         var parking = parkingPort.findParkingByNameOptional(name);
@@ -96,6 +84,7 @@ public class ParkingServiceImpl implements ParkingService{
         var parkingTypeToSave = parkingTypePort.findParkingTypeByType(newParkingRequest.getParkingType().getType());
         var openingHoursToSave = parkingToCreate.getOpeningHours();
         var locationToSave = parkingToCreate.getLocation();
+        locationPort.findLocationByAddress(locationToSave.getAddress());
         var locationCreated = locationPort.save(locationToSave, cityPort.findCityByCity(newParkingRequest.getLocation().getCity().getCity()));
         var parkingCreated = parkingPort.save(parkingToCreate, locationCreated, parkingTypeToSave, openingHoursToSave);
 
@@ -150,7 +139,8 @@ public class ParkingServiceImpl implements ParkingService{
         int lastBicycleSlots = parking.getBicycleSlots();
         int lastHeavyVehicleSlots = parking.getHeavyVehicleSlots();
         parking.setName(newParkingRequest.getName());
-        parking.setTotalSlots(newParkingRequest.getCarSlots()+newParkingRequest.getMotorcycleSlots()+newParkingRequest.getBicycleSlots()+newParkingRequest.getHeavyVehicleSlots());
+        Integer totalSlots = newParkingRequest.getCarSlots()+newParkingRequest.getMotorcycleSlots()+newParkingRequest.getBicycleSlots()+newParkingRequest.getHeavyVehicleSlots();
+        parking.setTotalSlots(totalSlots);
         parking.setAvailableSlots(parking.getTotalSlots());
         parking.setCarSlots(newParkingRequest.getCarSlots());
         parking.setMotorcycleSlots(newParkingRequest.getMotorcycleSlots());
@@ -171,46 +161,39 @@ public class ParkingServiceImpl implements ParkingService{
         Location locationCreated = locationPort.save(locationFound, cityPort.findCityByCity(newParkingRequest.getLocation().getCity().getCity()));
         
         var parkingModified = parkingPort.save(parking,locationCreated,parkingTypeToSave,openingHoursToSave);
-        
-        ParkingSlotRequest newParkingSlotRequest = new ParkingSlotRequest();
+
         if(lastCarSlots<parkingModified.getCarSlots()){
             for(int i = parking.getCarSlots(); i<=parkingModified.getCarSlots(); i++){
-                newParkingSlotRequest.setParkingId(parkingModified.getId());
-                newParkingSlotRequest.setSlotStatusId(new SlotStatusRequest(Long.parseLong("1"),"EMPTY"));
-                newParkingSlotRequest.setVehicleTypeId(new VehicleTypeRequest(Long.parseLong("1"),"CARRO"));
-                parkingSlotServiceImpl.newParkingSlot(newParkingSlotRequest);
+                parkingSlotServiceImpl.newParkingSlot(createParkingSlot(parkingModified.getId(), 1L, "EMPTY", 1L, "CARRO"));
             }
-        }else if (lastCarSlots>parkingModified.getCarSlots()) {
-            
         }
         if(lastMotorcycleSlots<parkingModified.getMotorcycleSlots()){
             for(int i = parking.getMotorcycleSlots(); i<=parkingModified.getMotorcycleSlots(); i++){
-                newParkingSlotRequest.setParkingId(parkingModified.getId());
-                newParkingSlotRequest.setSlotStatusId(new SlotStatusRequest(Long.parseLong("1"),"EMPTY"));
-                newParkingSlotRequest.setVehicleTypeId(new VehicleTypeRequest(Long.parseLong("2"),"MOTO"));
-                parkingSlotServiceImpl.newParkingSlot(newParkingSlotRequest);
+                parkingSlotServiceImpl.newParkingSlot(createParkingSlot(parkingModified.getId(), 1L, "EMPTY", 2L, "MOTO"));
             }
         }
         
         if(lastBicycleSlots<parkingModified.getBicycleSlots()){
             for(int i = parking.getBicycleSlots(); i<=parkingModified.getBicycleSlots(); i++){
-                newParkingSlotRequest.setParkingId(parkingModified.getId());
-                newParkingSlotRequest.setSlotStatusId(new SlotStatusRequest(Long.parseLong("1"),"EMPTY"));
-                newParkingSlotRequest.setVehicleTypeId(new VehicleTypeRequest(Long.parseLong("3"),"BICICLETA"));
-                parkingSlotServiceImpl.newParkingSlot(newParkingSlotRequest);
+                parkingSlotServiceImpl.newParkingSlot(createParkingSlot(parkingModified.getId(), 1L, "EMPTY", 3L, "BICICLETA"));
             }
         }
         
         if(lastHeavyVehicleSlots<parkingModified.getHeavyVehicleSlots()){
             for(int i = parking.getHeavyVehicleSlots(); i<=parkingModified.getHeavyVehicleSlots(); i++){
-                newParkingSlotRequest.setParkingId(parkingModified.getId());
-                newParkingSlotRequest.setSlotStatusId(new SlotStatusRequest(Long.parseLong("1"),"EMPTY"));
-                newParkingSlotRequest.setVehicleTypeId(new VehicleTypeRequest(Long.parseLong("4"),"VEHICULO_PESADO"));
-                parkingSlotServiceImpl.newParkingSlot(newParkingSlotRequest);
+                parkingSlotServiceImpl.newParkingSlot(createParkingSlot(parkingModified.getId(), 1L, "EMPTY", 3L, "VEHICULO_PESADO"));
             }
         }
 
         return this.parkingToAddListConvert(parkingModified);
+    }
+
+    public ParkingSlotRequest createParkingSlot(Long parkingId, Long slotId, String slotStatus, Long vehicleTypeId, String vehicleType) {
+        ParkingSlotRequest request = new ParkingSlotRequest();
+        request.setParkingId(parkingId);
+        request.setSlotStatusId(new SlotStatusRequest(slotId,slotStatus));
+        request.setVehicleTypeId(new VehicleTypeRequest(vehicleTypeId,vehicleType));
+        return request;
     }
     
     public String deleteParking(String name){
@@ -251,13 +234,6 @@ public class ParkingServiceImpl implements ParkingService{
 
     private ParkingDto parkingToAddListConvert(Parking parking) {
         ParkingDto parkingToAddList = new ParkingDto();
-        UserDto userToAddList = new UserDto();
-        userToAddList.setId(parking.getAdmin().getId());
-        userToAddList.setEmail(parking.getAdmin().getEmail());
-        userToAddList.setFirstLastname(parking.getAdmin().getFirstLastname());
-        userToAddList.setSecondName(parking.getAdmin().getSecondName());
-        userToAddList.setFirstLastname(parking.getAdmin().getFirstLastname());
-        userToAddList.setSecondLastname(parking.getAdmin().getSecondLastname());
         parkingToAddList.setId(parking.getId());
         parkingToAddList.setName(parking.getName());
         parkingToAddList.setAvailableSlots(parking.getAvailableSlots());
@@ -267,10 +243,21 @@ public class ParkingServiceImpl implements ParkingService{
         parkingToAddList.setBicycleSlots(parking.getBicycleSlots());
         parkingToAddList.setHeavyVehicleSlots(parking.getHeavyVehicleSlots());
         parkingToAddList.setLoyalty(parking.getLoyalty());
-        parkingToAddList.setAdmin(userToAddList);
+        parkingToAddList.setAdmin(convertToDto(parking));
         parkingToAddList.setLocation(locationDtoMapper.toDto(parking.getLocation()));
         parkingToAddList.setParkingType(parkingTypeDtoMapper.toDto(parking.getParkingType()));
         parkingToAddList.setOpeningHours(openingHoursDtoMapper.toDto(parking.getOpeningHours()));
         return parkingToAddList;
+    }
+
+    public UserDto convertToDto(Parking parking) {
+        return UserDto.builder()
+                .id(parking.getAdmin().getId())
+                .email(parking.getAdmin().getEmail())
+                .firstLastname(parking.getAdmin().getFirstLastname())
+                .secondName(parking.getAdmin().getSecondName())
+                .firstLastname(parking.getAdmin().getFirstLastname())
+                .secondLastname(parking.getAdmin().getSecondLastname())
+                .build();
     }
 }

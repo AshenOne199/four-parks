@@ -9,4 +9,5 @@ import com.groupc.fourparks.infraestructure.adapter.entity.ParkingEntity;
 @Repository
 public interface ParkingRepository extends JpaRepository<ParkingEntity, Long>{
     Optional<ParkingEntity> findParkingEntityByName(String name);
+    Optional<ParkingEntity> findParkingEntityByAdmin_Id(Long id);
 }

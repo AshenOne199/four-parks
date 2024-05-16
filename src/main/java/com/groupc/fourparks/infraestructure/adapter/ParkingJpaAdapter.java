@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class ParkingJpaAdapter implements ParkingPort{
+public class ParkingJpaAdapter implements ParkingPort {
 
     final private ParkingRepository parkingRepository;
     final private ParkingDboMapper parkingDboMapper;
@@ -47,6 +47,14 @@ public class ParkingJpaAdapter implements ParkingPort{
         }
 
         return parkingDboMapper.toDomain(optionalParking.get());
+    }
+
+    @Override
+    public void findParkingByAdminId(Long adminId) {
+        var parking = parkingRepository.findParkingEntityByAdmin_Id(adminId);
+        if (parking.isPresent()){
+            throw new NotFoundException("Este administrador ya esta asociado a otro parqueadero");
+        }
     }
 
     @Override

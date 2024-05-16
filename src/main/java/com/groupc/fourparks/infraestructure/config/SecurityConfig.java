@@ -37,8 +37,8 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
-                    // login endpoints
                     http.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+                    // login endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/sign-up").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/log-in").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auth/new-password").permitAll();
