@@ -1,5 +1,7 @@
 package com.groupc.fourparks.domain.model;
 
+import java.util.List;
+
 import lombok.*;
 
 @Setter
@@ -21,5 +23,5 @@ public class Parking {
     private Location location;
     private ParkingType parkingType;
     private OpeningHours openingHours;
-    private ParkingRate parkingRate;
+    private List <ParkingRate> parkingRate;
 }
