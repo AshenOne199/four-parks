@@ -11,11 +11,13 @@ import com.groupc.fourparks.infraestructure.adapter.mapper.ParkingSlotDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.mapper.SlotStatusDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.mapper.VehicleTypeDboMapper;
 import com.groupc.fourparks.infraestructure.adapter.repository.ParkingSlotRepository;
+import com.groupc.fourparks.infraestructure.adapter.repository.ParkingSlotRepositoryCustom;
 import com.groupc.fourparks.infraestructure.exception.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.groupc.fourparks.infraestructure.model.dto.ParkingSlotDetailsDto;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 
@@ -23,6 +25,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ParkingSlotJpaAdapter implements ParkingSlotPort{
     final private ParkingSlotRepository parkingSlotRepository;
+    final private ParkingSlotRepositoryCustom parkingSlotRepositoryCustom;
 
     final private ParkingSlotDboMapper parkingSlotDboMapper;
     final private VehicleTypeDboMapper vehicleTypeDboMapper;
@@ -64,7 +67,7 @@ public class ParkingSlotJpaAdapter implements ParkingSlotPort{
 
     @Override
     public List<ParkingSlot> getParkingSlotsByParking(Parking parking) {
-        List<ParkingSlot> allParkingSlots = new ArrayList<ParkingSlot>();
+        List<ParkingSlot> allParkingSlots = new ArrayList<>();
         List<ParkingSlotEntity> parkingSlotsReceiver = parkingSlotRepository.findByParkingId(parkingDboMapper.toDbo(parking));
         for (ParkingSlotEntity parkingSlotEntity : parkingSlotsReceiver) {
             allParkingSlots.add(parkingSlotDboMapper.toDomain(parkingSlotEntity));
@@ -77,5 +80,9 @@ public class ParkingSlotJpaAdapter implements ParkingSlotPort{
         var parkingSlotToDelete = parkingSlotDboMapper.toDbo(parkingSlot);
         parkingSlotRepository.delete(parkingSlotToDelete);
     }
-    
+
+    @Override
+    public List<ParkingSlotDetailsDto> findEmptySlotsByParkingId(Long parkingId) {
+        return parkingSlotRepositoryCustom.findEmptySlotsByParkingId(parkingId);
+    }
 }

@@ -6,6 +6,7 @@ import com.groupc.fourparks.domain.model.Parking;
 import com.groupc.fourparks.domain.model.ParkingSlot;
 import com.groupc.fourparks.domain.model.SlotStatus;
 import com.groupc.fourparks.domain.model.VehicleType;
+import com.groupc.fourparks.infraestructure.model.dto.ParkingSlotDetailsDto;
 
 public interface ParkingSlotPort {
     ParkingSlot save(ParkingSlot parkingSlot);
@@ -13,4 +14,6 @@ public interface ParkingSlotPort {
     ParkingSlot getParkingSlot(Long id);
     List<ParkingSlot> getParkingSlotsByParking(Parking parking);
     void deleteParkingSlot(ParkingSlot parkingSlot);
+
+    List<ParkingSlotDetailsDto> findEmptySlotsByParkingId(Long parkingId);
 }

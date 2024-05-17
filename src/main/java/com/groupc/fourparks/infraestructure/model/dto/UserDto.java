@@ -21,7 +21,6 @@ public class UserDto {
     private String secondName;
     private String firstLastname;
     private String secondLastname;
-
     private boolean accountActive;
     private boolean accountBlocked;
     private int loginAttempts;

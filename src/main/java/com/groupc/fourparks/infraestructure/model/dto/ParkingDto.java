@@ -2,6 +2,7 @@ package com.groupc.fourparks.infraestructure.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import com.groupc.fourparks.domain.model.ParkingSlot;
 import lombok.*;
 
 import java.util.List;
@@ -27,4 +28,5 @@ public class ParkingDto {
     ParkingTypeDto parkingType;
     UserDto admin;
     List <ParkingRateDto> parkingRate;
+    List<ParkingSlotDetailsDto> parkingSlotDetails;
 }

@@ -1,13 +1,11 @@
 package com.groupc.fourparks.application.service;
 
 import com.groupc.fourparks.application.mapper.*;
-import com.groupc.fourparks.infraestructure.model.dto.ParkingRateDto;
+import com.groupc.fourparks.infraestructure.model.dto.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.groupc.fourparks.application.usecase.ParkingService;
 import com.groupc.fourparks.domain.model.City;
@@ -26,9 +24,6 @@ import com.groupc.fourparks.domain.port.ParkingTypePort;
 import com.groupc.fourparks.domain.port.UserPort;
 import com.groupc.fourparks.infraestructure.exception.BadRequestException;
 import com.groupc.fourparks.infraestructure.exception.InternalServerErrorException;
-import com.groupc.fourparks.infraestructure.model.dto.CityDto;
-import com.groupc.fourparks.infraestructure.model.dto.ParkingDto;
-import com.groupc.fourparks.infraestructure.model.dto.UserDto;
 import com.groupc.fourparks.infraestructure.model.request.NewParkingRequest;
 import com.groupc.fourparks.infraestructure.model.request.ParkingSlotRequest;
 import com.groupc.fourparks.infraestructure.model.request.SlotStatusRequest;
@@ -47,6 +42,7 @@ public class ParkingServiceImpl implements ParkingService{
     private final ParkingTypeDtoMapper parkingTypeDtoMapper;
     private final OpeningHoursDtoMapper openingHoursDtoMapper;
     private final ParkingRateDtoMapper parkingRateDtoMapper;
+
     private final ParkingPort parkingPort;
     private final LocationPort locationPort;
     private final OpeningHoursPort openingHoursPort;
@@ -55,8 +51,8 @@ public class ParkingServiceImpl implements ParkingService{
     private final UserPort userPort;
     private final ParkingSlotPort parkingSlotPort;
     private final ParkingRatePort parkingRatePort;
+
     private final ParkingSlotServiceImpl parkingSlotServiceImpl;
-    private final ParkingRateDtoMapperImpl parkingRateDtoMapperImpl;
 
     @Transactional
     public ParkingDto newParking(NewParkingRequest newParkingRequest) {
@@ -238,6 +234,9 @@ public class ParkingServiceImpl implements ParkingService{
         List<ParkingRateDto> ratesDto = rates.stream()
                 .map(parkingRateDtoMapper::toDto)
                 .toList();
+
+        List<ParkingSlotDetailsDto> slotsEmpty = parkingSlotPort.findEmptySlotsByParkingId(parking.getId());
+
         return ParkingDto.builder()
                 .id(parking.getId())
                 .name(parking.getName())
@@ -253,6 +252,7 @@ public class ParkingServiceImpl implements ParkingService{
                 .parkingType(parkingTypeDtoMapper.toDto(parking.getParkingType()))
                 .openingHours(openingHoursDtoMapper.toDto(parking.getOpeningHours()))
                 .parkingRate(ratesDto)
+                .parkingSlotDetails(slotsEmpty)
                 .build();
     }
 
@@ -260,7 +260,7 @@ public class ParkingServiceImpl implements ParkingService{
         return UserDto.builder()
                 .id(parking.getAdmin().getId())
                 .email(parking.getAdmin().getEmail())
-                .firstLastname(parking.getAdmin().getFirstLastname())
+                .firstName(parking.getAdmin().getFirstName())
                 .secondName(parking.getAdmin().getSecondName())
                 .firstLastname(parking.getAdmin().getFirstLastname())
                 .secondLastname(parking.getAdmin().getSecondLastname())
