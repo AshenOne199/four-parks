@@ -2,7 +2,6 @@ package com.groupc.fourparks.domain.model;
 
 import com.groupc.fourparks.infraestructure.adapter.entity.ParkingSlotEntity;
 import com.groupc.fourparks.infraestructure.adapter.entity.UserEntity;
-import com.groupc.fourparks.infraestructure.adapter.entity.VehicleTypeEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -21,6 +20,9 @@ public class Reservation {
     private Float totalPrice;
     private UserEntity user;
     private ParkingSlotEntity parkingSlot;
-    private VehicleTypeEntity vehicleType;
+
+    public Float calculateTotal(Long minutes, Double rate){
+        return (float) (minutes * rate);
+    }
 
 }

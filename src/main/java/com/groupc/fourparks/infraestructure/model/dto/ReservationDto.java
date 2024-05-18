@@ -1,9 +1,7 @@
 package com.groupc.fourparks.infraestructure.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.groupc.fourparks.infraestructure.adapter.entity.ParkingSlotEntity;
-import com.groupc.fourparks.infraestructure.adapter.entity.UserEntity;
-import com.groupc.fourparks.infraestructure.adapter.entity.VehicleTypeEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -17,12 +15,14 @@ import java.time.LocalDateTime;
 public class ReservationDto {
 
     private Long id;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime reservationTime;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime reservationStartTime;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime reservationEndTime;
     private Float totalPrice;
-    private UserEntity user;
-    private ParkingSlotEntity parkingSlot;
-    private VehicleTypeEntity vehicleType;
+    private UserDto user;
+    private ParkingSlotDto parkingSlot;
 
 }

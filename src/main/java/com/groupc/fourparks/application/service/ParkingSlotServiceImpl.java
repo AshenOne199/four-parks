@@ -36,14 +36,14 @@ public class ParkingSlotServiceImpl implements ParkingSlotService{
     private final SlotStatusPort slotStatusPort;
 
     @Override
-    public ParkingSlotDto newParkingSlot(ParkingSlotRequest parkingSlotRequest) {
+    public void newParkingSlot(ParkingSlotRequest parkingSlotRequest) {
         Parking parking = parkingPort.findById(parkingSlotRequest.getParkingId());
         if(parkingSlotPort.getParkingSlotsByParking(parkingPort.findParkingByName(parking.getName())).size() < Integer.parseInt(String.valueOf(parking.getTotalSlots()))){
             var parkingSlotToCreate = parkingSlotRequestMapper.toDomain(parkingSlotRequest);
             var parkingToSave = parkingPort.findParkingByName(parking.getName());
             var vehicleTypeToSave = vehicleTypePort.findVehicleTypeByType(parkingSlotRequest.getVehicleTypeId().getType());
             var SlotStatusToSave = slotStatusPort.findSlotStatusByStatus(parkingSlotRequest.getSlotStatusId().getStatus());
-            return this.parkingSlotToAddListConvert(parkingSlotPort.save(parkingSlotToCreate,SlotStatusToSave, parkingToSave, vehicleTypeToSave));
+            this.parkingSlotToAddListConvert(parkingSlotPort.save(parkingSlotToCreate, SlotStatusToSave, parkingToSave, vehicleTypeToSave));
         }else{
             throw new InternalServerErrorException("Los espacios no pueden superar los espacios totales");
         }

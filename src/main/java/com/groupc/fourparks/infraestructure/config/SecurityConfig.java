@@ -72,6 +72,13 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/email/{email}").permitAll();
                     http.requestMatchers(HttpMethod.DELETE, "/api/v1/users/user/delete/email/{email}").permitAll();
                     http.requestMatchers(HttpMethod.PUT, "/api/v1/users/user/update").permitAll();
+
+                    // reservation endpoints
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/reservations/all").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/reservations/reservation/new").permitAll();
+                    http.requestMatchers(HttpMethod.DELETE, "/api/v1/reservations/reservation/delete/user/{id}").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/reservations/reservation/start").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/reservations/reservation/end").permitAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();

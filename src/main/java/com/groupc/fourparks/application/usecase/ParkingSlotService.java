@@ -6,7 +6,7 @@ import com.groupc.fourparks.infraestructure.model.dto.ParkingSlotDto;
 import com.groupc.fourparks.infraestructure.model.request.ParkingSlotRequest;
 
 public interface ParkingSlotService {
-    ParkingSlotDto newParkingSlot(ParkingSlotRequest newParkingRequest);
+    void newParkingSlot(ParkingSlotRequest newParkingRequest);
     ParkingSlotDto getParkingSlot(Long id);
     List<ParkingSlotDto> getParkingSlotsByParking(Long id);
     ParkingSlotDto modifyParkingSlot(ParkingSlotRequest newParkingRequest);

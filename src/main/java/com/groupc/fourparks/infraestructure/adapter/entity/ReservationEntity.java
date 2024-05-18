@@ -1,5 +1,6 @@
 package com.groupc.fourparks.infraestructure.adapter.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,12 +20,15 @@ public class ReservationEntity {
     private Long id;
 
     @Column(name = "reservation_time")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime reservationTime;
 
     @Column(name = "reservation_start_time")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime reservationStartTime;
 
     @Column(name = "reservation_end_time")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime reservationEndTime;
 
     @Column(name = "total_price")
@@ -34,12 +38,8 @@ public class ReservationEntity {
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @OneToOne(targetEntity = ParkingSlotEntity.class, cascade = CascadeType.MERGE)
+    @ManyToOne(targetEntity = ParkingSlotEntity.class)
     @JoinColumn(name = "parking_slot_id")
     private ParkingSlotEntity parkingSlot;
-
-    @OneToOne(targetEntity = VehicleTypeEntity.class, cascade = CascadeType.MERGE)
-    @JoinColumn(name = "vehicle_type_id")
-    private VehicleTypeEntity vehicleType;
 
 }
