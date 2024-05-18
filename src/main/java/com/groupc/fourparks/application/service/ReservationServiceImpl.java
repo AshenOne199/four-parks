@@ -130,4 +130,13 @@ public class ReservationServiceImpl implements ReservationService {
                 .map(reservationRequestMapper::toDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<ReservationDto> getReservationsByParkingId(Long parkingId) {
+        var parkingFound = parkingPort.findById(parkingId);
+        var reservations = reservationPort.findAllActiveReservations(parkingFound.getId());
+        return reservations.stream()
+                .map(reservationRequestMapper::toDto)
+                .collect(Collectors.toList());
+    }
 }

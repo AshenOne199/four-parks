@@ -79,6 +79,7 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.DELETE, "/api/v1/reservations/reservation/delete/user/{id}").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/reservations/reservation/start").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/reservations/reservation/end").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/reservations/parking/id/{id}").permitAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();

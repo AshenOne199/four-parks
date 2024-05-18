@@ -10,4 +10,5 @@ public interface ReservationPort {
     Reservation findById(Long id);
     void deleteActiveReservation(Long id);
     List<Reservation> findAllReservations();
+    List<Reservation> findAllActiveReservations(Long id);
 }
