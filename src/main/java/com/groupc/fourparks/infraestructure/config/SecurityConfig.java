@@ -80,6 +80,7 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/api/v1/reservations/reservation/start").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/reservations/reservation/end").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/reservations/parking/id/{id}").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/reservations/reservation/id/{id}").permitAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();

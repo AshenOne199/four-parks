@@ -12,4 +12,5 @@ public interface ReservationService {
     ReservationDto endReservation(ReservationRequest reservationEndRequest);
     List<ReservationDto> getAllReservations();
     List<ReservationDto> getReservationsByParkingId(Long userId);
+    ReservationDto getReservationById(Long id);
 }
