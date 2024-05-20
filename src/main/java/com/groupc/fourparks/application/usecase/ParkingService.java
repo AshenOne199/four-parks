@@ -13,4 +13,5 @@ public interface ParkingService {
     ParkingDto modifyParking(NewParkingRequest newParkingRequest);
     String deleteParking(String name);
     List<CityDto> getCities();
+    ParkingDto getParkingById(Long id);
 }

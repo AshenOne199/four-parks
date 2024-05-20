@@ -229,6 +229,13 @@ public class ParkingServiceImpl implements ParkingService{
         return finalList;
     }
 
+    @Override
+    public ParkingDto getParkingById(Long id) {
+        Parking parking = parkingPort.findById(id);
+        return this.parkingToAddListConvert(parking);
+    }
+
+
     private ParkingDto parkingToAddListConvert(Parking parking) {
         List<ParkingRate> rates = parkingRatePort.getParkingRatesByParking(parking);
         List<ParkingRateDto> ratesDto = rates.stream()

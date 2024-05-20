@@ -51,6 +51,7 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.GET, "/api/v1/parkings/cities").permitAll();
                     http.requestMatchers(HttpMethod.DELETE, "/api/v1/parkings/parking/delete/name/{name}").permitAll();
                     http.requestMatchers(HttpMethod.PUT, "/api/v1/parkings/parking/update").permitAll();
+                    http.requestMatchers(HttpMethod.GET , "/api/v1/parkings/parking/id/{id}").permitAll();
                     
                     // rate endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/rates/rate/new").permitAll();

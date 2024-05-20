@@ -38,7 +38,7 @@ public class ParkingController {
     }
 
     @GetMapping("/parking/name/{name}")
-    public ResponseEntity<ParkingDto> getParking(@PathVariable String name) {
+    public ResponseEntity<ParkingDto> getParkingByName(@PathVariable String name) {
         return new ResponseEntity<>(this.parkingServiceImpl.getParking(name), HttpStatus.OK);
     }
 
@@ -60,6 +60,11 @@ public class ParkingController {
     @PutMapping("/parking/update")
     public ResponseEntity<ParkingDto> modifyParking(@RequestBody @Valid NewParkingRequest newParkingRequest){
         return new ResponseEntity<>(this.parkingServiceImpl.modifyParking(newParkingRequest), HttpStatus.OK);
+    }
+
+    @GetMapping("/parking/id/{id}")
+    public ResponseEntity<ParkingDto> getParkingById(@PathVariable Long id) {
+        return new ResponseEntity<>(this.parkingServiceImpl.getParkingById(id), HttpStatus.OK);
     }
 
 }
