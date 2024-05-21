@@ -66,6 +66,9 @@ public class ReservationJpaAdapter implements ReservationPort {
     @Override
     public List<Reservation> findAllActiveReservationsByUserId(Long id) {
         var activeReservationList = reservationRepository.findActiveReservationsByUserId(id);
+        if (activeReservationList.isEmpty()) {
+            throw new NotFoundException("El usuario con: " + id + " no tiene reservas activas");
+        }
         return activeReservationList.stream()
                 .map(reservationDboMapper::toDomain)
                 .collect(Collectors.toList());
@@ -73,8 +76,11 @@ public class ReservationJpaAdapter implements ReservationPort {
 
     @Override
     public List<Reservation> findAllFinishReservationsByUserId(Long id) {
-        var activeReservationList = reservationRepository.findFinishReservationsByUserId(id);
-        return activeReservationList.stream()
+        var finishReservationsByUserId = reservationRepository.findFinishReservationsByUserId(id);
+        if (finishReservationsByUserId.isEmpty()) {
+            throw new NotFoundException("El usuario con: " + id + " no tiene reservas completadas");
+        }
+        return finishReservationsByUserId.stream()
                 .map(reservationDboMapper::toDomain)
                 .collect(Collectors.toList());
     }
