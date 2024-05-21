@@ -125,7 +125,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .flatMap(role -> role.getPermissionsList().stream())
                 .forEach(permission -> authorityList.add(new SimpleGrantedAuthority(permission.getName())));
 
-        return userDtoMapper.toDto(userCreated);
+        var userDto = userDtoMapper.toDto(userCreated);
+        userDto.setRoleList(userToCreate.getRoleList());
+        return userDto;
     }
 
     public LoginDto loginUser(UserLoginRequest userLoginRequest) {

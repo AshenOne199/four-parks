@@ -34,6 +34,9 @@ public class ReservationEntity {
     @Column(name = "total_price")
     private Float totalPrice;
 
+    @Column(name = "discount", columnDefinition = "boolean default false")
+    private Boolean discount;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private UserEntity user;

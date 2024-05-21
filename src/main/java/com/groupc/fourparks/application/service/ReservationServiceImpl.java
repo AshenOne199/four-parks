@@ -98,6 +98,9 @@ public class ReservationServiceImpl implements ReservationService {
         var reservation = reservationPort.findById(reservationRequest.getIdReservation());
         LocalDateTime timeNow = LocalDateTime.now();
         reservation.setReservationEndTime(timeNow);
+        if (reservation.getReservationStartTime() == null)  {
+            throw new BadRequestException("La reserva aun no se ha iniciado");
+        }
         Duration timeDuration = Duration.between(reservation.getReservationStartTime(), timeNow);
 
         var listParkingRates = parkingRatePort.getParkingRatesByParking(parkingPort.findById(reservation.getParkingSlot().getParkingId().getId()));
@@ -112,6 +115,13 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         Float total = reservation.calculateTotal(timeDuration.toMinutes(), optionalFinalRate.get());
+        if (reservation.getParkingSlot().getParkingId().getLoyalty()){
+            var finishReservation = reservationPort.findAllFinishReservationsByUserId(reservation.getUser().getId());
+            if (!finishReservation.isEmpty() && finishReservation.size() > 3){
+                reservation.setDiscount(true);
+                total = total - (total * 30)/100;
+            }
+        }
         reservation.setTotalPrice(total);
 
         var parkingSlot = parkingSlotPort.getParkingSlot(reservation.getParkingSlot().getId());
