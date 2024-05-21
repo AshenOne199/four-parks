@@ -6,7 +6,13 @@
   <component name="ChangeListManager">
     <list default="true" id="b3a97a6a-dd53-481b-bd86-caa5e85232d5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/scripts/insert_script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/scripts/insert_script.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/EmailServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/EmailServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/UserDetailsServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/UserDetailsServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/usecase/EmailService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/usecase/EmailService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/UserPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/UserPort.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/UserJpaAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/UserJpaAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,7 +156,7 @@
       <workItem from="1716036443814" duration="2577000" />
       <workItem from="1716131596055" duration="2393000" />
       <workItem from="1716178824909" duration="2398000" />
-      <workItem from="1716245148167" duration="643000" />
+      <workItem from="1716245148167" duration="5355000" />
     </task>
     <servers />
   </component>
@@ -180,11 +186,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/ReservationJpaAdapter.java</url>
           <line>37</line>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/UsersManageServiceImpl.java</url>
-          <line>44</line>
-          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

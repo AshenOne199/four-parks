@@ -91,7 +91,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         String password = passwordGeneratorImpl.generateRandomPassword();
         try {
-            emailServiceImpl.sendEmail(new EmailDto(email, "Nueva contraseña", password));
+            emailServiceImpl.sendEmailNewUser(new EmailDto(email, "Nueva contraseña", password));
         } catch (MessagingException e) {
             throw new InternalServerErrorException("Error al enviar email");
         }
@@ -222,6 +222,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             if (userFound.getLoginAttempts() > 3) {
                 userFound.setAccountBlocked(true);
                 userPort.save(userFound);
+
+                var gerenteFound = userPort.findUserByRoleName("GERENTE");
+                try {
+                    emailServiceImpl.sendEmailBlockedUser(new EmailDto(gerenteFound.getEmail(), "Usuario " + userDetails.getUsername() + "ha sido bloqueado", userDetails.getUsername()));
+                } catch (MessagingException e) {
+                    throw new InternalServerErrorException("Error al enviar email");
+                }
+
                 throw new TooManyRequestsException("Cuenta bloqueada. Mas de 3 intentos fallidos. Contacte con un administrador");
             }
             userPort.save(userFound);
