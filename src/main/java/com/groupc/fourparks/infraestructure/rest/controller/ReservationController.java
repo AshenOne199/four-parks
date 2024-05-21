@@ -56,13 +56,13 @@ public class ReservationController {
     }
 
     @GetMapping("/active/user/id/{id}")
-    public ResponseEntity<List<ReservationDto>> getReservationActiveById(@PathVariable Long id) {
-        return new ResponseEntity<>(reservationService.getReservationsActiveById(id), HttpStatus.OK);
+    public ResponseEntity<List<ReservationDto>> getReservationActiveByUserId(@PathVariable Long id) {
+        return new ResponseEntity<>(reservationService.getReservationsActiveByUserId(id), HttpStatus.OK);
     }
 
     @GetMapping("/finish/user/id/{id}")
-    public ResponseEntity<List<ReservationDto>> getReservationFinishById(@PathVariable Long id) {
-        return new ResponseEntity<>(reservationService.getReservationsFinishById(id), HttpStatus.OK);
+    public ResponseEntity<List<ReservationDto>> getReservationFinishByUserId(@PathVariable Long id) {
+        return new ResponseEntity<>(reservationService.getReservationsFinishByUserId(id), HttpStatus.OK);
     }
 
 }

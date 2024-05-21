@@ -81,14 +81,17 @@ INSERT INTO credit_card (user_id, card_number, expiration_date, cvv) VALUES
                                                                          (1, '1111222233334444', '12/25', '123'),
                                                                          (1, '5555666677778888', '10/24', '456');
 
--- Inserts para el usuario con email 'supervisor@gmail.com'
+-- Inserts para el usuario con rol supervisor
 INSERT INTO credit_card (user_id, card_number, expiration_date, cvv) VALUES
                                                                          (2, '2222111133334444', '05/26', '789'),
-                                                                         (2, '9999888877776666', '08/23', '012');
+                                                                         (3, '9999888877776666', '08/26', '123'),
+                                                                         (4, '8888999977776666', '07/26', '321'),
+                                                                         (5, '4444888877776666', '06/27', '741'),
+                                                                         (6, '3333888877776666', '04/26', '963');
 
 -- Inserts para el usuario con email 'user@gmail.com'
 INSERT INTO credit_card (user_id, card_number, expiration_date, cvv) VALUES
-    (3, '3333444455556666', '09/25', '345');
+    (7, '3333444455556666', '09/25', '345');
 
 
 -- Asignar rol de ADMIN al usuario GERENTE

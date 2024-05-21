@@ -147,7 +147,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationDto> getReservationsActiveById(Long userId) {
+    public List<ReservationDto> getReservationsActiveByUserId(Long userId) {
         var userFound = userPort.findUserById(userId);
         var reservations = reservationPort.findAllActiveReservationsByUserId(userFound.getId());
         return reservations.stream()
@@ -156,7 +156,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationDto> getReservationsFinishById(Long userId) {
+    public List<ReservationDto> getReservationsFinishByUserId(Long userId) {
         var userFound = userPort.findUserById(userId);
         var reservations = reservationPort.findAllFinishReservationsByUserId(userFound.getId());
         return reservations.stream()

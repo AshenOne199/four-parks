@@ -13,6 +13,6 @@ public interface ReservationService {
     List<ReservationDto> getAllReservations();
     List<ReservationDto> getReservationsByParkingId(Long userId);
     ReservationDto getReservationById(Long id);
-    List<ReservationDto> getReservationsActiveById(Long userId);
-    List<ReservationDto> getReservationsFinishById(Long userId);
+    List<ReservationDto> getReservationsActiveByUserId(Long userId);
+    List<ReservationDto> getReservationsFinishByUserId(Long userId);
 }
