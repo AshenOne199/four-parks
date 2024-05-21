@@ -56,8 +56,24 @@ public class ReservationJpaAdapter implements ReservationPort {
     }
 
     @Override
-    public List<Reservation> findAllActiveReservations(Long parkingId) {
+    public List<Reservation> findAllActiveReservationsByParkingId(Long parkingId) {
         var activeReservationList = reservationRepository.findActiveReservationsByParkingId(parkingId);
+        return activeReservationList.stream()
+                .map(reservationDboMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Reservation> findAllActiveReservationsByUserId(Long id) {
+        var activeReservationList = reservationRepository.findActiveReservationsByUserId(id);
+        return activeReservationList.stream()
+                .map(reservationDboMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Reservation> findAllFinishReservationsByUserId(Long id) {
+        var activeReservationList = reservationRepository.findFinishReservationsByUserId(id);
         return activeReservationList.stream()
                 .map(reservationDboMapper::toDomain)
                 .collect(Collectors.toList());

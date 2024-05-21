@@ -134,7 +134,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public List<ReservationDto> getReservationsByParkingId(Long parkingId) {
         var parkingFound = parkingPort.findById(parkingId);
-        var reservations = reservationPort.findAllActiveReservations(parkingFound.getId());
+        var reservations = reservationPort.findAllActiveReservationsByParkingId(parkingFound.getId());
         return reservations.stream()
                 .map(reservationRequestMapper::toDto)
                 .collect(Collectors.toList());
@@ -144,5 +144,23 @@ public class ReservationServiceImpl implements ReservationService {
     public ReservationDto getReservationById(Long id) {
         var reservationFound = reservationPort.findById(id);
         return reservationRequestMapper.toDto(reservationFound);
+    }
+
+    @Override
+    public List<ReservationDto> getReservationsActiveById(Long userId) {
+        var userFound = userPort.findUserById(userId);
+        var reservations = reservationPort.findAllActiveReservationsByUserId(userFound.getId());
+        return reservations.stream()
+                .map(reservationRequestMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ReservationDto> getReservationsFinishById(Long userId) {
+        var userFound = userPort.findUserById(userId);
+        var reservations = reservationPort.findAllFinishReservationsByUserId(userFound.getId());
+        return reservations.stream()
+                .map(reservationRequestMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

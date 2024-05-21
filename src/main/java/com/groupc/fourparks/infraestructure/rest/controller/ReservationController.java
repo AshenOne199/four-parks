@@ -55,4 +55,14 @@ public class ReservationController {
         return new ResponseEntity<>(reservationService.getReservationById(id), HttpStatus.OK);
     }
 
+    @GetMapping("/active/user/id/{id}")
+    public ResponseEntity<List<ReservationDto>> getReservationActiveById(@PathVariable Long id) {
+        return new ResponseEntity<>(reservationService.getReservationsActiveById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/finish/user/id/{id}")
+    public ResponseEntity<List<ReservationDto>> getReservationFinishById(@PathVariable Long id) {
+        return new ResponseEntity<>(reservationService.getReservationsFinishById(id), HttpStatus.OK);
+    }
+
 }

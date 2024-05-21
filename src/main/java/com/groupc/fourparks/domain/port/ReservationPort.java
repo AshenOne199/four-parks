@@ -10,5 +10,7 @@ public interface ReservationPort {
     Reservation findById(Long id);
     void deleteActiveReservation(Long id);
     List<Reservation> findAllReservations();
-    List<Reservation> findAllActiveReservations(Long id);
+    List<Reservation> findAllActiveReservationsByParkingId(Long id);
+    List<Reservation> findAllActiveReservationsByUserId(Long id);
+    List<Reservation> findAllFinishReservationsByUserId(Long id);
 }

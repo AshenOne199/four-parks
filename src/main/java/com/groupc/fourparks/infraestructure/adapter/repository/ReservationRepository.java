@@ -12,4 +12,8 @@ public interface ReservationRepository extends JpaRepository<ReservationEntity, 
     List <ReservationEntity> findByUserId(Long userId);
     @Query(value = "SELECT new ReservationEntity(r.id, r.reservationTime, r.reservationStartTime, r.reservationEndTime, r.totalPrice, r.user, r.parkingSlot) FROM ReservationEntity r JOIN ParkingSlotEntity ps ON r.parkingSlot.id = ps.id JOIN SlotStatusEntity ss ON ps.slotStatusId.id = ss.id JOIN ParkingEntity p ON ps.parkingId.id = p.id WHERE r.reservationEndTime IS NULL AND p.id = ?1")
     List <ReservationEntity> findActiveReservationsByParkingId(Long parkingId);
+    @Query(value = "SELECT new ReservationEntity(r.id, r.reservationTime, r.reservationStartTime, r.reservationEndTime, r.totalPrice, r.user, r.parkingSlot) FROM ReservationEntity r WHERE r.reservationEndTime IS NULL AND r.user.id = ?1")
+    List <ReservationEntity> findActiveReservationsByUserId(Long id);
+    @Query(value = "SELECT new ReservationEntity(r.id, r.reservationTime, r.reservationStartTime, r.reservationEndTime, r.totalPrice, r.user, r.parkingSlot) FROM ReservationEntity r WHERE r.reservationEndTime IS NOT NULL AND r.user.id = ?1")
+    List <ReservationEntity> findFinishReservationsByUserId(Long id);
 }
