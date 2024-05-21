@@ -66,13 +66,15 @@ public class UsersManageServiceImpl implements ManagerService {
         userFound.setSecondName(userRegisterRequest.getSecondName());
         userFound.setFirstLastname(userRegisterRequest.getFirstLastname());
         userFound.setSecondLastname(userRegisterRequest.getSecondLastname());
-        userFound.setCreditCard(userRegisterRequestMapper.toDomain(userRegisterRequest).getCreditCard());
 
-        CreditCard ccSample = creditCardPort.getCC(userFound);
-        ccSample.setCardNumber(userFound.getCreditCard().getCardNumber());
-        ccSample.setCvv(userFound.getCreditCard().getCvv());
-        ccSample.setExpirationDate(userFound.getCreditCard().getExpirationDate());
-        creditCardPort.save(ccSample, userFound);
+        if (userFound.getRoles().stream().anyMatch(rol -> rol.getRoleEnum().name().equals("USUARIO"))) {
+            userFound.setCreditCard(userRegisterRequestMapper.toDomain(userRegisterRequest).getCreditCard());
+            CreditCard ccSample = creditCardPort.getCC(userFound);
+            ccSample.setCardNumber(userFound.getCreditCard().getCardNumber());
+            ccSample.setCvv(userFound.getCreditCard().getCvv());
+            ccSample.setExpirationDate(userFound.getCreditCard().getExpirationDate());
+            creditCardPort.save(ccSample, userFound);
+        }
 
         return userToAddListConvert(userPort.save(userFound));
     }
