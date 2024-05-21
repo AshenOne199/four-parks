@@ -4,9 +4,11 @@ import java.time.LocalDate;
 import java.util.*;
 
 
+import com.groupc.fourparks.domain.model.RoleEnum;
 import com.groupc.fourparks.domain.port.CreditCardPort;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -66,6 +68,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new User(userToLoad.getEmail(), userToLoad.getPassword(), getRoles(userToLoad));
     }
 
+    @Transactional
     public UserDto createUser(UserRegisterRequest userRegisterRequest) {
         var userToCreate = userRegisterRequestMapper.toDomain(userRegisterRequest);
 
@@ -80,14 +83,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (roleEntitySet.isEmpty()){
             throw new BadRequestException("Los roles enviados no existen");
         }
-
-        var creditCard = creditCardDtoMapper.toDto(userToCreate.getCreditCard());
-
-        if (!creditCardServiceImpl.validateCreditCard(creditCard)){
-            throw new BadRequestException("La tarjeta de credito no es valida");
-        }
-
-        var creditCardToSave = creditCardDtoMapper.toDomain(creditCard);
 
         String password = passwordGeneratorImpl.generateRandomPassword();
         try {
@@ -113,8 +108,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userToCreate.setIp(remoteAddr);
 
         var userCreated = userPort.save(userToCreate);
-        creditCardPort.save(creditCardToSave, userCreated);
+        if (userCreated.getRoles().stream().anyMatch(rol -> rol.getRoleEnum().name().equals("USUARIO"))) {
+            var creditCard = creditCardDtoMapper.toDto(userToCreate.getCreditCard());
 
+            if (!creditCardServiceImpl.validateCreditCard(creditCard)){
+                throw new BadRequestException("La tarjeta de credito no es valida");
+            }
+            var creditCardToSave = creditCardDtoMapper.toDomain(creditCard);
+            creditCardPort.save(creditCardToSave, userCreated);
+        }
 
         ArrayList<SimpleGrantedAuthority> authorityList = new ArrayList<>();
 
