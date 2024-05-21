@@ -12,4 +12,5 @@ public interface ParkingRatePort {
     ParkingRate getParkingRate(Long id);
     List<ParkingRate> getParkingRatesByParking(Parking parking);
     void deleteParkingRate(ParkingRate parkingRate);
+
 }

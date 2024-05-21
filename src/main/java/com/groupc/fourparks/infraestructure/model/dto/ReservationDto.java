@@ -22,6 +22,7 @@ public class ReservationDto {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime reservationEndTime;
     private Float totalPrice;
+    private Boolean discount;
     private UserDto user;
     private ParkingSlotDto parkingSlot;
 

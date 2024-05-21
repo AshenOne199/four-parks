@@ -18,6 +18,7 @@ public class Reservation {
     private LocalDateTime reservationStartTime;
     private LocalDateTime reservationEndTime;
     private Float totalPrice;
+    private Boolean discount;
     private UserEntity user;
     private ParkingSlotEntity parkingSlot;
 
