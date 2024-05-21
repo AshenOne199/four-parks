@@ -4,6 +4,7 @@ import com.groupc.fourparks.application.mapper.ParkingSlotDtoMapper;
 import com.groupc.fourparks.application.mapper.ReservationRequestMapper;
 import com.groupc.fourparks.application.mapper.SlotStatusDtoMapper;
 import com.groupc.fourparks.application.mapper.UserDtoMapper;
+import com.groupc.fourparks.application.usecase.AuditoryService;
 import com.groupc.fourparks.application.usecase.ReservationService;
 import com.groupc.fourparks.domain.model.ParkingRate;
 import com.groupc.fourparks.domain.port.*;
@@ -36,6 +37,8 @@ public class ReservationServiceImpl implements ReservationService {
     private final ParkingSlotDtoMapper parkingSlotDtoMapper;
     private final SlotStatusDtoMapper slotStatusDtoMapper;
 
+    private final AuditoryService auditoryService;
+
     @Override
     @Transactional
     public ReservationDto createReservation(ReservationRequest reservation) {
@@ -67,6 +70,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         var reservationToCreate = reservationRequestMapper.toDomain(reservationDto);
         var reservationSaved = reservationPort.save(reservationToCreate);
+        auditoryService.registerAuditory(5L, userToSave.getId());
         return reservationRequestMapper.toDto(reservationSaved);
     }
 

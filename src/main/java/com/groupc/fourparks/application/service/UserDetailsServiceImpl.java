@@ -2,9 +2,6 @@ package com.groupc.fourparks.application.service;
 
 import java.time.LocalDate;
 import java.util.*;
-
-
-import com.groupc.fourparks.domain.model.RoleEnum;
 import com.groupc.fourparks.domain.port.CreditCardPort;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.groupc.fourparks.application.mapper.*;
+import com.groupc.fourparks.application.usecase.AuditoryService;
 import com.groupc.fourparks.infraestructure.model.dto.UserDto;
 import com.groupc.fourparks.infraestructure.exception.*;
 import com.groupc.fourparks.infraestructure.model.request.UserNewPasswordRequest;
@@ -55,6 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private final LoginDtoMapper loginDtoMapper;
     private final CreditCardDtoMapper creditCardDtoMapper;
 
+    private final AuditoryService auditoryService;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var userToLoad = userPort.findUserByEmail(username);
@@ -164,7 +163,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         login.setSecondName(user.getSecondName());
         login.setFirstLastname(user.getFirstLastname());
         login.setSecondLastname(user.getSecondLastname());
-
+        auditoryService.registerAuditory(1L, user.getId());
         return login;
     }
 
@@ -205,6 +204,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         user.setLoginAttempts(0);
         var userSaved = userPort.save(user);
 
+        auditoryService.registerAuditory(7L, userSaved.getId());
         return userDtoMapper.toDto(userSaved);
     }
 
@@ -221,8 +221,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             userFound.setLoginAttempts(userFound.getLoginAttempts()+1);
+            auditoryService.registerAuditory(3L, userFound.getId());
             if (userFound.getLoginAttempts() > 3) {
                 userFound.setAccountBlocked(true);
+                auditoryService.registerAuditory(4L, userFound.getId());
                 userPort.save(userFound);
 
                 var gerenteFound = userPort.findUserByRoleName("GERENTE");

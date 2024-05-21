@@ -1,6 +1,7 @@
 package  com.groupc.fourparks.infraestructure.model.request;
 
 import com.groupc.fourparks.infraestructure.adapter.entity.ActivityEntity;
+import com.groupc.fourparks.infraestructure.adapter.entity.UserEntity;
 
 import lombok.*;
 
@@ -15,6 +16,7 @@ public class AuditoryRequest {
     private String ip;
     private Date happening_date;
     private ActivityEntity activity;
+    private UserEntity user;
 }
 
 

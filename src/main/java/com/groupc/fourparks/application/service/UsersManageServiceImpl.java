@@ -2,6 +2,7 @@ package com.groupc.fourparks.application.service;
 
 import com.groupc.fourparks.application.mapper.UserRegisterRequestMapper;
 import com.groupc.fourparks.application.mapper.CreditCardDtoMapper;
+import com.groupc.fourparks.application.usecase.AuditoryService;
 import com.groupc.fourparks.application.usecase.ManagerService;
 import com.groupc.fourparks.domain.model.CreditCard;
 import com.groupc.fourparks.domain.model.User;
@@ -28,6 +29,7 @@ public class UsersManageServiceImpl implements ManagerService {
     private final RoleRepository roleRepository;
     private final CreditCardPort creditCardPort;
     private final CreditCardDtoMapper creditCardDtoMapper;
+    private final AuditoryService auditoryService;
 
 
     @Override
@@ -74,6 +76,8 @@ public class UsersManageServiceImpl implements ManagerService {
         ccSample.setExpirationDate(userFound.getCreditCard().getExpirationDate());
         creditCardPort.save(ccSample, userFound);
 
+        
+        auditoryService.registerAuditory(2L, userFound.getId());
         return userToAddListConvert(userPort.save(userFound));
     }
 

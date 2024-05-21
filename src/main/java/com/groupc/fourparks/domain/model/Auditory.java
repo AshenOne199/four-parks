@@ -1,6 +1,7 @@
 package com.groupc.fourparks.domain.model;
 
-import com.groupc.fourparks.infraestructure.adapter.entity.ActivityEntity;
+
+
 import lombok.*;
 
 import java.util.Date;
@@ -15,5 +16,6 @@ public class Auditory {
     private Long id;
     private String ip;
     private Date happening_date;
-    private ActivityEntity activity;
+    private Activity activity;
+    private User user;
 }

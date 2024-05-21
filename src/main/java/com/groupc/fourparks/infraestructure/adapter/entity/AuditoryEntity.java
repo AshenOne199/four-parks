@@ -27,8 +27,11 @@ public class AuditoryEntity {
     @Column(name = "happening_date")
     private Date happeningDate;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private ActivityEntity activity;
+
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private UserEntity user;
 }
 
 
