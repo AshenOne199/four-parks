@@ -7,6 +7,7 @@ import com.groupc.fourparks.infraestructure.model.dto.UserDto;
 import com.groupc.fourparks.infraestructure.model.request.ActivityRequest;
 import com.groupc.fourparks.infraestructure.model.request.AuditoryRequest;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,8 @@ public interface AuditoryService {
 
     public Activity RegisterActivity(ActivityRequest ActivityRequest);
     AuditoryDto RegisterActivity(AuditoryRequest auditoryRequest);
+
+    List<UserDto> usersOnDate(Date localDate, Date localDate2);
 
 
     //4 How many reservations were done on dates
