@@ -44,8 +44,8 @@ public class StatsController {
             Date.from(period.getEnding().atStartOfDay(defaultZoneId).toInstant())),HttpStatus.OK); 
     }
 
-    @PostMapping("/incomesOnDate")
-    public ResponseEntity<String> incomesOnDate(@RequestBody @Valid DateInfo period)
+    @PostMapping("/incomesOnDate/{id}")
+    public ResponseEntity<String> incomesOnDate(@RequestBody @Valid DateInfo period,@PathVariable Long id)
 
     {   ZoneId defaultZoneId;
         defaultZoneId = ZoneId.systemDefault();
@@ -53,7 +53,7 @@ public class StatsController {
         
         return new ResponseEntity<String>(this.statsService.incomesOnDate(          
             Date.from(period.getBeginning().atStartOfDay(defaultZoneId).toInstant()),
-            Date.from(period.getEnding().atStartOfDay(defaultZoneId).toInstant())),HttpStatus.OK); 
+            Date.from(period.getEnding().atStartOfDay(defaultZoneId).toInstant()),id),HttpStatus.OK); 
     }
     
 

@@ -20,7 +20,7 @@ import lombok.AllArgsConstructor;
 public class StatsServiceImpl implements StatsService {
     private final ReservationService reservationService;
     @Override
-    public String incomesOnDate(Date beginning, Date ending) 
+    public String incomesOnDate(Date beginning, Date ending, Long id) 
     {
         List<ReservationDto> reservationsReceiver=new ArrayList<>();
         reservationsReceiver = reservationService.getAllReservations();
@@ -31,9 +31,20 @@ public class StatsServiceImpl implements StatsService {
             ZonedDateTime zdt = ldt.atZone(ZoneId.systemDefault());
             Date comparableDate = Date.from(zdt.toInstant());
             
-            if ((comparableDate.after(beginning) && comparableDate.before(ending))) {
-            totalAmount += reservationDto.getTotalPrice(); 
+            if(id == -1)
+            {
+                if ((comparableDate.after(beginning) && comparableDate.before(ending))) {
+                    totalAmount += reservationDto.getTotalPrice(); 
+                }
+            
             }
+            else
+            {
+                if ((comparableDate.after(beginning) && reservationDto.getParkingSlot().getParkingId().getId() == id &&comparableDate.before(ending))) {
+                    totalAmount += reservationDto.getTotalPrice(); 
+                }
+            }
+            
             
         }
         String returnable = "" + totalAmount;
