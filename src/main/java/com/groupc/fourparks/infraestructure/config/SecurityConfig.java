@@ -89,6 +89,9 @@ public class SecurityConfig {
                     //Auditory endpoints 
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auditory/usersCreatedOnDate").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auditory/getAuditories/{id}").permitAll();
+
+                    //Stats endpoint 
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/stats/incomesOnDate").permitAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();
