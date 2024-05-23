@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,6 +80,17 @@ public class ReservationJpaAdapter implements ReservationPort {
         var finishReservationsByUserId = reservationRepository.findFinishReservationsByUserId(id);
         if (finishReservationsByUserId.isEmpty()) {
             throw new NotFoundException("El usuario con: " + id + " no tiene reservas completadas");
+        }
+        return finishReservationsByUserId.stream()
+                .map(reservationDboMapper::toDomain)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Reservation> findAllFinishReservationsByUserIdOptional(Long id) {
+        var finishReservationsByUserId = reservationRepository.findFinishReservationsByUserId(id);
+        if (finishReservationsByUserId.isEmpty()) {
+            return null;
         }
         return finishReservationsByUserId.stream()
                 .map(reservationDboMapper::toDomain)

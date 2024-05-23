@@ -116,8 +116,8 @@ public class ReservationServiceImpl implements ReservationService {
 
         Float total = reservation.calculateTotal(timeDuration.toMinutes(), optionalFinalRate.get());
         if (reservation.getParkingSlot().getParkingId().getLoyalty()){
-            var finishReservation = reservationPort.findAllFinishReservationsByUserId(reservation.getUser().getId());
-            if (!finishReservation.isEmpty() && finishReservation.size() > 3){
+            var finishReservation = reservationPort.findAllFinishReservationsByUserIdOptional(reservation.getUser().getId());
+            if (finishReservation != null && !finishReservation.isEmpty() && finishReservation.size() > 3){
                 reservation.setDiscount(true);
                 total = total - (total * 30)/100;
             }
