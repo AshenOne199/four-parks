@@ -28,31 +28,22 @@ import org.springframework.web.bind.annotation.*;
 public class AuditoryController {
 
     private final AuditoryService auditoryService;
-    
 
-    
+
     @PostMapping("/usersCreatedOnDate")
-    public ResponseEntity<List<UserDto>> usersCreatedOnDate(@RequestBody @Valid DateInfo period)
-
-    {   ZoneId defaultZoneId;
-        defaultZoneId = ZoneId.systemDefault();
-       
-        
-        return new ResponseEntity<>(this.auditoryService.usersOnDate(          
-            Date.from(period.getBeginning().atStartOfDay(defaultZoneId).toInstant()),
-            Date.from(period.getEnding().atStartOfDay(defaultZoneId).toInstant())),HttpStatus.OK); 
+    public ResponseEntity<List<UserDto>> usersCreatedOnDate(@RequestBody @Valid DateInfo period) {
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        return new ResponseEntity<>(this.auditoryService.usersOnDate(
+                Date.from(period.getBeginning().atStartOfDay(defaultZoneId).toInstant()),
+                Date.from(period.getEnding().atStartOfDay(defaultZoneId).toInstant())), HttpStatus.OK);
     }
 
     @PostMapping("/getAuditories/{id}")
-    public ResponseEntity<List<AuditoryDto>> getAuditories(@RequestBody @Valid DateInfo period,@PathVariable Long id)
-
-    {   ZoneId defaultZoneId;
-        defaultZoneId = ZoneId.systemDefault();
-       
-        
-        return new ResponseEntity<>(this.auditoryService.getAuditories(          
-            Date.from(period.getBeginning().atStartOfDay(defaultZoneId).toInstant()),
-            Date.from(period.getEnding().atStartOfDay(defaultZoneId).toInstant()),id),HttpStatus.OK); 
+    public ResponseEntity<List<AuditoryDto>> getAuditories(@RequestBody @Valid DateInfo period, @PathVariable Long id) {
+        ZoneId defaultZoneId = ZoneId.systemDefault();
+        return new ResponseEntity<>(this.auditoryService.getAuditories(
+                Date.from(period.getBeginning().atStartOfDay(defaultZoneId).toInstant()),
+                Date.from(period.getEnding().atStartOfDay(defaultZoneId).toInstant()), id), HttpStatus.OK);
     }
 
 }

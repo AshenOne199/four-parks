@@ -23,13 +23,14 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
 public class AuditoryServiceImpl implements AuditoryService {
 
     private final AuditoryPort auditoryPort;
-    
+
     private final AuditoryDtoMapper auditoryDtoMapper;
 
     private final UserPort userPort;
@@ -40,16 +41,11 @@ public class AuditoryServiceImpl implements AuditoryService {
 
     @Override
     public List<UserDto> usersOnDate(Date beginning, Date ending) {
-        
         List<UserDto> returnable = new ArrayList<>();
-        List<UserEntity> receiver = new ArrayList<>();
+        List<UserEntity> receiver = userPort.findAll();
 
-        receiver = userPort.findAll();
-
-        for(UserEntity user : receiver)
-        {
-            if(user.getCreatedAt().after(beginning) && user.getCreatedAt().before(ending))
-            {
+        for (UserEntity user : receiver) {
+            if (user.getCreatedAt().after(beginning) && user.getCreatedAt().before(ending)) {
                 returnable.add(userDtoMapper.toDto(userDboMapper.toDomain(user)));
             }
         }
@@ -58,71 +54,50 @@ public class AuditoryServiceImpl implements AuditoryService {
     }
 
     @Override
-    public AuditoryDto registerAuditory( Long activityId,Long userId) {
+    public AuditoryDto registerAuditory(Long activityId, Long userId) {
         Auditory auditory = new Auditory();
-        List<Activity> allActivities = new ArrayList<>();
-        allActivities = activityPort.read();
-        for(Activity activity : allActivities)
-        {
-            if (activity.getId() == activityId) {
+        List<Activity> allActivities = activityPort.read();
+        for (Activity activity : allActivities) {
+            if (Objects.equals(activity.getId(), activityId)) {
                 auditory.setActivity(activity);
-                
+
             }
         }
-
-        List<User> allUsers = new ArrayList<>();
-        allUsers = userPort.findAllUsers();
-        for(User user : allUsers)
-        {
-            if (user.getId() == userId) {
+        List<User> allUsers = userPort.findAllUsers();
+        for (User user : allUsers) {
+            if (Objects.equals(user.getId(), userId)) {
                 auditory.setUser(user);
-                
-                
+
+
             }
         }
-         
-
         auditory.setIp(auditory.getUser().getIp());
-        
-       
-        AuditoryDto returnable = new AuditoryDto();
-        returnable = auditoryDtoMapper.toDto(auditoryPort.registerAuditory(auditory)); 
-        return returnable;
+        return auditoryDtoMapper.toDto(auditoryPort.registerAuditory(auditory));
     }
 
     @Override
-    public List<AuditoryDto> getAuditories(Date beginning, Date ending, Long userId) 
-    {
+    public List<AuditoryDto> getAuditories(Date beginning, Date ending, Long userId) {
         List<AuditoryDto> returnable = new ArrayList<>();
-        List<Auditory> receiver = new ArrayList<>();
-
-        receiver = auditoryPort.read();
-        for(Auditory auditory:receiver)
-        {
+        List<Auditory> receiver = auditoryPort.read();
+        for (Auditory auditory : receiver) {
             if (userId == -1L) {
-                if(auditory.getHappening_date().after(beginning) && auditory.getHappening_date().before(ending))
-                {
+                if (auditory.getHappening_date().after(beginning) && auditory.getHappening_date().before(ending)) {
                     AuditoryDto auditoryDto = auditoryDtoMapper.toDto(auditory);
                     auditoryDto.setUserDto(userDtoMapper.toDto(auditory.getUser()));
-                    auditoryDto.setHappening_date(auditory.getHappening_date()); 
+                    auditoryDto.setHappening_date(auditory.getHappening_date());
                     returnable.add(auditoryDto);
-                } 
-            }
-            else
-            {
-                if(auditory.getHappening_date().after(beginning) && auditory.getHappening_date().before(ending) && auditory.getUser().getId() == userId)
-                {
+                }
+            } else {
+                if (auditory.getHappening_date().after(beginning) && auditory.getHappening_date().before(ending) && Objects.equals(auditory.getUser().getId(), userId)) {
                     AuditoryDto auditoryDto = auditoryDtoMapper.toDto(auditory);
                     auditoryDto.setUserDto(userDtoMapper.toDto(auditory.getUser()));
-                    
-                    auditoryDto.setHappening_date(auditory.getHappening_date()); 
+
+                    auditoryDto.setHappening_date(auditory.getHappening_date());
                     returnable.add(auditoryDto);
-                } 
+                }
             }
-            
+
         }
         return returnable;
-
-        
     }
 }
