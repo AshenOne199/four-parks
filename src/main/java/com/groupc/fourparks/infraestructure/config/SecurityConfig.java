@@ -52,7 +52,7 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.DELETE, "/api/v1/parkings/parking/delete/name/{name}").permitAll();
                     http.requestMatchers(HttpMethod.PUT, "/api/v1/parkings/parking/update").permitAll();
                     http.requestMatchers(HttpMethod.GET , "/api/v1/parkings/parking/id/{id}").permitAll();
-                    
+
                     // rate endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/rates/rate/new").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/rates/rate/id/{id}").permitAll();
@@ -69,12 +69,13 @@ public class SecurityConfig {
 
                     // manager endpoints
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/all").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/freeAdmins").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/role/{role}").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/email/{email}").permitAll();
                     http.requestMatchers(HttpMethod.DELETE, "/api/v1/users/user/delete/email/{email}").permitAll();
                     http.requestMatchers(HttpMethod.PUT, "/api/v1/users/user/update").permitAll();
 
-                    
+
                     // reservation endpoints
                     http.requestMatchers(HttpMethod.GET, "/api/v1/reservations/all").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/reservations/reservation/new").permitAll();
@@ -86,11 +87,11 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.GET, "/api/v1/reservations/active/user/id/{id}").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/reservations/finish/user/id/{id}").permitAll();
 
-                    //Auditory endpoints 
+                    //Auditory endpoints
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auditory/usersCreatedOnDate").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/auditory/getAuditories/{id}").permitAll();
 
-                    //Stats endpoint 
+                    //Stats endpoint
                     http.requestMatchers(HttpMethod.POST, "/api/v1/stats/incomesOnDate/{date}").permitAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
