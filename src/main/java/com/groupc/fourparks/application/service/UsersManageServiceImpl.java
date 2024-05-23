@@ -101,25 +101,33 @@ public class UsersManageServiceImpl implements ManagerService {
 
     @Override
     public List<UserDto> getFreeAdmins() {
-        List<UserDto> returnable = new ArrayList<>();
         List<UserDto> receiver = new ArrayList<>();
+        List<UserDto> removable = new ArrayList<>();
+        List<UserDto> returnable = new ArrayList<>();
 
         List<ParkingDto> parkingsDtos = new ArrayList<>();
-        returnable = userByRole(2L);
+        receiver = userByRole(2L);
 
         parkingsDtos = parkingService.getParkings();
 
-        for (UserDto userDto : returnable) {
+        for (UserDto userDto : receiver) {
             for (ParkingDto parkingDto : parkingsDtos) {
                 if (parkingDto.getAdmin() != null) {
                     if (Objects.equals(parkingDto.getAdmin().getEmail(), userDto.getEmail())) {
-                        returnable.remove(userDto);
+                        removable.add(userDto);
+                        
                     }
                 }
 
             }
-        }
+        } 
 
+        for(UserDto userDto : receiver)        
+        {
+            if (!removable.contains(userDto)) {
+                returnable.add(userDto);
+            }
+        }
 
         return returnable;
     }
