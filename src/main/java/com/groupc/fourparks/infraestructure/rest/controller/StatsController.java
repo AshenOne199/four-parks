@@ -43,6 +43,19 @@ public class StatsController {
             Date.from(period.getBeginning().atStartOfDay(defaultZoneId).toInstant()),
             Date.from(period.getEnding().atStartOfDay(defaultZoneId).toInstant())),HttpStatus.OK); 
     }
+    @PostMapping("/getUsersForParking/{id}")
+    public ResponseEntity<List<UserDto>> getUsersForParking(@RequestBody @Valid DateInfo period,@PathVariable Long id)
+    {
+        ZoneId defaultZoneId;
+        defaultZoneId = ZoneId.systemDefault();
+       
+        
+        return new ResponseEntity<List<UserDto>>(this.statsService.getUsersForParking(
+            Date.from(period.getBeginning().atStartOfDay(defaultZoneId).toInstant()),
+            Date.from(period.getEnding().atStartOfDay(defaultZoneId).toInstant()),
+            id
+        ),HttpStatus.OK); 
+    }
 
     @PostMapping("/incomesOnDate/{id}")
     public ResponseEntity<String> incomesOnDate(@RequestBody @Valid DateInfo period,@PathVariable Long id)

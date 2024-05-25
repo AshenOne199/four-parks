@@ -13,6 +13,7 @@ import java.util.Date;
 @Setter
 public class AuditoryDto {
 
+    private Long id;
     private String ip;
     private Date happening_date;
     private Activity activity;
