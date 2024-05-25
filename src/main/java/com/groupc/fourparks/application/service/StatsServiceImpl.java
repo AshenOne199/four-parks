@@ -54,7 +54,6 @@ public class StatsServiceImpl implements StatsService {
         List<ReservationDto> reservationsReceiver = reservationService.getAllReservations();
         List<UserDto> returnable = new ArrayList<>();
         for (ReservationDto reservationDto : reservationsReceiver) {
-            System.out.println(reservationDto.getParkingSlot().getParkingId().getId());
 
             LocalDateTime ldt = reservationDto.getReservationStartTime();
 
@@ -79,20 +78,46 @@ public class StatsServiceImpl implements StatsService {
                 if ((comparableDate.after(beginning) && comparableDate.before(ending)
                         && !returnable.contains(reservationDto.getUser())
                         && reservationDto.getParkingSlot().getParkingId().getId() == id)) {
-                            boolean addableConfirmation = true;
-                            for (UserDto userDto : returnable) {
-                                if (userDto.getId() == addable.getId())
-                                    addableConfirmation = false;
-                            }
-                            if (addableConfirmation) {
-        
-                                returnable.add(addable);
-                            }
+                    boolean addableConfirmation = true;
+                    for (UserDto userDto : returnable) {
+                        if (userDto.getId() == addable.getId())
+                            addableConfirmation = false;
+                    }
+                    if (addableConfirmation) {
+
+                        returnable.add(addable);
+                    }
                 }
             }
         }
 
         return returnable;
+    }
+
+    @Override
+    public String reservationsOnDate(Date beginning, Date ending, Long id) {
+        List<ReservationDto> returnable = new ArrayList();
+        List<ReservationDto> reservationsReceiver = reservationService.getAllReservations();
+        for (ReservationDto reservationDto : reservationsReceiver) {
+
+            LocalDateTime ldt = reservationDto.getReservationStartTime();
+
+            ZonedDateTime zdt = ldt.atZone(ZoneId.systemDefault());
+            Date comparableDate = Date.from(zdt.toInstant());
+
+            if (id == -1) {
+                if (comparableDate.after(beginning) && comparableDate.before(ending))
+                    returnable.add(reservationDto);
+
+            } else {
+                if (comparableDate.after(beginning) && comparableDate.before(ending) && reservationDto.getParkingSlot().getParkingId().getId()==id)
+                    returnable.add(reservationDto);
+
+            }
+        }
+        return "" + returnable.size();
+        
+
     }
 
 }

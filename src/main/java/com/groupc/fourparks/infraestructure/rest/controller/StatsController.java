@@ -2,8 +2,6 @@ package com.groupc.fourparks.infraestructure.rest.controller;
 
 import com.groupc.fourparks.application.usecase.AuditoryService;
 import com.groupc.fourparks.application.usecase.StatsService;
-import com.groupc.fourparks.domain.model.Auditory;
-import com.groupc.fourparks.infraestructure.model.dto.AuditoryDto;
 import com.groupc.fourparks.infraestructure.model.dto.UserDto;
 
 import com.groupc.fourparks.infraestructure.model.request.DateInfo;
@@ -51,6 +49,20 @@ public class StatsController {
        
         
         return new ResponseEntity<List<UserDto>>(this.statsService.getUsersForParking(
+            Date.from(period.getBeginning().atStartOfDay(defaultZoneId).toInstant()),
+            Date.from(period.getEnding().atStartOfDay(defaultZoneId).toInstant()),
+            id
+        ),HttpStatus.OK); 
+    }
+
+    @PostMapping("/reservationsOnDate/{id}")
+    public ResponseEntity<String> reservationsOnDate(@RequestBody @Valid DateInfo period,@PathVariable Long id)
+    {
+        ZoneId defaultZoneId;
+        defaultZoneId = ZoneId.systemDefault();
+       
+        
+        return new ResponseEntity<String>(this.statsService.reservationsOnDate(
             Date.from(period.getBeginning().atStartOfDay(defaultZoneId).toInstant()),
             Date.from(period.getEnding().atStartOfDay(defaultZoneId).toInstant()),
             id

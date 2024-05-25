@@ -95,6 +95,7 @@ public class SecurityConfig {
                     //Stats endpoint
                     http.requestMatchers(HttpMethod.POST, "/api/v1/stats/incomesOnDate/{date}").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/v1/stats/getUsersForParking/{id}").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/stats/reservationsOnDate/{id}").permitAll();
                 })
                 .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
                 .build();
