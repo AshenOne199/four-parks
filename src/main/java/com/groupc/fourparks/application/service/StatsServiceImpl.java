@@ -99,7 +99,7 @@ public class StatsServiceImpl implements StatsService {
         List<ReservationDto> returnable = new ArrayList();
         List<ReservationDto> reservationsReceiver = reservationService.getAllReservations();
         for (ReservationDto reservationDto : reservationsReceiver) {
-            System.out.println(reservationDto.getReservationStartTime() + " " + reservationDto.getParkingSlot().getParkingId().getId() + " " + reservationDto.getParkingSlot().getVehicleTypeId().getType());
+
             LocalDateTime ldt = reservationDto.getReservationStartTime();
 
             ZonedDateTime zdt = ldt.atZone(ZoneId.systemDefault());
@@ -110,19 +110,19 @@ public class StatsServiceImpl implements StatsService {
                     returnable.add(reservationDto);
 
             } else {
-                if (comparableDate.after(beginning) && comparableDate.before(ending) && reservationDto.getParkingSlot().getParkingId().getId()==id)
+                if (comparableDate.after(beginning) && comparableDate.before(ending)
+                        && reservationDto.getParkingSlot().getParkingId().getId() == id)
                     returnable.add(reservationDto);
 
             }
         }
         return "" + returnable.size();
-        
 
     }
 
     @Override
     public String vehicleType(Date beginning, Date ending, Long id, Long idTypeVehicle) {
-        
+
         List<ReservationDto> returnable = new ArrayList();
         List<ReservationDto> reservationsReceiver = reservationService.getAllReservations();
         for (ReservationDto reservationDto : reservationsReceiver) {
@@ -133,11 +133,14 @@ public class StatsServiceImpl implements StatsService {
             Date comparableDate = Date.from(zdt.toInstant());
 
             if (id == -1) {
-                if (comparableDate.after(beginning) && comparableDate.before(ending) && reservationDto.getParkingSlot().getVehicleTypeId().getId() == idTypeVehicle)
+                if (comparableDate.after(beginning) && comparableDate.before(ending)
+                        && reservationDto.getParkingSlot().getVehicleTypeId().getId() == idTypeVehicle)
                     returnable.add(reservationDto);
 
             } else {
-                if (comparableDate.after(beginning) && comparableDate.before(ending) && reservationDto.getParkingSlot().getParkingId().getId()==id&& reservationDto.getParkingSlot().getVehicleTypeId().getId() == idTypeVehicle)
+                if (comparableDate.after(beginning) && comparableDate.before(ending)
+                        && reservationDto.getParkingSlot().getParkingId().getId() == id
+                        && reservationDto.getParkingSlot().getVehicleTypeId().getId() == idTypeVehicle)
                     returnable.add(reservationDto);
 
             }
