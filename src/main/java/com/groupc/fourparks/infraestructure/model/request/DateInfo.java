@@ -15,5 +15,5 @@ import lombok.Setter;
 public class DateInfo {
     LocalDate beginning;
     LocalDate ending;
-
+    Long vehicleTypeCode;
 }

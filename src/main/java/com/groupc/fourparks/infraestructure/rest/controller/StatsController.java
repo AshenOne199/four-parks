@@ -29,6 +29,19 @@ public class StatsController {
     private final AuditoryService auditoryService;
     private final StatsService statsService;
 
+    @PostMapping("/vehicleType/{id}")
+    public ResponseEntity<String> vehicleType(@RequestBody @Valid DateInfo period,@PathVariable Long id)
+    {
+        ZoneId defaultZoneId;
+        defaultZoneId = ZoneId.systemDefault();
+       
+        
+        return new ResponseEntity<String>(this.statsService.vehicleType(
+            Date.from(period.getBeginning().atStartOfDay(defaultZoneId).toInstant()),
+            Date.from(period.getEnding().atStartOfDay(defaultZoneId).toInstant()),
+            id,period.getVehicleTypeCode()
+        ),HttpStatus.OK); 
+    }
     
     @PostMapping("/usersCreatedOnDate")
     public ResponseEntity<List<UserDto>> usersCreatedOnDate(@RequestBody @Valid DateInfo period)
