@@ -72,6 +72,7 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/freeAdmins").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/role/{role}").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/email/{email}").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/users/user/id/{id}").permitAll();
                     http.requestMatchers(HttpMethod.DELETE, "/api/v1/users/user/delete/email/{email}").permitAll();
                     http.requestMatchers(HttpMethod.PUT, "/api/v1/users/user/update").permitAll();
 

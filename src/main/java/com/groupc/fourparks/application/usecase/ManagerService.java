@@ -12,4 +12,5 @@ public interface ManagerService {
      void deleteUser(String userEmail);
 
      List<UserDto> getFreeAdmins();
+     UserDto getOneUserId(Long id);
 }

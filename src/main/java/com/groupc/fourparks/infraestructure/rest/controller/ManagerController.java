@@ -42,6 +42,10 @@ public class ManagerController {
     public ResponseEntity<UserDto> getUser(@PathVariable String email) {
         return new ResponseEntity<>(this.managerService.getOneUser(email),HttpStatus.OK);
     }
+    @GetMapping("/user/id/{id}")
+    public ResponseEntity<UserDto> getUserId(@PathVariable Long id) {
+        return new ResponseEntity<UserDto>(this.managerService.getOneUserId(id),HttpStatus.OK);
+    }
 
     @DeleteMapping("/user/delete/email/{email}")
     public void deleteUser( @PathVariable String email) {

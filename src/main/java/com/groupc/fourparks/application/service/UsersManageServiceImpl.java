@@ -35,7 +35,6 @@ public class UsersManageServiceImpl implements ManagerService {
 
     private final ParkingService parkingService;
 
-
     @Override
     public List<UserDto> readUsers() {
         List<UserDto> returnable = new ArrayList<>();
@@ -82,7 +81,6 @@ public class UsersManageServiceImpl implements ManagerService {
             creditCardPort.save(ccSample, userFound);
         }
 
-
         auditoryService.registerAuditory(2L, userFound.getId());
         return userToAddListConvert(userPort.save(userFound));
     }
@@ -115,15 +113,14 @@ public class UsersManageServiceImpl implements ManagerService {
                 if (parkingDto.getAdmin() != null) {
                     if (Objects.equals(parkingDto.getAdmin().getEmail(), userDto.getEmail())) {
                         removable.add(userDto);
-                        
+
                     }
                 }
 
             }
-        } 
+        }
 
-        for(UserDto userDto : receiver)        
-        {
+        for (UserDto userDto : receiver) {
             if (!removable.contains(userDto)) {
                 returnable.add(userDto);
             }
@@ -135,7 +132,6 @@ public class UsersManageServiceImpl implements ManagerService {
     private UserDto userToAddListConvert(User user) {
         UserDto userToAddList = new UserDto();
         userToAddList.setId(user.getId());
-
 
         userToAddList.setCreditCard(creditCardDtoMapper.toDto(creditCardPort.getCC(user)));
         userToAddList.setEmail(user.getEmail());
@@ -153,5 +149,16 @@ public class UsersManageServiceImpl implements ManagerService {
         }
         userToAddList.setRoleList(roleListToAdd);
         return userToAddList;
+    }
+
+    @Override
+    public UserDto getOneUserId(Long id) {
+
+        for (UserDto userDto : readUsers()) {
+            if (userDto.getId() == id)
+                return userDto;
+
+        }
+        return new UserDto();
     }
 }
