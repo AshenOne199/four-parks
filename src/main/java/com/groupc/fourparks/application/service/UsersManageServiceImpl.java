@@ -1,7 +1,9 @@
 package com.groupc.fourparks.application.service;
 
 import com.groupc.fourparks.application.mapper.UserRegisterRequestMapper;
+import com.groupc.fourparks.application.service.PatternsHelpers.ModifyUserDirector;
 import com.groupc.fourparks.application.mapper.CreditCardDtoMapper;
+import com.groupc.fourparks.application.mapper.UserDtoMapper;
 import com.groupc.fourparks.application.usecase.AuditoryService;
 import com.groupc.fourparks.application.usecase.ManagerService;
 import com.groupc.fourparks.application.usecase.ParkingService;
@@ -28,9 +30,10 @@ public class UsersManageServiceImpl implements ManagerService {
 
     private final UserRegisterRequestMapper userRegisterRequestMapper;
     private final UserPort userPort;
+    private final UserDtoMapper userDtoMapper;
     private final RoleRepository roleRepository;
     private final CreditCardPort creditCardPort;
-    private final CreditCardDtoMapper creditCardDtoMapper;
+    private final CreditCardDtoMapper CreditCardDtoMapper;
     private final AuditoryService auditoryService;
 
     private final ParkingService parkingService;
@@ -40,7 +43,10 @@ public class UsersManageServiceImpl implements ManagerService {
         List<UserDto> returnable = new ArrayList<>();
         List<User> receiver = userPort.findAllUsers();
         for (User user : receiver) {
-            returnable.add((userToAddListConvert(user)));
+            UserDto addable = userDtoMapper.toDto((user));
+            addable.setCreditCard(CreditCardDtoMapper.toDto(creditCardPort.getCC(user)));
+            addable.setRoleList(user.getRoleList());
+            returnable.add(addable);
         }
         return returnable;
     }
@@ -52,8 +58,12 @@ public class UsersManageServiceImpl implements ManagerService {
         RoleEntity roleToVerify = roleRepository.getReferenceById(rol);
         for (User user : receiver) {
             if (user.getRoles().contains(roleToVerify)) {
-                returnable.add((userToAddListConvert(user)));
+                UserDto addable = userDtoMapper.toDto((user));
+                addable.setCreditCard(CreditCardDtoMapper.toDto(creditCardPort.getCC(user)));
+                addable.setRoleList(user.getRoleList());
+                returnable.add(addable);
             }
+
         }
         return returnable;
     }
@@ -61,28 +71,37 @@ public class UsersManageServiceImpl implements ManagerService {
     @Override
     public UserDto getOneUser(String email) {
         User user = userPort.findUserByEmail(email);
-        return userToAddListConvert(user);
+
+        UserDto addable = userDtoMapper.toDto((user));
+        addable.setCreditCard(CreditCardDtoMapper.toDto(creditCardPort.getCC(user)));
+        addable.setRoleList(user.getRoleList());
+
+        return addable;
     }
 
     @Override
     public UserDto modifyUser(UserRegisterRequest userRegisterRequest) {
-        User userFound = userPort.findUserByEmail(userRegisterRequest.getEmail());
-        userFound.setFirstName(userRegisterRequest.getFirstName());
-        userFound.setSecondName(userRegisterRequest.getSecondName());
-        userFound.setFirstLastname(userRegisterRequest.getFirstLastname());
-        userFound.setSecondLastname(userRegisterRequest.getSecondLastname());
+        ModifyUserDirector modifyUserDirector = new ModifyUserDirector();
+        User found = userPort.findUserByEmail(userRegisterRequest.getEmail());
+        CreditCard creditCardSendable = new CreditCard();
 
-        if (userFound.getRoles().stream().anyMatch(rol -> rol.getRoleEnum().name().equals("USUARIO"))) {
-            userFound.setCreditCard(userRegisterRequestMapper.toDomain(userRegisterRequest).getCreditCard());
-            CreditCard ccSample = creditCardPort.getCC(userFound);
-            ccSample.setCardNumber(userFound.getCreditCard().getCardNumber());
-            ccSample.setCvv(userFound.getCreditCard().getCvv());
-            ccSample.setExpirationDate(userFound.getCreditCard().getExpirationDate());
-            creditCardPort.save(ccSample, userFound);
+        creditCardSendable.setCardNumber(userRegisterRequest.getCreditCard().getCardNumber());
+        creditCardSendable.setCvv(userRegisterRequest.getCreditCard().getCvv());
+        creditCardSendable.setExpirationDate(userRegisterRequest.getCreditCard().getExpirationDate());
+
+        User userModified = modifyUserDirector.make(found,userRegisterRequest);
+
+        if (!creditCardSendable.getCardNumber().equals(null) &&!creditCardSendable.getExpirationDate().equals(null)&& !creditCardSendable.getCvv().equals(null)) {
+            creditCardPort.save(creditCardSendable, userPort.findUserByEmail(userRegisterRequest.getEmail()));
         }
 
-        auditoryService.registerAuditory(2L, userFound.getId());
-        return userToAddListConvert(userPort.save(userFound));
+        auditoryService.registerAuditory(2L, userModified.getId());
+
+        UserDto addable = userDtoMapper.toDto((userPort.save(userModified)));
+        addable.setCreditCard(CreditCardDtoMapper.toDto(creditCardPort.getCC(userPort.save(userModified))));
+        addable.setRoleList(userPort.save(userModified).getRoleList());
+
+        return addable;
     }
 
     @Override
@@ -99,6 +118,7 @@ public class UsersManageServiceImpl implements ManagerService {
 
     @Override
     public List<UserDto> getFreeAdmins() {
+
         List<UserDto> receiver = new ArrayList<>();
         List<UserDto> removable = new ArrayList<>();
         List<UserDto> returnable = new ArrayList<>();
@@ -127,28 +147,6 @@ public class UsersManageServiceImpl implements ManagerService {
         }
 
         return returnable;
-    }
-
-    private UserDto userToAddListConvert(User user) {
-        UserDto userToAddList = new UserDto();
-        userToAddList.setId(user.getId());
-
-        userToAddList.setCreditCard(creditCardDtoMapper.toDto(creditCardPort.getCC(user)));
-        userToAddList.setEmail(user.getEmail());
-        userToAddList.setFirstName(user.getFirstName());
-        userToAddList.setSecondName(user.getSecondName());
-        userToAddList.setFirstLastname(user.getFirstLastname());
-        userToAddList.setSecondLastname(user.getSecondLastname());
-        userToAddList.setLoginAttempts(user.getLoginAttempts());
-        userToAddList.setAccountActive(user.getAccountActive());
-        userToAddList.setAccountBlocked(user.getAccountBlocked());
-
-        List<String> roleListToAdd = new ArrayList<>();
-        for (RoleEntity role : user.getRoles()) {
-            roleListToAdd.add(role.getRoleEnum().name());
-        }
-        userToAddList.setRoleList(roleListToAdd);
-        return userToAddList;
     }
 
     @Override

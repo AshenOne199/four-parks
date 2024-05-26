@@ -123,6 +123,7 @@ public class StatsServiceImpl implements StatsService {
     @Override
     public String vehicleType(Date beginning, Date ending, Long id, Long idTypeVehicle) {
 
+        @SuppressWarnings("rawtypes")
         List<ReservationDto> returnable = new ArrayList();
         List<ReservationDto> reservationsReceiver = reservationService.getAllReservations();
         for (ReservationDto reservationDto : reservationsReceiver) {
