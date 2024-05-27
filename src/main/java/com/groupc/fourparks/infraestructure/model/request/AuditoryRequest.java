@@ -15,8 +15,8 @@ public class AuditoryRequest {
 
     private String ip;
     private Date happening_date;
-    private ActivityEntity activity;
-    private UserEntity user;
+    private Long activity;
+    private Long user;
 }
 
 

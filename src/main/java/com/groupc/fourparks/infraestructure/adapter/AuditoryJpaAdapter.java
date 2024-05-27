@@ -44,6 +44,8 @@ public class AuditoryJpaAdapter  implements AuditoryPort {
         {
             Auditory auditory = auditoryDboMapper.toDomain(auditoryEntity);
             auditory.setHappening_date(auditoryEntity.getHappeningDate());
+            auditory.setUser(auditoryEntity.getUser_id());
+            auditory.setActivity(auditoryEntity.getActivity_id());
             returnable.add(auditory);
         }
         

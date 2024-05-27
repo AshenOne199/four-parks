@@ -16,6 +16,6 @@ public class Auditory {
     private Long id;
     private String ip;
     private Date happening_date;
-    private Activity activity;
-    private User user;
+    private Long activity;
+    private Long user;
 }
