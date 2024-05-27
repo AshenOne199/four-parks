@@ -47,6 +47,12 @@ public class UsersManageServiceImpl implements ManagerService {
             addable.setCreditCard(CreditCardDtoMapper.toDto(creditCardPort.getCC(user)));
             addable.setRoleList(user.getRoleList());
             returnable.add(addable);
+            // System.out.println(user.getRoleList().size());
+            List<String> roleListToAdd = new ArrayList<>();
+            for (RoleEntity role : user.getRoles()) {
+                roleListToAdd.add(role.getRoleEnum().name());
+            }
+            addable.setRoleList(roleListToAdd);
         }
         return returnable;
     }
@@ -62,6 +68,11 @@ public class UsersManageServiceImpl implements ManagerService {
                 addable.setCreditCard(CreditCardDtoMapper.toDto(creditCardPort.getCC(user)));
                 addable.setRoleList(user.getRoleList());
                 returnable.add(addable);
+                List<String> roleListToAdd = new ArrayList<>();
+                for (RoleEntity role : user.getRoles()) {
+                    roleListToAdd.add(role.getRoleEnum().name());
+                }
+                addable.setRoleList(roleListToAdd);
             }
 
         }
@@ -75,7 +86,11 @@ public class UsersManageServiceImpl implements ManagerService {
         UserDto addable = userDtoMapper.toDto((user));
         addable.setCreditCard(CreditCardDtoMapper.toDto(creditCardPort.getCC(user)));
         addable.setRoleList(user.getRoleList());
-
+        List<String> roleListToAdd = new ArrayList<>();
+        for (RoleEntity role : user.getRoles()) {
+            roleListToAdd.add(role.getRoleEnum().name());
+        }
+        addable.setRoleList(roleListToAdd);
         return addable;
     }
 
@@ -89,9 +104,10 @@ public class UsersManageServiceImpl implements ManagerService {
         creditCardSendable.setCvv(userRegisterRequest.getCreditCard().getCvv());
         creditCardSendable.setExpirationDate(userRegisterRequest.getCreditCard().getExpirationDate());
 
-        User userModified = modifyUserDirector.make(found,userRegisterRequest);
+        User userModified = modifyUserDirector.make(found, userRegisterRequest);
 
-        if (!creditCardSendable.getCardNumber().equals(null) &&!creditCardSendable.getExpirationDate().equals(null)&& !creditCardSendable.getCvv().equals(null)) {
+        if (!creditCardSendable.getCardNumber().equals(null) && !creditCardSendable.getExpirationDate().equals(null)
+                && !creditCardSendable.getCvv().equals(null)) {
             creditCardPort.save(creditCardSendable, userPort.findUserByEmail(userRegisterRequest.getEmail()));
         }
 
