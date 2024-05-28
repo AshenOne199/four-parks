@@ -54,6 +54,7 @@ public class ManagerController {
 
     @PutMapping("/user/update")
     public ResponseEntity<UserDto> modifyUser(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
+     
         return new ResponseEntity<>(this.managerService.modifyUser(userRegisterRequest), HttpStatus.OK);
     }
 }

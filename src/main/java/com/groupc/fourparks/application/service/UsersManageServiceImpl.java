@@ -1,9 +1,15 @@
 package com.groupc.fourparks.application.service;
 
-import com.groupc.fourparks.application.mapper.UserRegisterRequestMapper;
-import com.groupc.fourparks.application.service.PatternsHelpers.ModifyUserDirector;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.stereotype.Service;
+
 import com.groupc.fourparks.application.mapper.CreditCardDtoMapper;
 import com.groupc.fourparks.application.mapper.UserDtoMapper;
+import com.groupc.fourparks.application.mapper.UserRegisterRequestMapper;
+import com.groupc.fourparks.application.service.PatternsHelpers.ModifyUserDirector;
 import com.groupc.fourparks.application.usecase.AuditoryService;
 import com.groupc.fourparks.application.usecase.ManagerService;
 import com.groupc.fourparks.application.usecase.ParkingService;
@@ -18,11 +24,6 @@ import com.groupc.fourparks.infraestructure.model.dto.UserDto;
 import com.groupc.fourparks.infraestructure.model.request.UserRegisterRequest;
 
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -47,7 +48,7 @@ public class UsersManageServiceImpl implements ManagerService {
             addable.setCreditCard(CreditCardDtoMapper.toDto(creditCardPort.getCC(user)));
             addable.setRoleList(user.getRoleList());
             returnable.add(addable);
-            // System.out.println(user.getRoleList().size());
+            
             List<String> roleListToAdd = new ArrayList<>();
             for (RoleEntity role : user.getRoles()) {
                 roleListToAdd.add(role.getRoleEnum().name());
@@ -99,24 +100,37 @@ public class UsersManageServiceImpl implements ManagerService {
         ModifyUserDirector modifyUserDirector = new ModifyUserDirector();
         User found = userPort.findUserByEmail(userRegisterRequest.getEmail());
         CreditCard creditCardSendable = new CreditCard();
-
-        creditCardSendable.setCardNumber(userRegisterRequest.getCreditCard().getCardNumber());
-        creditCardSendable.setCvv(userRegisterRequest.getCreditCard().getCvv());
-        creditCardSendable.setExpirationDate(userRegisterRequest.getCreditCard().getExpirationDate());
-
-        User userModified = modifyUserDirector.make(found, userRegisterRequest);
-
-        if (!creditCardSendable.getCardNumber().equals(null) && !creditCardSendable.getExpirationDate().equals(null)
-                && !creditCardSendable.getCvv().equals(null)) {
-            creditCardPort.save(creditCardSendable, userPort.findUserByEmail(userRegisterRequest.getEmail()));
+        
+        
+        if(userRegisterRequest.getCreditCard() != null)
+        {
+            creditCardSendable.setCardNumber(userRegisterRequest.getCreditCard().getCardNumber());
+            creditCardSendable.setCvv(userRegisterRequest.getCreditCard().getCvv());
+            creditCardSendable.setExpirationDate(userRegisterRequest.getCreditCard().getExpirationDate());
+            if (!creditCardSendable.getCardNumber().equals(null) && !creditCardSendable.getExpirationDate().equals(null)
+            && !creditCardSendable.getCvv().equals(null)) {
+        creditCardPort.save(creditCardSendable, userPort.findUserByEmail(userRegisterRequest.getEmail()));
+    }
+            
+    
         }
+        User userModified = modifyUserDirector.make(found, userRegisterRequest);
+        
 
         auditoryService.registerAuditory(2L, userModified.getId());
 
         UserDto addable = userDtoMapper.toDto((userPort.save(userModified)));
         addable.setCreditCard(CreditCardDtoMapper.toDto(creditCardPort.getCC(userPort.save(userModified))));
         addable.setRoleList(userPort.save(userModified).getRoleList());
+        
+        List<String> roleListToAdd = new ArrayList<>();
+        for (RoleEntity role : userModified.getRoles()) {
+            roleListToAdd.add(role.getRoleEnum().name());
+        }
+        addable.setRoleList(roleListToAdd);
 
+    
+        
         return addable;
     }
 
