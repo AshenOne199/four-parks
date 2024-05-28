@@ -32,7 +32,7 @@ public class StatsServiceImpl implements StatsService {
             Date comparableDate = Date.from(zdt.toInstant());
 
             if (id == -1) {
-                if ((comparableDate.after(beginning) && comparableDate.before(ending))) {
+                if ((comparableDate.after(beginning) && reservationDto.getTotalPrice() != null &&comparableDate.before(ending))) {
                     totalAmount += reservationDto.getTotalPrice();
                 }
 
@@ -55,7 +55,7 @@ public class StatsServiceImpl implements StatsService {
         List<UserDto> returnable = new ArrayList<>();
         for (ReservationDto reservationDto : reservationsReceiver) {
 
-            LocalDateTime ldt = reservationDto.getReservationStartTime();
+            LocalDateTime ldt = reservationDto.getReservationTime();
 
             ZonedDateTime zdt = ldt.atZone(ZoneId.systemDefault());
             Date comparableDate = Date.from(zdt.toInstant());
