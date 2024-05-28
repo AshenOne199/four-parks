@@ -56,11 +56,13 @@ public class AuditoryServiceImpl implements AuditoryService {
     @Override
     public AuditoryDto registerAuditory(Long activityId, Long userId) {
         Auditory auditory = new Auditory();
-        List<Activity> allActivities = activityPort.read();
         auditory.setActivity(activityId);
         auditory.setUser(userId);
-        
-        return auditoryDtoMapper.toDto(auditoryPort.registerAuditory(auditory));
+
+        var returnable = auditoryPort.registerAuditory(auditory);
+
+        var returnable1 = auditoryDtoMapper.toDto(returnable);
+        return returnable1;
     }
 
     @Override
@@ -70,16 +72,16 @@ public class AuditoryServiceImpl implements AuditoryService {
         for (Auditory auditory : receiver) {
             if (userId == -1L) {
                 if (auditory.getHappening_date().after(beginning) && auditory.getHappening_date().before(ending)) {
-                    AuditoryDto auditoryDto = auditoryDtoMapper.toDto(auditory);  
-                    auditoryDto.setActivity(auditory.getActivity());               
+                    AuditoryDto auditoryDto = auditoryDtoMapper.toDto(auditory);
+                    auditoryDto.setActivity(auditory.getActivity());
                     auditoryDto.setUser(auditory.getUser());
                     returnable.add(auditoryDto);
                 }
             } else {
                 if (auditory.getHappening_date().after(beginning) && auditory.getHappening_date().before(ending) && Objects.equals(auditory.getUser(), userId)) {
-                    AuditoryDto auditoryDto = auditoryDtoMapper.toDto(auditory);         
-                    auditoryDto.setActivity(auditory.getActivity());               
-                    auditoryDto.setUser(auditory.getUser());          
+                    AuditoryDto auditoryDto = auditoryDtoMapper.toDto(auditory);
+                    auditoryDto.setActivity(auditory.getActivity());
+                    auditoryDto.setUser(auditory.getUser());
                     returnable.add(auditoryDto);
                 }
             }

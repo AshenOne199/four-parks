@@ -28,10 +28,10 @@ public class AuditoryEntity {
     private Date happeningDate;
 
     @Column(name = "activity_id")
-    private Long activity_id;
+    private Long activity;
 
     @Column(name = "user_id")
-    private Long user_id;
+    private Long user;
 }
 
 

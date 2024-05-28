@@ -116,9 +116,9 @@ public class UsersManageServiceImpl implements ManagerService {
         }
         User userModified = modifyUserDirector.make(found, userRegisterRequest);
         
-
-        auditoryService.registerAuditory(2L, userModified.getId());
-
+ 
+        var  sampler = auditoryService.registerAuditory(2L, userModified.getId());
+        System.out.println(sampler.getActivity());
         UserDto addable = userDtoMapper.toDto((userPort.save(userModified)));
         addable.setCreditCard(CreditCardDtoMapper.toDto(creditCardPort.getCC(userPort.save(userModified))));
         addable.setRoleList(userPort.save(userModified).getRoleList());
