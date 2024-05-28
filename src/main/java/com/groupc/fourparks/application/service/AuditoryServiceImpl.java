@@ -57,20 +57,8 @@ public class AuditoryServiceImpl implements AuditoryService {
     public AuditoryDto registerAuditory(Long activityId, Long userId) {
         Auditory auditory = new Auditory();
         List<Activity> allActivities = activityPort.read();
-        for (Activity activity : allActivities) {
-            if (Objects.equals(activity.getId(), activityId)) {
-                auditory.setActivity(activity.getId());
-
-            }
-        }
-        List<User> allUsers = userPort.findAllUsers();
-        for (User user : allUsers) {
-            if (Objects.equals(user.getId(), userId)) {
-                auditory.setUser(user.getId());
-                auditory.setIp(user.getIp());
-
-            }
-        }
+        auditory.setActivity(activityId);
+        auditory.setUser(userId);
         
         return auditoryDtoMapper.toDto(auditoryPort.registerAuditory(auditory));
     }

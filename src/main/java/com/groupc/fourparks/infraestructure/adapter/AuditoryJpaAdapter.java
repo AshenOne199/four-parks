@@ -1,7 +1,6 @@
 package com.groupc.fourparks.infraestructure.adapter;
 
 import com.groupc.fourparks.domain.model.Auditory;
-import com.groupc.fourparks.domain.model.User;
 import com.groupc.fourparks.domain.port.AuditoryPort;
 import com.groupc.fourparks.infraestructure.adapter.entity.AuditoryEntity;
 
