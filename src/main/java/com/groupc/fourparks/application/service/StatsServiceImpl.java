@@ -27,7 +27,7 @@ public class StatsServiceImpl implements StatsService {
         reservationsReceiver = reservationService.getAllReservations();
         double totalAmount = 0;
         for (ReservationDto reservationDto : reservationsReceiver) {
-            LocalDateTime ldt = reservationDto.getReservationStartTime();
+            LocalDateTime ldt = reservationDto.getReservationTime();
             ZonedDateTime zdt = ldt.atZone(ZoneId.systemDefault());
             Date comparableDate = Date.from(zdt.toInstant());
 
@@ -98,9 +98,11 @@ public class StatsServiceImpl implements StatsService {
     public String reservationsOnDate(Date beginning, Date ending, Long id) {
         List<ReservationDto> returnable = new ArrayList();
         List<ReservationDto> reservationsReceiver = reservationService.getAllReservations();
+       
         for (ReservationDto reservationDto : reservationsReceiver) {
 
-            LocalDateTime ldt = reservationDto.getReservationStartTime();
+            LocalDateTime ldt = reservationDto.getReservationTime();
+            
 
             ZonedDateTime zdt = ldt.atZone(ZoneId.systemDefault());
             Date comparableDate = Date.from(zdt.toInstant());
@@ -128,7 +130,7 @@ public class StatsServiceImpl implements StatsService {
         List<ReservationDto> reservationsReceiver = reservationService.getAllReservations();
         for (ReservationDto reservationDto : reservationsReceiver) {
 
-            LocalDateTime ldt = reservationDto.getReservationStartTime();
+            LocalDateTime ldt = reservationDto.getReservationTime();
 
             ZonedDateTime zdt = ldt.atZone(ZoneId.systemDefault());
             Date comparableDate = Date.from(zdt.toInstant());
