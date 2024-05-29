@@ -7,5 +7,9 @@ import com.groupc.fourparks.domain.model.Activity;
 public interface ActivityPort {
 
     List<Activity> read();
+
+    Activity getById(Long activity);
+
+    
     
 } 

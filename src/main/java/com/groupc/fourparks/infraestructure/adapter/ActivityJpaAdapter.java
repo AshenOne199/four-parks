@@ -31,5 +31,10 @@ public class ActivityJpaAdapter implements ActivityPort{
         }
         return returnable;
     }
+    @Override
+    public Activity getById(Long activity) {
+        
+        return activityDboMapper.toDomain(activityRepository.findById(activity).get());
+    }
     
 }

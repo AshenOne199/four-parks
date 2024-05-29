@@ -15,8 +15,8 @@ public class AuditoryDto {
     private Long id;
     private String ip;
     private Date happening_date;
-    private Long activity;
-    private Long user;
+    private ActivityDto activityShowable;
+    private UserDto userShowable;
 }
 
 

@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.groupc.fourparks.application.mapper.CreditCardDtoMapper;
 import com.groupc.fourparks.application.mapper.UserDtoMapper;
-import com.groupc.fourparks.application.mapper.UserRegisterRequestMapper;
 import com.groupc.fourparks.application.service.PatternsHelpers.ModifyUserDirector;
-import com.groupc.fourparks.application.usecase.AuditoryService;
 import com.groupc.fourparks.application.usecase.ManagerService;
 import com.groupc.fourparks.application.usecase.ParkingService;
 import com.groupc.fourparks.domain.model.CreditCard;
@@ -29,14 +27,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class UsersManageServiceImpl implements ManagerService {
 
-    private final UserRegisterRequestMapper userRegisterRequestMapper;
     private final UserPort userPort;
     private final UserDtoMapper userDtoMapper;
     private final RoleRepository roleRepository;
     private final CreditCardPort creditCardPort;
     private final CreditCardDtoMapper CreditCardDtoMapper;
-    private final AuditoryService auditoryService;
-
     private final ParkingService parkingService;
 
     @Override
@@ -117,8 +112,6 @@ public class UsersManageServiceImpl implements ManagerService {
         User userModified = modifyUserDirector.make(found, userRegisterRequest);
         
  
-        var  sampler = auditoryService.registerAuditory(2L, userModified.getId());
-        System.out.println(sampler.getActivity());
         UserDto addable = userDtoMapper.toDto((userPort.save(userModified)));
         addable.setCreditCard(CreditCardDtoMapper.toDto(creditCardPort.getCC(userPort.save(userModified))));
         addable.setRoleList(userPort.save(userModified).getRoleList());

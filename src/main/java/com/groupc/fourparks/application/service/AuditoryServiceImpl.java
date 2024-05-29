@@ -1,5 +1,6 @@
 package com.groupc.fourparks.application.service;
 
+import com.groupc.fourparks.application.mapper.ActivityDtoMapper;
 import com.groupc.fourparks.application.mapper.AuditoryDtoMapper;
 
 import com.groupc.fourparks.application.mapper.UserDtoMapper;
@@ -35,6 +36,7 @@ public class AuditoryServiceImpl implements AuditoryService {
 
     private final UserPort userPort;
     private final ActivityPort activityPort;
+    private final ActivityDtoMapper activityDtoMapper;
 
     private final UserDboMapper userDboMapper;
     private final UserDtoMapper userDtoMapper;
@@ -69,20 +71,47 @@ public class AuditoryServiceImpl implements AuditoryService {
     public List<AuditoryDto> getAuditories(Date beginning, Date ending, Long userId) {
         List<AuditoryDto> returnable = new ArrayList<>();
         List<Auditory> receiver = auditoryPort.read();
+        List<Activity> receiverActivities = activityPort.read();
+        List<User> users = userPort.findAllUsers();
+ 
         for (Auditory auditory : receiver) {
+
             if (userId == -1L) {
                 if (auditory.getHappening_date().after(beginning) && auditory.getHappening_date().before(ending)) {
                     AuditoryDto auditoryDto = auditoryDtoMapper.toDto(auditory);
-                    auditoryDto.setActivity(auditory.getActivity());
-                    auditoryDto.setUser(auditory.getUser());
+                
+                    for(User user : users)
+                    {
+                        if(auditory.getUser() == user.getId())
+                        {
+                            auditoryDto.setUserShowable(userDtoMapper.toDto(user));
+                            
+                        }
+                    }
+                    for(Activity activity: receiverActivities)
+                    {
+                        if(auditory.getActivity() == activity.getId())
+                        {
+                            auditoryDto.setActivityShowable(activityDtoMapper.toDto(activity));
+                            
+                        }
+                    }
+                   
+                    
                     returnable.add(auditoryDto);
+
                 }
+
             } else {
-                if (auditory.getHappening_date().after(beginning) && auditory.getHappening_date().before(ending) && Objects.equals(auditory.getUser(), userId)) {
+                if (auditory.getHappening_date().after(beginning) && auditory.getHappening_date().before(ending)
+                        && Objects.equals(auditory.getUser(), userId)) {
                     AuditoryDto auditoryDto = auditoryDtoMapper.toDto(auditory);
-                    auditoryDto.setActivity(auditory.getActivity());
-                    auditoryDto.setUser(auditory.getUser());
+                    Activity activity = activityPort.getById(auditory.getActivity());
+                    auditoryDto.setActivityShowable(activityDtoMapper.toDto(activity));
+                    auditoryDto.setUserShowable(userDtoMapper.toDto(userPort.findUserById(auditory.getId())));
                     returnable.add(auditoryDto);
+
+                    
                 }
             }
 
