@@ -93,7 +93,6 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    @Transactional
     public ReservationDto endReservation(ReservationRequest reservationRequest) {
         var reservation = reservationPort.findById(reservationRequest.getIdReservation());
         LocalDateTime timeNow = LocalDateTime.now();

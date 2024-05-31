@@ -33,8 +33,7 @@ public class ManagerController {
     }
 
     @GetMapping("/freeAdmins")
-    public ResponseEntity<List<UserDto>> getFreeAdmins()
-    {
+    public ResponseEntity<List<UserDto>> getFreeAdmins() {
         return new ResponseEntity<>(this.managerService.getFreeAdmins(), HttpStatus.OK);
     }
 
@@ -54,7 +53,6 @@ public class ManagerController {
 
     @PutMapping("/user/update")
     public ResponseEntity<UserDto> modifyUser(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
-     
         return new ResponseEntity<>(this.managerService.modifyUser(userRegisterRequest), HttpStatus.OK);
     }
 }
