@@ -21,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -127,17 +128,12 @@ public class ReservationServiceImpl implements ReservationService {
 
         var parkingSlot = parkingSlotPort.getParkingSlot(reservation.getParkingSlot().getId());
         var parkingSlotDto = parkingSlotDtoMapper.toDto(parkingSlot);
-
-        List<String> roleListToAdd = new ArrayList<>();
-        for (RoleEntity role : parkingSlot.getParkingId().getAdmin().getRoles()) {
-            roleListToAdd.add(role.getRoleEnum().name());
-        }
-        parkingSlotDto.getParkingId().getAdmin().setRoleList(roleListToAdd);
-
         var statusSlot = slotStatusPort.findSlotStatusByStatus("EMPTY");
         var slotStatusDto = slotStatusDtoMapper.toDto(statusSlot);
         parkingSlotDto.setSlotStatusId(slotStatusDto);
         var parkingSlotToSave = parkingSlotDtoMapper.toDomain(parkingSlotDto);
+        var roles = parkingSlot.getParkingId().getAdmin().getRoles();
+        parkingSlotToSave.getParkingId().getAdmin().setRoles(roles);
         parkingSlotPort.save(parkingSlotToSave);
 
         var reservationSaved = reservationPort.save(reservation);
