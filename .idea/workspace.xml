@@ -6,9 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="b3a97a6a-dd53-481b-bd86-caa5e85232d5" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/ReservationServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/ReservationServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/ReservationPort.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/domain/port/ReservationPort.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/ReservationJpaAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/adapter/ReservationJpaAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/AuditoryServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/AuditoryServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/StatsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/groupc/fourparks/infraestructure/rest/controller/StatsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +61,7 @@
     &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
     &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Spring Boot.FourParksApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Spring Boot.FourParksApplication.executor&quot;: &quot;Run&quot;,
     &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
     &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
@@ -156,6 +156,12 @@
       <workItem from="1716262970087" duration="1630000" />
       <workItem from="1716315772060" duration="2914000" />
       <workItem from="1716499053795" duration="374000" />
+      <workItem from="1716916016340" duration="2115000" />
+      <workItem from="1716919370472" duration="1223000" />
+      <workItem from="1716921466943" duration="464000" />
+      <workItem from="1716946665585" duration="1660000" />
+      <workItem from="1717035506517" duration="2277000" />
+      <workItem from="1717113957802" duration="1474000" />
     </task>
     <servers />
   </component>
@@ -183,7 +189,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/groupc/fourparks/application/service/UsersManageServiceImpl.java</url>
-          <line>103</line>
+          <line>95</line>
           <option name="timeStamp" value="10" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">

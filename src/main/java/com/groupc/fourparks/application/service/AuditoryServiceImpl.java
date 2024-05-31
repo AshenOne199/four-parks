@@ -63,8 +63,7 @@ public class AuditoryServiceImpl implements AuditoryService {
 
         var returnable = auditoryPort.registerAuditory(auditory);
 
-        var returnable1 = auditoryDtoMapper.toDto(returnable);
-        return returnable1;
+        return auditoryDtoMapper.toDto(returnable);
     }
 
     @Override
@@ -82,7 +81,7 @@ public class AuditoryServiceImpl implements AuditoryService {
                 
                     for(User user : users)
                     {
-                        if(auditory.getUser() == user.getId())
+                        if(Objects.equals(auditory.getUser(), user.getId()))
                         {
                             auditoryDto.setUserShowable(userDtoMapper.toDto(user));
                             
@@ -90,7 +89,7 @@ public class AuditoryServiceImpl implements AuditoryService {
                     }
                     for(Activity activity: receiverActivities)
                     {
-                        if(auditory.getActivity() == activity.getId())
+                        if(Objects.equals(auditory.getActivity(), activity.getId()))
                         {
                             auditoryDto.setActivityShowable(activityDtoMapper.toDto(activity));
                             
