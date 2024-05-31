@@ -6,6 +6,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class StatsServiceImpl implements StatsService {
 
     @Override
     public String incomesOnDate(Date beginning, Date ending, Long id) {
-        List<ReservationDto> reservationsReceiver = new ArrayList<>();
+        List<ReservationDto> reservationsReceiver;
         reservationsReceiver = reservationService.getAllReservations();
         double totalAmount = 0;
         for (ReservationDto reservationDto : reservationsReceiver) {
@@ -37,16 +38,15 @@ public class StatsServiceImpl implements StatsService {
                 }
 
             } else {
-                if ((comparableDate.after(beginning) && reservationDto.getParkingSlot().getParkingId().getId() == id
+                if (reservationDto.getTotalPrice() != null && (comparableDate.after(beginning) && Objects.equals(reservationDto.getParkingSlot().getParkingId().getId(), id)
                         && comparableDate.before(ending))) {
                     totalAmount += reservationDto.getTotalPrice();
                 }
             }
 
         }
-        String returnable = "" + totalAmount;
 
-        return returnable;
+        return "" + totalAmount;
     }
 
     @Override
@@ -77,11 +77,13 @@ public class StatsServiceImpl implements StatsService {
             } else {
                 if ((comparableDate.after(beginning) && comparableDate.before(ending)
                         && !returnable.contains(reservationDto.getUser())
-                        && reservationDto.getParkingSlot().getParkingId().getId() == id)) {
+                        && Objects.equals(reservationDto.getParkingSlot().getParkingId().getId(), id))) {
                     boolean addableConfirmation = true;
                     for (UserDto userDto : returnable) {
-                        if (userDto.getId() == addable.getId())
+                        if (Objects.equals(userDto.getId(), addable.getId())) {
                             addableConfirmation = false;
+                            break;
+                        }
                     }
                     if (addableConfirmation) {
 

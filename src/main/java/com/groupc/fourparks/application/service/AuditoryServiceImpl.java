@@ -72,31 +72,27 @@ public class AuditoryServiceImpl implements AuditoryService {
         List<Auditory> receiver = auditoryPort.read();
         List<Activity> receiverActivities = activityPort.read();
         List<User> users = userPort.findAllUsers();
- 
+
         for (Auditory auditory : receiver) {
 
             if (userId == -1L) {
                 if (auditory.getHappening_date().after(beginning) && auditory.getHappening_date().before(ending)) {
                     AuditoryDto auditoryDto = auditoryDtoMapper.toDto(auditory);
-                
-                    for(User user : users)
-                    {
-                        if(Objects.equals(auditory.getUser(), user.getId()))
-                        {
+
+                    for (User user : users) {
+                        if (Objects.equals(auditory.getUser(), user.getId())) {
                             auditoryDto.setUserShowable(userDtoMapper.toDto(user));
-                            
+
                         }
                     }
-                    for(Activity activity: receiverActivities)
-                    {
-                        if(Objects.equals(auditory.getActivity(), activity.getId()))
-                        {
+                    for (Activity activity : receiverActivities) {
+                        if (Objects.equals(auditory.getActivity(), activity.getId())) {
                             auditoryDto.setActivityShowable(activityDtoMapper.toDto(activity));
-                            
+
                         }
                     }
-                   
-                    
+
+
                     returnable.add(auditoryDto);
 
                 }
@@ -109,8 +105,6 @@ public class AuditoryServiceImpl implements AuditoryService {
                     auditoryDto.setActivityShowable(activityDtoMapper.toDto(activity));
                     auditoryDto.setUserShowable(userDtoMapper.toDto(userPort.findUserById(auditory.getUser())));
                     returnable.add(auditoryDto);
-
-                    
                 }
             }
 
