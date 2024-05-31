@@ -63,8 +63,10 @@ public class ReservationServiceImpl implements ReservationService {
         var slotStatusDto = slotStatusDtoMapper.toDto(statusSlot);
         parkingSlotDto.setSlotStatusId(slotStatusDto);
         var parkingSlotToSave = parkingSlotDtoMapper.toDomain(parkingSlotDto);
+
         var roles = parkingSlot.getParkingId().getAdmin().getRoles();
         parkingSlotToSave.getParkingId().getAdmin().setRoles(roles);
+
         parkingSlotPort.save(parkingSlotToSave);
 
         var reservationDto = ReservationDto.builder()
@@ -74,6 +76,8 @@ public class ReservationServiceImpl implements ReservationService {
                 .build();
 
         var reservationToCreate = reservationRequestMapper.toDomain(reservationDto);
+        reservationToCreate.getParkingSlot().getParkingId().getAdmin().setRoles(roles);
+
         var reservationSaved = reservationPort.save(reservationToCreate);
         auditoryService.registerAuditory(5L, userToSave.getId());
         return reservationRequestMapper.toDto(reservationSaved);
