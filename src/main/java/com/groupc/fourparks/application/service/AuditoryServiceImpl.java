@@ -107,7 +107,7 @@ public class AuditoryServiceImpl implements AuditoryService {
                     AuditoryDto auditoryDto = auditoryDtoMapper.toDto(auditory);
                     Activity activity = activityPort.getById(auditory.getActivity());
                     auditoryDto.setActivityShowable(activityDtoMapper.toDto(activity));
-                    auditoryDto.setUserShowable(userDtoMapper.toDto(userPort.findUserById(auditory.getId())));
+                    auditoryDto.setUserShowable(userDtoMapper.toDto(userPort.findUserById(auditory.getUser())));
                     returnable.add(auditoryDto);
 
                     
