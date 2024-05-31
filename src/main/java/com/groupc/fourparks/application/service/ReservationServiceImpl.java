@@ -8,6 +8,7 @@ import com.groupc.fourparks.application.usecase.AuditoryService;
 import com.groupc.fourparks.application.usecase.ReservationService;
 import com.groupc.fourparks.domain.model.ParkingRate;
 import com.groupc.fourparks.domain.port.*;
+import com.groupc.fourparks.infraestructure.adapter.entity.RoleEntity;
 import com.groupc.fourparks.infraestructure.exception.BadRequestException;
 import com.groupc.fourparks.infraestructure.model.dto.ReservationDto;
 import com.groupc.fourparks.infraestructure.model.request.ReservationRequest;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -125,6 +127,13 @@ public class ReservationServiceImpl implements ReservationService {
 
         var parkingSlot = parkingSlotPort.getParkingSlot(reservation.getParkingSlot().getId());
         var parkingSlotDto = parkingSlotDtoMapper.toDto(parkingSlot);
+
+        List<String> roleListToAdd = new ArrayList<>();
+        for (RoleEntity role : parkingSlot.getParkingId().getAdmin().getRoles()) {
+            roleListToAdd.add(role.getRoleEnum().name());
+        }
+        parkingSlotDto.getParkingId().getAdmin().setRoleList(roleListToAdd);
+
         var statusSlot = slotStatusPort.findSlotStatusByStatus("EMPTY");
         var slotStatusDto = slotStatusDtoMapper.toDto(statusSlot);
         parkingSlotDto.setSlotStatusId(slotStatusDto);
