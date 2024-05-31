@@ -63,6 +63,8 @@ public class ReservationServiceImpl implements ReservationService {
         var slotStatusDto = slotStatusDtoMapper.toDto(statusSlot);
         parkingSlotDto.setSlotStatusId(slotStatusDto);
         var parkingSlotToSave = parkingSlotDtoMapper.toDomain(parkingSlotDto);
+        var roles = parkingSlot.getParkingId().getAdmin().getRoles();
+        parkingSlotToSave.getParkingId().getAdmin().setRoles(roles);
         parkingSlotPort.save(parkingSlotToSave);
 
         var reservationDto = ReservationDto.builder()
